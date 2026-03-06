@@ -92,34 +92,25 @@
         footer a { color: #fff; text-decoration: none; }
 	    /* ================= 📱 手機版專屬優化 (魔法響應式設計) ================= */
         @media (max-width: 768px) {
-            /* 1. 導覽列：改為上下排列，讓品牌名稱與選單不打架 */
-            .navbar {
-                flex-direction: column;
-                padding: 12px 0;
-            }
-            .brand-logo {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-            .nav-links a {
-                margin: 0 12px;
-                font-size: 14px;
-            }
+            /* 1. 導覽列：改為上下排列 */
+            .navbar { flex-direction: column; padding: 12px 0; }
+            .brand-logo { font-size: 18px; margin-bottom: 10px; }
+            .nav-links a { margin: 0 12px; font-size: 14px; }
 
-            /* 2. 品牌首圖文案：縮小標題與內文字體，並拉開行距增加呼吸感 */
-            .hero {
-                height: auto; /* 讓高度根據文字自動延伸 */
-                padding: 80px 15px; 
-            }
-            .hero h1 {
-                font-size: 26px; /* 從 40px 縮小 */
-                line-height: 1.4;
-            }
+            /* 2. 品牌首圖文案：縮小標題與內文字體 */
+            .hero { height: auto; padding: 80px 15px; }
+            .hero h1 { font-size: 26px; line-height: 1.4; }
+            
             .hero p {
                 font-size: 15px;
-                line-height: 1.8; /* 拉開行距，閱讀更舒服 */
+                line-height: 1.8;
                 text-align: left; /* 改為靠左對齊，在手機上閱讀長文比較自然 */
                 margin-bottom: 40px;
+            }
+
+            /* 🌟 隱形魔法加在這裡：讓首圖裡的換行符號在手機上消失 🌟 */
+            .hero p br {
+                display: none; 
             }
 
             /* 3. 區塊標題與內文稍微縮小 */
@@ -138,12 +129,11 @@
     </nav>
 
     <header class="hero">
-        <h1>DUMPLING ART｜一個情慾藝術品牌</h1> <p>我是餃子🥟不會畫畫，畫風甚至不乖，但你一定會記得。
-		<br>喜歡騷氣的「藝術」、擅長粗暴式的「溫柔」，用顏色擁抱「愛與性」。<br>
+        <h1>DUMPLING ART｜一個情慾藝術品牌</h1> <p>我是餃子🥟不會畫畫，畫風甚至不乖，但你一定會記得。<br>
+		喜歡騷氣的「藝術」、擅長粗暴式的「溫柔」，用顏色擁抱「愛與性」。<br>
 		敢於畫出「你不敢說的誠實」、收藏「你偷偷壓抑的慾望」。<br>
-		渴望與你分享那份赤裸的真誠。
+		渴望與你分享那份赤裸的真誠。</p>
 
-</p>
         <a href="#products" class="hero-btn">立即選購</a>
     </header>
 
