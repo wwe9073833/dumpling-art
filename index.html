@@ -131,9 +131,17 @@
 
         /* ================= 📱 手機版專屬優化 (魔法響應式設計) ================= */
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 12px 0; }
-            .brand-logo { font-size: 18px; margin-bottom: 10px; }
-            .nav-links a { margin: 0 12px; font-size: 14px; }
+            .navbar { flex-direction: column; padding: 15px 10px; }
+            .brand-logo { font-size: 18px; margin-bottom: 15px; text-align: center; }
+            
+            /* 讓導覽列按鈕自動換行、置中，不再擠破頭！ */
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap; 
+                justify-content: center;
+                gap: 10px; /* 按鈕上下的間距 */
+            }
+            .nav-links a { margin: 0 5px; font-size: 14px; }
 
             .hero { height: auto; padding: 80px 15px; }
             .hero h1 { font-size: 26px; line-height: 1.4; }
