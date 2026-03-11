@@ -1,0 +1,164 @@
+<!DOCTYPE html> 
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全部商品｜DUMPLING ART</title> 
+    <style>
+        /* ================= 沿用原本的完美 CSS ================= */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
+            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6; padding-bottom: 60px; 
+        }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
+        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
+        .nav-links a:hover { color: #000; }
+
+        .section-title { text-align: center; margin: 60px 0 40px; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background-color: #333; margin: 15px auto 0; }
+
+        .products-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
+        }
+        
+        .product-card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        
+        .product-img { width: 100%; height: 350px; object-fit: cover; }
+        .product-info { padding: 20px; text-align: center; }
+        .product-title { font-size: 18px; margin: 0 0 10px; font-weight: 600; }
+        .product-price { color: #888; font-size: 16px; margin-bottom: 20px; }
+
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; }
+        .btn { padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .btn-myship { background-color: #ff6b6b; color: white; border: 1px solid #ff6b6b; }
+        .btn-myship:hover { background-color: #fa5252; }
+
+        footer { background-color: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 14px; }
+        footer a { color: #fff; text-decoration: none; }
+
+        .floating-btn {
+            position: fixed; bottom: 25px; right: 25px; background-color: #06C755; color: white;
+            padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
+            font-size: 16px; box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); z-index: 9999;
+            transition: 0.3s ease; display: flex; align-items: center; gap: 5px;
+        }
+        .floating-btn:hover { transform: scale(1.05); background-color: #05b34c; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 12px 0; }
+            .brand-logo { font-size: 18px; margin-bottom: 10px; }
+            .nav-links a { margin: 0 12px; font-size: 14px; }
+            .section-title { font-size: 24px; margin: 40px 0 20px; }
+            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
+        <div class="nav-links">
+			<a href="index.html">🏠 回首頁</a>
+			<a href="about.html" target="_blank">關於我</a>
+			<a href="#all-products">全部商品</a>
+		</div>
+    </nav>
+
+    <section id="all-products">
+        <h2 class="section-title">✨ 商品總覽 ✨</h2>
+        <div class="products-container">
+            
+            <div class="product-card">
+                <img src="images/hot_item2.jpg" alt="情慾無框畫" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">🫦情慾🫦無框畫</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
+                    <p class="product-price">NT$ 169</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">❤️筆電、創意、電腦貼紙❤️</h3>
+                    <p class="product-price">NT$ 20</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="images/item3.jpg" alt="掛布" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">情慾藝術🎨掛布</h3>
+                    <p class="product-price">NT$ 480</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
+                    <p class="product-price">NT$ 369</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
+                    <p class="product-price">NT$ 369</p>
+                    <div class="action-buttons">
+                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+    </section>
+
+    <footer>
+        <p>聯絡我們</p>
+        <p>Instagram：<a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank">@dumpling_arrrt_</a></p>
+        <p>E-mail：dumplinguu@gmail.com</p>
+        <p>2020 ® DUMPLING ART</p>
+    </footer>
+
+    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">
+        💬 點我私訊
+    </a>
+
+</body>
+</html>

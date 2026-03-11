@@ -1,0 +1,162 @@
+<!DOCTYPE html> 
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>結帳清單｜DUMPLING ART</title> 
+    <style>
+        /* ================= 沿用核心品牌 CSS ================= */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
+            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
+        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
+        .nav-links a:hover { color: #000; }
+
+        .section-title { text-align: center; margin: 40px 0; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
+        
+        /* ================= 🛒 購物車專屬設計 ================= */
+        .cart-container {
+            max-width: 800px; margin: 0 auto 60px auto; padding: 30px;
+            background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; border-bottom: 1px dashed #ddd; font-size: 16px;
+        }
+        .item-name { font-weight: bold; color: #111; }
+        .item-subtotal { color: #ff6b6b; font-weight: bold; }
+
+        .cart-total {
+            text-align: right; font-size: 22px; font-weight: bold; margin-top: 30px; color: #111;
+        }
+
+        .checkout-btn {
+            display: block; width: 100%; text-align: center; background-color: #06C755; /* LINE綠色 */
+            color: white; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold;
+            text-decoration: none; margin-top: 30px; transition: 0.3s; box-sizing: border-box; cursor: pointer; border: none;
+        }
+        .checkout-btn:hover { background-color: #05b34c; }
+
+        .clear-btn {
+            display: block; width: 100%; text-align: center; background-color: #f1f1f1; 
+            color: #888; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: bold;
+            text-decoration: none; margin-top: 15px; transition: 0.3s; box-sizing: border-box; cursor: pointer; border: none;
+        }
+        .clear-btn:hover { background-color: #e1e1e1; color: #333; }
+
+        .empty-message { text-align: center; color: #888; font-size: 16px; margin: 40px 0; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 12px 0; }
+            .brand-logo { font-size: 18px; margin-bottom: 10px; }
+            .nav-links a { margin: 0 12px; font-size: 14px; }
+            .cart-container { padding: 20px; margin: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
+        <div class="nav-links">
+            <a href="index.html">🏠 繼續逛逛</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h2 class="section-title">🛒 你的購物車</h2>
+        
+        <div id="cart-items"></div>
+        
+        <div class="cart-total" id="cart-total">總計：NT$ 0</div>
+
+        <button onclick="checkoutViaLine()" class="checkout-btn">📲 傳送訂單給餃子 (LINE)</button>
+        <button onclick="clearCart()" class="clear-btn">🗑️ 清空購物車，重新挑選</button>
+    </div>
+
+    <script>
+        // 一進來這個網頁，就去讀取記憶體裡的購物車資料
+        let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+        let totalPrice = 0;
+
+        function renderCart() {
+            let cartItemsDiv = document.getElementById('cart-items');
+            cartItemsDiv.innerHTML = ""; // 先清空畫面
+            totalPrice = 0;
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-message">你的購物車空空的耶，快去挑選喜歡的藝術品吧！🥺</div>';
+                document.getElementById('cart-total').innerText = "總計：NT$ 0";
+                return;
+            }
+
+            // 把商品一個一個印出來
+            cart.forEach(item => {
+                let subtotal = item.price * item.quantity;
+                totalPrice += subtotal;
+                
+                cartItemsDiv.innerHTML += `
+                    <div class="cart-item">
+                        <span class="item-name">▪️ ${item.name} (x${item.quantity})</span>
+                        <span class="item-subtotal">NT$ ${subtotal}</span>
+                    </div>
+                `;
+            });
+
+            // 更新總金額
+            document.getElementById('cart-total').innerText = `總計：NT$ ${totalPrice}`;
+        }
+
+        // 清空購物車
+        function clearCart() {
+            if(confirm("確定要清空購物車嗎？")) {
+                localStorage.removeItem('dumpling_cart');
+                cart = [];
+                renderCart();
+                alert("購物車已清空！");
+            }
+        }
+
+        // 🚀 終極魔法：LINE 自動點餐機
+        function checkoutViaLine() {
+            if (cart.length === 0) {
+                alert("購物車是空的，無法結帳喔！");
+                return;
+            }
+
+            // 1. 開始幫客人自動寫訂單文字
+            let message = "老闆你好！這是我要訂購的商品：\n\n";
+            
+            cart.forEach(item => {
+                let subtotal = item.price * item.quantity;
+                message += `▪️ ${item.name} x ${item.quantity} (NT$ ${subtotal})\n`;
+            });
+
+            message += `\n💰 總金額：NT$ ${totalPrice}\n\n`;
+            message += "請協助確認訂單並提供匯款資訊，謝謝！";
+
+            // 2. 把文字打包，並準備跳轉到你的 LINE 官方帳號
+            // ⚠️ 你的官方 LINE ID 是 @659jchwf
+            let lineId = "@659jchwf"; 
+            let lineUrl = `https://line.me/R/oaMessage/${lineId}/?${encodeURIComponent(message)}`;
+
+            // 3. 打開 LINE！
+            window.location.href = lineUrl;
+        }
+
+        // 網頁讀取完畢後，執行顯示購物車
+        window.onload = renderCart;
+    </script>
+
+</body>
+</html>
