@@ -85,11 +85,11 @@
     </div>
 
     <script>
-        // 一進來這個網頁，就去讀取記憶體裡的購物車資料
-        let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
         let totalPrice = 0;
 
         function renderCart() {
+            // 💡 修正關鍵：每次進來這個畫面，都「強制重新讀取」一次最新資料！
+            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             let cartItemsDiv = document.getElementById('cart-items');
             cartItemsDiv.innerHTML = ""; // 先清空畫面
             totalPrice = 0;
@@ -121,20 +121,21 @@
         function clearCart() {
             if(confirm("確定要清空購物車嗎？")) {
                 localStorage.removeItem('dumpling_cart');
-                cart = [];
-                renderCart();
+                renderCart(); // 💡 修正關鍵：清空後馬上重新整理畫面
                 alert("購物車已清空！");
             }
         }
 
         // 🚀 終極魔法：LINE 自動點餐機
         function checkoutViaLine() {
+            // 💡 修正關鍵：結帳前也再抓一次最新資料最保險
+            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            
             if (cart.length === 0) {
                 alert("購物車是空的，無法結帳喔！");
                 return;
             }
 
-            // 1. 開始幫客人自動寫訂單文字
             let message = "老闆你好！這是我要訂購的商品：\n\n";
             
             cart.forEach(item => {
@@ -145,18 +146,14 @@
             message += `\n💰 總金額：NT$ ${totalPrice}\n\n`;
             message += "請協助確認訂單並提供匯款資訊，謝謝！";
 
-            // 2. 把文字打包，並準備跳轉到你的 LINE 官方帳號
-            // ⚠️ 你的官方 LINE ID 是 @659jchwf
             let lineId = "@659jchwf"; 
             let lineUrl = `https://line.me/R/oaMessage/${lineId}/?${encodeURIComponent(message)}`;
 
-            // 3. 打開 LINE！
             window.location.href = lineUrl;
         }
 
         // 網頁讀取完畢後，執行顯示購物車
         window.onload = renderCart;
     </script>
-
 </body>
 </html>

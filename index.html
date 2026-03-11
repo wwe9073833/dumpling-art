@@ -6,37 +6,24 @@
     <title>DUMPLING ART｜餃子的性藝術</title> 
     <style>
         /* ================= CSS 樣式美化區塊 ================= */
-        
-        /* 基礎設定：極簡風格、平滑捲動 */
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
-            margin: 0; padding: 0;
-            background-color: #fafafa;
-            color: #333;
-            line-height: 1.6;
-            /* 為了不讓底部內容被漂浮按鈕擋住，底部留白多一點 */
-            padding-bottom: 60px; 
+            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6; padding-bottom: 60px; 
         }
 
-        /* --- 1. 頂部導覽列 (Navbar) --- */
         .navbar {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            position: sticky; top: 0; z-index: 1000;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
         }
         .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
         .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
         .nav-links a:hover { color: #000; }
 
-        /* --- 2. 品牌門面首圖 (Hero Banner) --- */
         .hero {
             background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('images/bg.jpg');
-            background-size: cover; background-position: center;
-            height: 80vh;
+            background-size: cover; background-position: center; height: 80vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; text-align: center; padding: 0 20px;
         }
@@ -44,19 +31,15 @@
         .hero p { font-size: 18px; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; }
         .hero-btn {
             padding: 12px 30px; background-color: white; color: #333;
-            text-decoration: none; border-radius: 30px; font-weight: bold;
-            transition: 0.3s;
+            text-decoration: none; border-radius: 30px; font-weight: bold; transition: 0.3s;
         }
         .hero-btn:hover { background-color: #333; color: white; }
 
-        /* --- 3. 共同區塊標題設計 --- */
         .section-title { text-align: center; margin: 80px 0 40px; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
         .section-title::after { content: ''; display: block; width: 50px; height: 3px; background-color: #333; margin: 15px auto 0; }
 
-        /* --- 4. 精品展示區 (商品網格排版) --- */
         .products-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
         }
         
@@ -75,25 +58,37 @@
         .btn { padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
         .btn-myship { background-color: #ff6b6b; color: white; border: 1px solid #ff6b6b; }
         .btn-myship:hover { background-color: #fa5252; }
-        .btn-line { background-color: #fff; color: #06C755; border: 1px solid #06C755; }
-        .btn-line:hover { background-color: #06C755; color: white; }
 
-        /* --- 🆕 5. 顧客好評區塊 (Reviews) --- */
+		/* --- 🔢 數量選擇器專屬樣式 --- */
+        .quantity-control {
+            display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px;
+        }
+        .qty-btn {
+            background-color: #f1f1f1; border: none; padding: 5px 12px; border-radius: 5px; 
+            cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; color: #333;
+        }
+        .qty-btn:hover { background-color: #ddd; }
+        .qty-input {
+            width: 40px; text-align: center; border: 1px solid #ccc; border-radius: 5px; 
+            padding: 5px; font-size: 16px; color: #333;
+        }
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* --- 5. 顧客好評區塊 --- */
         .reviews-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px; padding: 0 5%; max-width: 1000px; margin: 0 auto;
         }
         .review-card {
             background: white; border-radius: 12px; padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid #ff6b6b; /* 上方加一條騷氣的紅線 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #ff6b6b;
         }
         .review-stars { color: #FFD700; font-size: 18px; margin-bottom: 10px; }
         .review-text { font-size: 15px; color: #555; margin-bottom: 15px; font-style: italic; }
         .review-author { font-size: 14px; font-weight: bold; color: #111; text-align: right; }
 
-        /* --- 6. 購物與匯款須知 --- */
+        /* --- 6. 購物須知 --- */
         .guide-container {
             max-width: 800px; margin: 60px auto; padding: 40px;
             background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -101,71 +96,31 @@
         .guide-box { background: #f9f9f9; padding: 20px; border-left: 4px solid #333; margin-bottom: 20px; }
         .bank-info { font-size: 15px; font-weight: bold; color: #333; letter-spacing: 1px; margin: 15px 0; }
 
-        /* --- 7. 網站底部 (Footer) --- */
+        /* --- 7. 網站底部 --- */
         footer { background-color: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 14px; }
         footer a { color: #fff; text-decoration: none; }
 
-        /* --- 🆕 8. 右下角漂浮 LINE 按鈕 --- */
+        /* --- 8. 漂浮按鈕 --- */
         .floating-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #06C755; /* LINE 的綠色 */
-            color: white;
-            padding: 12px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); /* 綠色光暈 */
-            z-index: 9999; /* 保證它永遠在最上層 */
-            transition: 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            position: fixed; bottom: 25px; right: 25px; background-color: #06C755; color: white;
+            padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
+            font-size: 16px; box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); z-index: 9999;
+            transition: 0.3s ease; display: flex; align-items: center; gap: 5px;
         }
-        .floating-btn:hover {
-            transform: scale(1.05); /* 摸到會稍微放大 */
-            background-color: #05b34c;
-        }
+        .floating-btn:hover { transform: scale(1.05); background-color: #05b34c; }
 
-        /* ================= 📱 手機版專屬優化 (魔法響應式設計) ================= */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; padding: 15px 10px; }
             .brand-logo { font-size: 18px; margin-bottom: 15px; text-align: center; }
-            
-            /* 讓導覽列按鈕自動換行、置中，不再擠破頭！ */
-            .nav-links {
-                display: flex;
-                flex-wrap: wrap; 
-                justify-content: center;
-                gap: 10px; /* 按鈕上下的間距 */
-            }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
             .nav-links a { margin: 0 5px; font-size: 14px; }
-
             .hero { height: auto; padding: 80px 15px; }
             .hero h1 { font-size: 26px; line-height: 1.4; }
-            
-            .hero p {
-                font-size: 15px;
-                line-height: 1.8;
-                text-align: left;
-                margin-bottom: 40px;
-            }
-
-            /* 🌟 隱形魔法：讓首圖裡的換行符號在手機上消失 🌟 */
+            .hero p { font-size: 15px; line-height: 1.8; text-align: left; margin-bottom: 40px; }
             .hero p br { display: none; }
-
             .section-title { font-size: 24px; margin: 40px 0 20px; }
             .guide-container { padding: 20px; margin: 30px 15px; }
-
-            /* 手機上的漂浮按鈕稍微調小一點，避免擋住太多畫面 */
-            .floating-btn {
-                bottom: 15px;
-                right: 15px;
-                padding: 10px 15px;
-                font-size: 14px;
-            }
+            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 14px; }
         }
     </style>
 </head>
@@ -201,31 +156,49 @@
                     <h3 class="product-title">🫦情慾🫦無框畫</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
-                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450)" class="btn btn-myship">🛒 加入購物車</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-1', -1)">-</button>
+                            <input type="number" id="qty-1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-1', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450, 'qty-1')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
+
             <div class="product-card">
                 <img src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
                     <p class="product-price">NT$ 169</p>
                     <div class="action-buttons">
-                        <a href="javascript:void(0);" onclick="addToCart('🔥獨一無二🔥陶瓷杯墊', 169)" class="btn btn-myship">🛒 加入購物車</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-2', -1)">-</button>
+                            <input type="number" id="qty-2" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-2', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('🔥獨一無二🔥陶瓷杯墊', 169, 'qty-2')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
+
 			<div class="product-card">
                 <img src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">❤️筆電貼紙、創意貼紙、電腦貼紙❤️</h3>
                     <p class="product-price">NT$ 20</p>
                     <div class="action-buttons">
-                       <a href="javascript:void(0);" onclick="addToCart('❤️筆電貼紙、創意貼紙、電腦貼紙❤️', 20)" class="btn btn-myship">🛒 加入購物車</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-3', -1)">-</button>
+                            <input type="number" id="qty-3" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-3', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('❤️筆電貼紙、創意貼紙、電腦貼紙❤️', 20, 'qty-3')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
-            </div>
+            
+        </div>
     </section>
 
     <section id="merch">
@@ -238,7 +211,12 @@
                     <h3 class="product-title">情慾🫦無框畫</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-4', -1)">-</button>
+                            <input type="number" id="qty-4" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-4', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('情慾🫦無框畫', 450, 'qty-4')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
@@ -249,7 +227,12 @@
                     <h3 class="product-title">情慾藝術🎨掛布</h3>
                     <p class="product-price">NT$ 480</p>
                     <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-5', -1)">-</button>
+                            <input type="number" id="qty-5" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-5', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('情慾藝術🎨掛布', 480, 'qty-5')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
@@ -260,7 +243,12 @@
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
                     <p class="product-price">NT$ 369</p>
                     <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-6', -1)">-</button>
+                            <input type="number" id="qty-6" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-6', 1)">+</button>
+                        </div>
+                        <a href="javascript:void(0);" onclick="addToCart('💗每一步都是誘惑💗地墊', 369, 'qty-6')" class="btn btn-myship">🛒 加入購物車</a>
                     </div>
                 </div>
             </div>
@@ -271,40 +259,33 @@
     <section id="reviews">
         <h2 class="section-title">💌 來自粉濕們的真誠回饋</h2>
         <div class="reviews-container">
-            
             <div class="review-card">
               <div class="review-stars">★★★★★</div>
                 <p class="review-text">「畫風真的超級喜歡！大膽又充滿張力，掛在房間每天看著心情都很好，實體質感好到哭😭 期待餃子更多作品。」</p>
                 <div class="review-author">— 匿名買家 K</div>
             </div>
-
           <div class="review-card">
             <div class="review-stars">★★★★★</div>
                 <p class="review-text">「已經跟隨餃子好久，每一次出新款的無框畫都一定要下單收藏，家裡一大面牆都獻給餃子了！」</p>
                 <div class="review-author">— 忠實粉絲 Chen</div>
             </div>
-
             <div class="review-card">
                 <div class="review-stars">★★★★★</div>
                 <p class="review-text">「餃子的文創商品很平價，東西質感也不錯，懷疑到底有沒有在賺錢🥹期待更多商品和創作。」</p>
                 <div class="review-author">— 買家</div>
           </div>
-
         </div>
     </section>
 
     <section id="guide">
         <h2 class="section-title">購物須知</h2>
         <div class="guide-container">
-            
             <h3>📦 購買方式</h3>
             <p>請選擇最適合您的結帳管道：</p>
-            
             <div class="guide-box">
                 <strong>方法 A：7-11 賣貨便 (推薦)</strong>
                 <p>點擊商品下方的「賣貨便下單」按鈕，即可享受 7-11 超商取貨付款服務，運費優惠且安全有保障。</p>
             </div>
-
             <div class="guide-box">
                 <strong>方法 B：銀行轉帳 + 官方LINE 寄件</strong>
                 <p>若您希望直接轉帳匯款，請將款項匯至下方帳號。<br>
@@ -315,7 +296,6 @@
                     💳 帳號：2888-10-0431522-2
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -335,7 +315,7 @@
     </a>
 
     <script>
-        // 讀取購物車內的數量
+        // 1. 計算購物車總數並顯示在按鈕上
         function updateCartCount() {
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             let totalItems = 0;
@@ -343,24 +323,39 @@
             document.getElementById('cart-count').innerText = totalItems;
         }
 
-        // 加入購物車的動作
-        function addToCart(name, price) {
+        // 2. ➕➖ 增加或減少數量的按鈕功能
+        function changeQty(inputId, amount) {
+            let input = document.getElementById(inputId);
+            let currentValue = parseInt(input.value);
+            if (currentValue + amount >= 1) { // 確保數量不會變成 0 或負數
+                input.value = currentValue + amount;
+            }
+        }
+
+        // 3. 🛒 將商品與選擇的數量加入購物車
+        function addToCart(name, price, inputId) {
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            
+            // 抓取畫面上那個輸入框的數字
+            let quantityToAdd = parseInt(document.getElementById(inputId).value); 
+            
             let existingItem = cart.find(item => item.name === name);
             
             if (existingItem) {
-                existingItem.quantity += 1; // 如果已經有這個商品，數量+1
+                existingItem.quantity += quantityToAdd; // 加上客人選的數量
             } else {
-                cart.push({ name: name, price: price, quantity: 1 }); // 沒有的話就新增一筆
+                cart.push({ name: name, price: price, quantity: quantityToAdd });
             }
             
-            // 把資料存進客人的瀏覽器記憶體裡
             localStorage.setItem('dumpling_cart', JSON.stringify(cart));
-            updateCartCount(); // 更新右下角的數字
-            alert(`🎉 成功將「${name}」加入購物車！`); // 跳出成功提示
+            updateCartCount(); 
+            alert(`🎉 成功將 ${quantityToAdd} 個「${name}」加入購物車！`); 
+            
+            // 加完之後，貼心地幫客人把數字重置回 1
+            document.getElementById(inputId).value = 1;
         }
 
-        // 網頁一打開，就自動算一次購物車裡有幾件商品
+        // 4. 網頁一打開，就先算一次目前購物車裡有幾件
         window.onload = updateCartCount;
     </script>
 
