@@ -88,8 +88,9 @@
         let totalPrice = 0;
 
         function renderCart() {
-            // 💡 修正關鍵：每次進來這個畫面，都「強制重新讀取」一次最新資料！
+            // 💡 修正關鍵在這裡！把讀取記憶的動作搬進來，每次打開網頁都強制重新抓最新資料！
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            
             let cartItemsDiv = document.getElementById('cart-items');
             cartItemsDiv.innerHTML = ""; // 先清空畫面
             totalPrice = 0;
@@ -121,14 +122,14 @@
         function clearCart() {
             if(confirm("確定要清空購物車嗎？")) {
                 localStorage.removeItem('dumpling_cart');
-                renderCart(); // 💡 修正關鍵：清空後馬上重新整理畫面
+                renderCart(); // 💡 清空後馬上重新整理畫面
                 alert("購物車已清空！");
             }
         }
 
         // 🚀 終極魔法：LINE 自動點餐機
         function checkoutViaLine() {
-            // 💡 修正關鍵：結帳前也再抓一次最新資料最保險
+            // 💡 結帳前也再抓一次最新資料最保險
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             
             if (cart.length === 0) {
