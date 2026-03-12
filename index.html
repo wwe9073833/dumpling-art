@@ -4,137 +4,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DUMPLING ART｜餃子的性藝術</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
-        /* ================= CSS 樣式美化區塊 ================= */
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
-            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6; padding-bottom: 60px; 
-        }
+    /* ================= 🎬 DUMPLING ART 電影片場版 CSS ================= */
+    
+    /* 基礎設定：全黑背景，增加神秘感 */
+    html { scroll-behavior: smooth; }
+    body {
+        /* 👉🏼 關鍵更新：英文優先使用 Helvetica，中文使用思源黑體 (Noto Sans TC) */
+        font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif;
+        margin: 0; padding: 0;
+        background-color: #000; 
+        color: #fff; 
+        line-height: 1.8; 
+        padding-bottom: 60px; 
+    }
 
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
-            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-        }
-        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
-        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
-        .nav-links a:hover { color: #000; }
+    /* --- 1. 頂部導覽列 (Navbar)：透明、懸浮，像電影片頭 --- */
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.85); /* 黑色半透明 */
+        backdrop-filter: blur(10px); /* 模糊背景，很有質感 */
+        position: sticky; top: 0; z-index: 1000;
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 5%; /* 上下加寬一點 */
+        border-bottom: 1px solid #222; /* 微微的黑線，很優雅 */
+    }
+    .brand-logo { 
+        font-size: 24px; font-weight: bold; 
+        letter-spacing: 4px; /* 字距拉開 */
+        color: #fff; text-decoration: none; 
+        text-transform: uppercase; /* 全部大寫 */
+    }
+    .nav-links a { 
+        text-decoration: none; color: #aaa; /* 平時是灰色 */
+        margin-left: 25px; font-size: 14px; 
+        transition: 0.3s; 
+        text-transform: uppercase; letter-spacing: 2px;
+    }
+    .nav-links a:hover { 
+        color: #ff3b3b; /* 👉🏼 摸到時變成火辣的紅 */
+    }
 
-        .hero {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('images/bg.jpg');
-            background-size: cover; background-position: center; height: 80vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; padding: 0 20px;
-        }
-        .hero h1 { font-size: 40px; margin-bottom: 10px; letter-spacing: 3px; }
-        .hero p { font-size: 18px; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; }
-        .hero-btn {
-            padding: 12px 30px; background-color: white; color: #333;
-            text-decoration: none; border-radius: 30px; font-weight: bold; transition: 0.3s;
-        }
-        .hero-btn:hover { background-color: #333; color: white; }
+    /* --- 2. 品牌門面首圖 (Hero Banner)：增加粗糙的電影質感 --- */
+    .hero {
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('images/bg.jpg');
+        background-size: cover; background-position: center;
+        height: 90vh; /* 稍微再拉高一點 */
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        color: white; text-align: center; padding: 0 20px;
+        position: relative;
+    }
+    /* 這裡加了一個 CSS 魔法，讓首圖微微有電影膠卷的粗糙感 */
+    .hero::after {
+        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36z8gAFWPAAnV1dX/5+fkM4ADRAADL7Q5555555555'); /* 這是一個極小的透明雜點圖 */
+        opacity: 0.2; /* 很微弱的雜點 */
+        pointer-events: none;
+    }
+    .hero h1 { 
+        font-size: 45px; margin-bottom: 15px; 
+        letter-spacing: 8px; /* 字距大幅拉開，很有精品感 */
+        font-weight: 300; /* 把字變細，更冷冽 */
+        text-transform: uppercase;
+    }
+    .hero p { 
+        font-size: 16px; font-weight: 300; /* 思源黑體調成 300 會很優雅 */
+        letter-spacing: 2px; margin-bottom: 40px; 
+        color: #ccc;
+    }
+    /* 首圖按鈕：細緻框線 + 膠囊圓角 */
+    .hero-btn {
+        padding: 15px 40px; 
+        background-color: transparent; 
+        color: #fff; 
+        text-decoration: none; 
+        border-radius: 50px; /* 👉🏼 關鍵：50px 創造出完美的膠囊圓角 */
+        font-weight: bold; font-size: 14px; letter-spacing: 2px;
+        border: 1px solid #fff; /* 框線變細更優雅 */
+        transition: 0.4s ease;
+        text-transform: uppercase;
+    }
+    .hero-btn:hover { 
+        background-color: #ff3b3b; border-color: #ff3b3b; 
+    }
 
-        .section-title { text-align: center; margin: 80px 0 40px; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
-        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background-color: #333; margin: 15px auto 0; }
+    /* --- 3. 共同區塊標題設計：把字體變細、字距拉大 --- */
+    .section-title { 
+        text-align: center; 
+        margin: 100px 0 50px; /* 上下留白加大 */
+        font-size: 30px; font-weight: 300; 
+        letter-spacing: 8px; /* 字距拉開！關鍵！ */
+        color: #fff;
+        text-transform: uppercase;
+    }
+    /* 去掉標題下面的黑線，改成單純用留白展現質感 */
+    .section-title::after { display: none; }
 
-        .products-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
-        }
+    /* --- 4. 精品展示區 (商品網格排版)：拔掉陰影，改走極簡海報風 --- */
+    .products-container {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
+    }
+    
+    .product-card {
+        background: transparent; /* 👉🏼 關鍵3：透明卡片背景 */
+        border-radius: 8px; 
+        overflow: hidden;
+        transition: transform 0.4s ease; /* 只留下一點點上浮動畫 */
+    }
+    .product-card:hover { transform: translateY(-5px); }
+    
+    /* 這裡加上一個超酷的「電影換框」魔法 */
+    .product-img { 
+        width: 100%; 
+        height: 380px; /* 把照片稍微拉高一點 */
+        object-fit: cover; 
+        transition: 0.8s ease; /* 0.8秒的緩慢變換，很優雅 */
+        filter: grayscale(80%) contrast(120%); /* 微微的黑白效果 */
+    }
+    /* 當滑鼠摸到商品時，照片會緩慢放大，並恢復一點點顏色 */
+    .product-card:hover .product-img { 
+        transform: scale(1.05); 
+        filter: grayscale(0%) contrast(100%); 
+    }
+    
+    .product-info { padding: 20px; text-align: left; } /* 改成向左對齊，很有設計感 */
+    .product-title { 
+        font-size: 16px; margin: 0 0 10px; 
+        font-weight: 500; letter-spacing: 1px;
+        color: #fff;
+    }
+    .product-price { 
+        color: #888; font-size: 14px; margin-bottom: 20px; 
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 數字強制用英文漂亮字體 */
+    }
+
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
+    
+    /* 🌟 加入購物車按鈕：文字完美置中！ */
+    .btn-myship { 
+        background-color: transparent; 
+        color: white; 
+        border: 1px solid #555; /* 低調的深灰線條 */
+        border-radius: 50px; /* 👉🏼 膠囊圓角 */
+        padding: 12px;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        text-align: center; /* 🌟 加上這行，文字完美置中 */
+        text-decoration: none; /* 確保沒有醜醜底線 */
+        font-weight: bold;
+    }
+    .btn-myship:hover { 
+        background-color: #ff3b3b; /* 摸到時變成火辣的紅，並填滿 */
+        border-color: #ff3b3b;
+    }
+    
+    /* --- 🔢 數量選擇器精品化：一體成型的膠囊設計 --- */
+    .quantity-control { 
+        display: flex; justify-content: center; align-items: center; 
+        margin: 0 auto 15px auto; 
+        border: 1px solid #444; /* 外圍一圈精緻的暗灰色線條 */
+        border-radius: 50px; /* 👉🏼 膠囊形狀 */
+        width: 130px; /* 固定寬度，看起來更俐落 */
+        overflow: hidden; /* 把超出的部分藏起來，保持圓角 */
+    }
+    .qty-btn { 
+        background-color: transparent; border: none; 
+        padding: 8px 15px; cursor: pointer; 
+        font-size: 18px; font-weight: 300; transition: 0.2s; 
+        color: #888; /* 平時是低調的灰色 */
+    }
+    .qty-btn:hover { color: #ff3b3b; /* 摸到加減號時變紅色 */ }
+    
+    .qty-input { 
+        width: 40px; text-align: center; 
+        background-color: transparent; border: none; /* 拔掉所有底色跟醜醜的框線 */
+        padding: 5px 0; font-size: 16px; color: #fff; font-weight: bold;
+        outline: none; /* 👉🏼 點擊時不會再出現醜醜的預設藍色外框 */
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    /* 隱藏原生數字輸入框的上下箭頭 */
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
-        .product-card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+    /* --- 🆕 5. 顧客好評區塊 (Reviews) --- */
+    .reviews-container {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px; padding: 0 5%; max-width: 1000px; margin: 0 auto;
+    }
+    .review-card {
+        background: transparent; border-radius: 12px; padding: 25px;
+        border: 1px solid #222; /* 淡淡的黑線框 */
+        transition: 0.3s ease;
+    }
+    .review-card:hover { 
+        border-color: #555; /* 摸到時框線變白 */
+    }
+    .review-stars { color: #ff3b3b; font-size: 16px; margin-bottom: 10px; } /* 星星換成紅色 */
+    .review-text { font-size: 14px; color: #ccc; margin-bottom: 15px; font-style: italic; font-weight: 300; }
+    .review-author { font-size: 13px; font-weight: 500; color: #fff; text-align: right; letter-spacing: 1px; }
+
+    /* --- 6. 購物須知 --- */
+    .guide-container {
+        max-width: 800px; margin: 60px auto; padding: 50px;
+        background: transparent; border-radius: 12px; 
+        border: 1px solid #222; /* 淡淡的黑線框 */
+    }
+    .guide-box { background: #111; padding: 20px; border-left: 4px solid #ff3b3b; margin-bottom: 20px; } /* 左邊加一條騷氣紅線 */
+    .bank-info { font-size: 15px; font-weight: 500; color: #fff; letter-spacing: 2px; margin: 15px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; } /* 數字用英文體 */
+
+    /* --- 7. 網站底部 (Footer) --- */
+    footer { 
+        background-color: #111; color: #777; 
+        text-align: center; padding: 40px 20px; 
+        margin-top: 60px; font-size: 13px; 
+        letter-spacing: 1px;
+        border-top: 1px solid #222;
+    }
+    footer a { color: #999; text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    /* 右下角漂浮按鈕：圓滑化 */
+    .floating-btn {
+        position: fixed; bottom: 25px; right: 25px; 
+        background-color: #fff; color: #111; 
+        padding: 15px 25px; 
+        border-radius: 50px; /* 👉🏼 膠囊圓角 */
+        text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px;
+        transition: 0.4s ease; text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); 
+    }
+    .floating-btn:hover { 
+        transform: scale(1.05); background-color: #ff3b3b; color: white; 
+    }
+    
+    /* 修正購物車按鈕的位置 */
+    a[href="cart.html"].floating-btn { bottom: 90px; }
         
-        .product-img { width: 100%; height: 350px; object-fit: cover; }
-        .product-info { padding: 20px; text-align: center; }
-        .product-title { font-size: 18px; margin: 0 0 10px; font-weight: 600; }
-        .product-price { color: #888; font-size: 16px; margin-bottom: 20px; }
-
-        .action-buttons { display: flex; flex-direction: column; gap: 10px; }
-        .btn { padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .btn-myship { background-color: #ff6b6b; color: white; border: 1px solid #ff6b6b; }
-        .btn-myship:hover { background-color: #fa5252; }
-
-		/* --- 🔢 數量選擇器專屬樣式 --- */
-        .quantity-control {
-            display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px;
-        }
-        .qty-btn {
-            background-color: #f1f1f1; border: none; padding: 5px 12px; border-radius: 5px; 
-            cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; color: #333;
-        }
-        .qty-btn:hover { background-color: #ddd; }
-        .qty-input {
-            width: 40px; text-align: center; border: 1px solid #ccc; border-radius: 5px; 
-            padding: 5px; font-size: 16px; color: #333;
-        }
-        .qty-input::-webkit-outer-spin-button,
-        .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
-        /* --- 5. 顧客好評區塊 --- */
-        .reviews-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; padding: 0 5%; max-width: 1000px; margin: 0 auto;
-        }
-        .review-card {
-            background: white; border-radius: 12px; padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #ff6b6b;
-        }
-        .review-stars { color: #FFD700; font-size: 18px; margin-bottom: 10px; }
-        .review-text { font-size: 15px; color: #555; margin-bottom: 15px; font-style: italic; }
-        .review-author { font-size: 14px; font-weight: bold; color: #111; text-align: right; }
-
-        /* --- 6. 購物須知 --- */
-        .guide-container {
-            max-width: 800px; margin: 60px auto; padding: 40px;
-            background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .guide-box { background: #f9f9f9; padding: 20px; border-left: 4px solid #333; margin-bottom: 20px; }
-        .bank-info { font-size: 15px; font-weight: bold; color: #333; letter-spacing: 1px; margin: 15px 0; }
-
-        /* --- 7. 網站底部 --- */
-        footer { background-color: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 14px; }
-        footer a { color: #fff; text-decoration: none; }
-
-        /* --- 8. 漂浮按鈕 --- */
-        .floating-btn {
-            position: fixed; bottom: 25px; right: 25px; background-color: #06C755; color: white;
-            padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
-            font-size: 16px; box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); z-index: 9999;
-            transition: 0.3s ease; display: flex; align-items: center; gap: 5px;
-        }
-        .floating-btn:hover { transform: scale(1.05); background-color: #05b34c; }
-
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 15px 10px; }
-            .brand-logo { font-size: 18px; margin-bottom: 15px; text-align: center; }
-            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .nav-links a { margin: 0 5px; font-size: 14px; }
-            .hero { height: auto; padding: 80px 15px; }
-            .hero h1 { font-size: 26px; line-height: 1.4; }
-            .hero p { font-size: 15px; line-height: 1.8; text-align: left; margin-bottom: 40px; }
-            .hero p br { display: none; }
-            .section-title { font-size: 24px; margin: 40px 0 20px; }
-            .guide-container { padding: 20px; margin: 30px 15px; }
-            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 14px; }
-        }
+    /* ================= 📱 手機版專屬優化 ================= */
+    @media (max-width: 768px) {
+        .navbar { flex-direction: column; padding: 15px 10px; }
+        .brand-logo { font-size: 20px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;}
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .nav-links a { margin: 0 5px; font-size: 13px; }
+        .hero { height: auto; padding: 80px 15px; }
+        .hero h1 { font-size: 28px; line-height: 1.3; }
+        .hero p { font-size: 14px; line-height: 1.8; text-align: left; margin-bottom: 30px; }
+        .section-title { font-size: 26px; margin: 60px 0 30px; letter-spacing: 4px; }
+        .guide-container { padding: 30px; margin: 30px 15px; }
+        .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+        a[href="cart.html"].floating-btn { bottom: 65px; }
+    }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <a href="#" class="brand-logo">DUMPLING ART｜官方網站</a> 
-		<div class="nav-links">
-			<a href="about.html" target="_blank">關於我</a>
-			<a href="#artworks">熱銷商品</a>
-			<a href="products.html" target="_blank">商品總覽</a>
-			<a href="#reviews">顧客好評</a>
-			<a href="#guide">購物須知</a>
-		</div>
+        <div class="nav-links">
+            <a href="about.html" target="_blank">關於我</a>
+            <a href="#artworks">熱銷商品</a>
+            <a href="products.html" target="_blank">商品總覽</a>
+            <a href="#reviews">顧客好評</a>
+            <a href="#guide">購物須知</a>
+        </div>
     </nav>
 
     <header class="hero">
@@ -161,7 +298,7 @@
                             <input type="number" id="qty-1" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-1', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450, 'qty-1')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450, 'qty-1')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
@@ -177,12 +314,12 @@
                             <input type="number" id="qty-2" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-2', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('🔥獨一無二🔥陶瓷杯墊', 169, 'qty-2')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('🔥獨一無二🔥陶瓷杯墊', 169, 'qty-2')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
 
-			<div class="product-card">
+            <div class="product-card">
                 <img src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">❤️筆電貼紙、創意貼紙、電腦貼紙❤️</h3>
@@ -193,7 +330,7 @@
                             <input type="number" id="qty-3" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-3', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('❤️筆電貼紙、創意貼紙、電腦貼紙❤️', 20, 'qty-3')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('❤️筆電貼紙、創意貼紙、電腦貼紙❤️', 20, 'qty-3')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
@@ -216,7 +353,7 @@
                             <input type="number" id="qty-4" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-4', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450, 'qty-4')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('🫦情慾🫦無框畫', 450, 'qty-4')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
@@ -232,12 +369,12 @@
                             <input type="number" id="qty-5" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-5', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('情慾藝術🎨掛布', 480, 'qty-5')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('情慾藝術🎨掛布', 480, 'qty-5')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
-			
-			<div class="product-card">
+            
+            <div class="product-card">
                 <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
@@ -248,7 +385,7 @@
                             <input type="number" id="qty-6" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-6', 1)">+</button>
                         </div>
-                        <a href="javascript:void(0);" onclick="addToCart('💗每一步都是誘惑💗地墊', 369, 'qty-6')" class="btn btn-myship">🛒 加入購物車</a>
+                        <a href="javascript:void(0);" onclick="addToCart('💗每一步都是誘惑💗地墊', 369, 'qty-6')" class="btn btn-myship">🛒 ADD TO BAG</a>
                     </div>
                 </div>
             </div>
@@ -262,12 +399,12 @@
             <div class="review-card">
               <div class="review-stars">★★★★★</div>
                 <p class="review-text">「畫風真的超級喜歡！大膽又充滿張力，掛在房間每天看著心情都很好，實體質感好到哭😭 期待餃子更多作品。」</p>
-                <div class="review-author">— 匿名買家 K</div>
+                <div class="review-author">— 匿名</div>
             </div>
           <div class="review-card">
             <div class="review-stars">★★★★★</div>
                 <p class="review-text">「已經跟隨餃子好久，每一次出新款的無框畫都一定要下單收藏，家裡一大面牆都獻給餃子了！」</p>
-                <div class="review-author">— 忠實粉絲 Chen</div>
+                <div class="review-author">— 忠實粉絲</div>
             </div>
             <div class="review-card">
                 <div class="review-stars">★★★★★</div>
@@ -289,8 +426,8 @@
             <div class="guide-box">
                 <strong>方法 B：銀行轉帳 + 官方LINE 寄件</strong>
                 <p>若您希望直接轉帳匯款，請將款項匯至下方帳號。<br>
-					匯款完成後，請務必點擊右下角的「💬 點我私訊」漂浮按鈕，<br>
-					傳送您的「帳號末五碼」、「姓名」、「電話」及「7-11門市」給我們對帳喔！</p>
+                    匯款完成後，請務必點擊右下角的「💬 點我私訊」漂浮按鈕，<br>
+                    傳送您的「帳號末五碼」、「姓名」、「電話」及「7-11門市」給我們對帳喔！</p>
                 <div class="bank-info">
                     🏦 銀行代碼：(812) 台新銀行<br>
                     💳 帳號：2888-10-0431522-2
@@ -302,16 +439,16 @@
     <footer>
         <p>聯絡我們</p>
         <p>Instagram：<a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank">@dumpling_arrrt_</a></p>
-		<p>E-mail：dumplinguu@gmail.com</p>
-		<p>2020 ® DUMPLING ART</p>
+        <p>E-mail：dumplinguu@gmail.com</p>
+        <p>2020 ® DUMPLING ART</p>
     </footer>
 
     <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">
         💬 點我私訊
     </a>
-	
-	<a href="cart.html" class="floating-btn" style="bottom: 80px; background-color: #ff6b6b; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);">
-        🛒 購物車 (<span id="cart-count">0</span>)
+    
+    <a href="cart.html" class="floating-btn">
+        MY BAG (<span id="cart-count">0</span>)
     </a>
 
     <script>

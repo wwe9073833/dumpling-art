@@ -4,63 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>結帳清單｜DUMPLING ART</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
-        /* ================= 沿用核心品牌 CSS ================= */
+        /* ================= 🛒 DUMPLING ART 結帳清單 (黑化精品版) ================= */
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
-            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6;
+            /* 👉🏼 完美同步：英文優先使用 Helvetica，中文使用思源黑體 */
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif;
+            margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.6;
         }
 
         .navbar {
-            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            padding: 20px 5%; border-bottom: 1px solid #222;
         }
-        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
-        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
-        .nav-links a:hover { color: #000; }
+        .brand-logo { font-size: 24px; font-weight: bold; letter-spacing: 4px; color: #fff; text-decoration: none; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: #aaa; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a:hover { color: #ff3b3b; }
 
-        .section-title { text-align: center; margin: 40px 0; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
+        .section-title { text-align: center; margin: 60px 0 40px; font-size: 28px; font-weight: 300; letter-spacing: 6px; color: #fff; text-transform: uppercase; }
         
-        /* ================= 🛒 購物車專屬設計 ================= */
+        /* 🛒 購物車容器：改成黑色透明與精緻框線 */
         .cart-container {
-            max-width: 800px; margin: 0 auto 60px auto; padding: 30px;
-            background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 800px; margin: 0 auto 60px auto; padding: 40px;
+            background: transparent; border-radius: 12px; border: 1px solid #222;
         }
         
         .cart-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 0; border-bottom: 1px dashed #ddd; font-size: 16px;
+            padding: 20px 0; border-bottom: 1px dashed #333; font-size: 16px; letter-spacing: 1px;
         }
-        .item-name { font-weight: bold; color: #111; }
-        .item-subtotal { color: #ff6b6b; font-weight: bold; }
+        .item-name { font-weight: 300; color: #fff; }
+        .item-subtotal { color: #ff3b3b; font-weight: bold; }
 
         .cart-total {
-            text-align: right; font-size: 22px; font-weight: bold; margin-top: 30px; color: #111;
+            text-align: right; font-size: 24px; font-weight: 300; margin-top: 40px; color: #fff; letter-spacing: 2px;
         }
 
+        /* 結帳按鈕：紅色膠囊 */
         .checkout-btn {
-            display: block; width: 100%; text-align: center; background-color: #06C755; /* LINE綠色 */
-            color: white; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold;
-            text-decoration: none; margin-top: 30px; transition: 0.3s; box-sizing: border-box; cursor: pointer; border: none;
+            display: block; width: 100%; text-align: center; 
+            background-color: #ff3b3b; color: white; padding: 18px; 
+            border-radius: 50px; font-size: 16px; font-weight: bold; letter-spacing: 2px;
+            text-decoration: none; margin-top: 40px; transition: 0.4s; cursor: pointer; border: 1px solid #ff3b3b;
         }
-        .checkout-btn:hover { background-color: #05b34c; }
+        .checkout-btn:hover { background-color: transparent; color: #ff3b3b; }
 
+        /* 清空按鈕：黑色膠囊 */
         .clear-btn {
-            display: block; width: 100%; text-align: center; background-color: #f1f1f1; 
-            color: #888; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: bold;
-            text-decoration: none; margin-top: 15px; transition: 0.3s; box-sizing: border-box; cursor: pointer; border: none;
+            display: block; width: 100%; text-align: center; 
+            background-color: #111; color: #888; padding: 15px; 
+            border-radius: 50px; font-size: 14px; font-weight: 300; letter-spacing: 1px;
+            text-decoration: none; margin-top: 15px; transition: 0.4s; cursor: pointer; border: 1px solid #333;
         }
-        .clear-btn:hover { background-color: #e1e1e1; color: #333; }
+        .clear-btn:hover { background-color: #222; color: #fff; border-color: #555; }
 
-        .empty-message { text-align: center; color: #888; font-size: 16px; margin: 40px 0; }
+        .empty-message { text-align: center; color: #555; font-size: 16px; margin: 40px 0; letter-spacing: 1px; }
 
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 12px 0; }
-            .brand-logo { font-size: 18px; margin-bottom: 10px; }
-            .nav-links a { margin: 0 12px; font-size: 14px; }
-            .cart-container { padding: 20px; margin: 20px 15px; }
+            .navbar { flex-direction: column; padding: 15px 10px; }
+            .brand-logo { font-size: 20px; margin-bottom: 15px; text-align: center; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+            .nav-links a { margin: 0 5px; font-size: 13px; }
+            .cart-container { padding: 25px; margin: 20px 15px; }
+            .cart-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .item-subtotal { align-self: flex-end; }
         }
     </style>
 </head>
@@ -88,7 +101,6 @@
         let totalPrice = 0;
 
         function renderCart() {
-            // 💡 修正關鍵在這裡！把讀取記憶的動作搬進來，每次打開網頁都強制重新抓最新資料！
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             
             let cartItemsDiv = document.getElementById('cart-items');
@@ -129,7 +141,6 @@
 
         // 🚀 終極魔法：LINE 自動點餐機
         function checkoutViaLine() {
-            // 💡 結帳前也再抓一次最新資料最保險
             let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             
             if (cart.length === 0) {
