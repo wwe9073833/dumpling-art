@@ -18,15 +18,34 @@
             margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.6;
         }
 
+        /* --- 1. 頂部導覽列 (Navbar)：✨ 已同步為首頁的高級深血紅窄版 ✨ --- */
         .navbar {
-            background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; border-bottom: 1px solid #222;
+            background-color: rgba(184, 0, 0, 0.95); 
+            backdrop-filter: blur(10px); 
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 5%; /* 窄版設定，俐落不壓迫 */
+            border-bottom: 1px solid #8a0000; 
         }
-        .brand-logo { font-size: 24px; font-weight: bold; letter-spacing: 4px; color: #fff; text-decoration: none; text-transform: uppercase; }
-        .nav-links a { text-decoration: none; color: #aaa; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
-        .nav-links a:hover { color: #ff3b3b; }
+        .brand-logo { 
+            font-size: 20px; 
+            font-weight: bold; 
+            letter-spacing: 4px; 
+            color: #fff; text-decoration: none; 
+            text-transform: uppercase; 
+        }
+        .nav-links a { 
+            text-decoration: none; 
+            color: #ffcccc; /* 淡粉白色 */
+            margin-left: 25px; font-size: 14px; 
+            transition: 0.3s; 
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .nav-links a:hover { 
+            color: #fff; /* 摸到變純白 */
+        }
 
+        /* --- 購物車內部排版 --- */
         .section-title { text-align: center; margin: 60px 0 40px; font-size: 28px; font-weight: 300; letter-spacing: 6px; color: #fff; text-transform: uppercase; }
         
         /* 🛒 購物車容器：改成黑色透明與精緻框線 */
@@ -40,7 +59,7 @@
             padding: 20px 0; border-bottom: 1px dashed #333; font-size: 16px; letter-spacing: 1px;
         }
         .item-name { font-weight: 300; color: #fff; }
-        .item-subtotal { color: #ff3b3b; font-weight: bold; }
+        .item-subtotal { color: #ff3b3b; font-weight: bold; } /* 金額保留醒目紅色 */
 
         .cart-total {
             text-align: right; font-size: 24px; font-weight: 300; margin-top: 40px; color: #fff; letter-spacing: 2px;
@@ -66,6 +85,7 @@
 
         .empty-message { text-align: center; color: #555; font-size: 16px; margin: 40px 0; letter-spacing: 1px; }
 
+        /* 手機版排版自動堆疊 */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; padding: 15px 10px; }
             .brand-logo { font-size: 20px; margin-bottom: 15px; text-align: center; }

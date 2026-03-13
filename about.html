@@ -4,73 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於品牌｜DUMPLING ART</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
     <style>
-        /* ================= 沿用核心品牌 CSS ================= */
+        /* ================= 🎬 DUMPLING ART 電影片場版 CSS (同步首頁) ================= */
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
-            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.8; padding-bottom: 60px; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif;
+            margin: 0; padding: 0; 
+            background-color: #000; 
+            color: #fff; 
+            line-height: 1.8; 
+            padding-bottom: 60px; 
         }
 
+        /* --- 1. 頂部導覽列 (Navbar)：高級深血紅窄版 --- */
         .navbar {
-            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
-            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            background-color: rgba(184, 0, 0, 0.95); 
+            backdrop-filter: blur(10px); 
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 5%; 
+            border-bottom: 1px solid #8a0000; 
         }
-        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
-        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
-        .nav-links a:hover { color: #000; }
-
-        footer { background-color: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 80px; font-size: 14px; line-height: 1.6;}
-        footer a { color: #fff; text-decoration: none; }
-
-        .floating-btn {
-            position: fixed; bottom: 25px; right: 25px; background-color: #06C755; color: white;
-            padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
-            font-size: 16px; box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); z-index: 9999;
-            transition: 0.3s ease; display: flex; align-items: center; gap: 5px;
+        .brand-logo { 
+            font-size: 20px; 
+            font-weight: bold; 
+            letter-spacing: 4px; 
+            color: #fff; text-decoration: none; 
+            text-transform: uppercase; 
         }
-        .floating-btn:hover { transform: scale(1.05); background-color: #05b34c; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: #ffcccc; 
+            margin-left: 25px; font-size: 14px; 
+            transition: 0.3s; 
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .nav-links a:hover { 
+            color: #fff; 
+        }
 
-        /* ================= 📖 「關於我」專屬雜誌風排版 ================= */
+        /* ================= 🌟 滾動進場魔法 ================= */
+        .reveal-item {
+            opacity: 0; 
+            transform: translateY(40px); /* 往下沉 40px */
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* 絲滑的動畫節奏 */
+        }
+        .reveal-item.active {
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+        /* 讓不同元素有一點點時間差，更有層次感 */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.5s; }
+
+
+        /* ================= 📖 「關於我」專屬電影字幕風排版 ================= */
         .about-container {
-            max-width: 800px; /* 限制文字寬度，讓閱讀體驗最好 */
-            margin: 60px auto;
+            max-width: 800px; 
+            margin: 80px auto;
             padding: 0 5%;
         }
 
         .about-title {
-            text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 3px; margin-bottom: 20px;
+            text-align: center; font-size: 32px; font-weight: 300; letter-spacing: 8px; margin-bottom: 10px; color: #fff;
         }
         .about-subtitle {
-            text-align: center; font-size: 16px; color: #888; letter-spacing: 5px; margin-bottom: 50px; text-transform: uppercase;
+            text-align: center; font-size: 14px; color: #b80000; 
+            letter-spacing: 5px; margin-bottom: 60px; text-transform: uppercase; font-family: 'Playfair Display', serif;
         }
 
         .about-image {
-            width: 100%; height: 450px; object-fit: cover; border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.0); margin-bottom: 50px;
+            width: 100%; 
+            max-width: 350px; 
+            height: auto; 
+            object-fit: contain; 
+            display: block; 
+            margin: 0 auto 60px auto; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); 
+            border-radius: 8px;
         }
 
         .about-quote {
-            font-size: 22px; font-weight: bold; color: #111; text-align: center;
-            margin: 50px 0; padding: 0 20px; position: relative;
+            font-size: 26px; 
+            font-weight: bold; 
+            color: #fff; 
+            text-align: center;
+            margin: 60px 0; 
+            padding: 40px 20px; 
+            position: relative;
+            letter-spacing: 4px;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
         }
         
         .about-content {
-            font-size: 16px; color: #444; letter-spacing: 1px;
+            font-size: 15px; 
+            color: #ccc; 
+            letter-spacing: 2px; 
+            line-height: 2; 
+            font-weight: 300; 
         }
-        .about-content p { margin-bottom: 25px; text-align: justify; }
+        .about-content h4 {
+            color: #fff; 
+            font-size: 18px; 
+            letter-spacing: 3px; 
+            margin-top: 60px; 
+            margin-bottom: 20px; 
+            font-weight: 500; 
+        }
+        .about-content p { margin-bottom: 30px; text-align: justify; }
 
+        /* --- 7. 網站底部 (Footer)：同步首頁破格疊加版 --- */
+        .overlap-footer {
+            position: relative; background-color: #000; padding: 90px 0 30px 0; margin-top: 80px;
+        }
+        .footer-band { background-color: #b80000; padding: 35px 0; position: relative; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 80px; padding: 0 5%; }
+        
+        .footer-left { 
+            flex: 0 0 35%; position: relative; margin-top: -100px; margin-bottom: -100px; z-index: 2;
+        }
+        .footer-logo-img {
+            width: 100%; height: auto; object-fit: contain; 
+            filter: drop-shadow(15px 20px 25px rgba(0, 0, 0, 0.7)); 
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .footer-left:hover .footer-logo-img { transform: translateY(-10px); }
+
+        .footer-right { flex: 1; text-align: center; z-index: 2; }
+        .footer-right h3 { font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 4px; margin-bottom: 15px; color: #fff; font-weight: 400; }
+        .footer-right .sub-title { font-size: 14px; color: #ffcccc; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase; line-height: 1.8; }
+        .footer-btn { display: inline-block; padding: 12px 35px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 3px; transition: 0.4s; text-transform: uppercase; margin-bottom: 20px; }
+        .footer-btn:hover { background-color: #fff; color: #b80000; } 
+        .footer-mail { display: block; color: #ffcccc; font-size: 13px; text-decoration: none; letter-spacing: 2px; transition: 0.3s; }
+        .footer-mail:hover { color: #fff; }
+        .copyright { margin-top: 100px; font-size: 12px; color: #555; letter-spacing: 1px; text-align: center; }
+
+        /* 右下角漂浮按鈕：同步首頁的白底黑字設計 */
+        .floating-btn {
+            position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; 
+            padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px;
+            transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999;
+        }
+        .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
+
+        /* 手機版優化 */
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 12px 0; }
-            .brand-logo { font-size: 18px; margin-bottom: 10px; }
-            .nav-links a { margin: 0 12px; font-size: 14px; }
+            .navbar { flex-direction: column; padding: 15px 10px; }
+            .brand-logo { font-size: 20px; margin-bottom: 10px; text-align: center; letter-spacing: 2px;}
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+            .nav-links a { margin: 0 5px; font-size: 13px; }
             
             .about-container { margin: 40px auto; }
             .about-title { font-size: 26px; }
-            .about-image { height: 300px; margin-bottom: 30px; }
-            .about-quote { font-size: 18px; margin: 30px 0; }
-            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 14px; }
+            .about-quote { font-size: 18px; margin: 40px 0; letter-spacing: 2px; padding: 30px 10px; font-weight: bold;}
+            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+            
+            .overlap-footer { padding: 60px 0 30px 0; }
+            .footer-band { padding: 40px 0; }
+            .footer-content { flex-direction: column; gap: 40px; }
+            .footer-left { margin-top: -80px; margin-bottom: 0; width: 60%; } 
         }
     </style>
 </head>
@@ -79,67 +178,97 @@
     <nav class="navbar">
         <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
         <div class="nav-links">
-			<a href="index.html">🏠 回首頁</a>
-			<a href="products.html" target="_blank">商品總覽</a>
-		</div>
+            <a href="index.html">回首頁</a>
+            <a href="products.html" target="_blank">商品總覽</a>
+        </div>
     </nav>
 
     <section class="about-container">
         
-        <div class="about-title">關於餃子</div>
-        <div class="about-subtitle">The Story of Dumpling Art</div>
+        <div class="about-title reveal-item">關於餃子</div>
+        <div class="about-subtitle reveal-item delay-1">The Story of Dumpling Art</div>
 
-        <img src="images/DUMPLING ART.png" alt="關於創作者" class="about-image">
+        <img src="images/Dumpling art(白邊).png" alt="關於創作者" class="about-image reveal-item delay-2">
 
-        <div class="about-quote">
+        <div class="about-quote reveal-item">
             「我是餃子，畫你不敢說的慾望。」
         </div>
 
         <div class="about-content">
-            <p>DUMPLING ART 是一個情慾藝術品牌。</p>
+            <p class="reveal-item">DUMPLING ART 是一個情慾藝術品牌。</p>
             
-            <p>我是餃子🥟不會畫畫，畫風甚至不乖，但你一定會記得。<br>
-				喜歡騷氣的「藝術」、擅長粗暴式的「溫柔」，用顏色擁抱「愛與性」。<br>
-				敢於畫出「你不敢說的誠實」、收藏「你偷偷壓抑的慾望」。<br>
-				渴望與你分享那份赤裸的真誠。</p>
+            <p class="reveal-item delay-1">我是餃子🥟不會畫畫，畫風甚至不乖，但你一定會記得。<br>
+                喜歡騷氣的「藝術」、擅長粗暴式的「溫柔」，用顏色擁抱「愛與性」。<br>
+                敢於畫出「你不敢說的誠實」、收藏「你偷偷壓抑的慾望」。<br>
+                渴望與你分享那份赤裸的真誠。</p>
             
-            <p>🎯 品牌的誕生</p>
-
-            <p>我相信每個人心裡都有一些隱藏的慾望或情感，社會不允許、或我們不敢說出口的事。<br>
-				餃子用插畫把它們畫出來，可能溫柔、可能騷氣性感、粗暴、甚至有點失禮，但一定真實。<br>
-				他們是藝術，也是真實的感受，不需為此感到羞恥，希望你可以面對自己的誠實。</p>
-			
-			<p>💡 品牌價值</p>
-			
-            <p>＊誠實：面對慾望、情感與社會壓抑，不粉飾，不假裝。<br>
-				＊陪伴：用作品替你說出隱藏在心裡的渴望，讓孤獨的人知道「你並不孤單」。<br>
-				＊挑釁：幽默、騷氣、粗暴的筆畫，反擊社會的不允許。<br>
-				＊情緒：商品不只是商品，而是一種感受，面對自己的情緒。</p>
-			
-			<p>🖌️ 關於Logo</p>
-			<p>👄嘴唇：性感、神秘、帶著挑逗與不安分，是情慾的出口，也是誠實的入口。<br>
-				🫦下唇=餃子：仔細看下唇是一個餃子的形狀，「餃子」是我。<br>
-				🖌️咬著畫筆：餃子是個插畫家，作品是用慾望與誠實去咬出來的。<br>
-				🥟整體：餃子不是「隨便畫畫的人」，而是專門畫性感、騷氣、挑釁卻真實的畫圖仔。</p>
-			
-			<p>DUMPLING ART 不只是品牌，而是一種態度。<br>
-				💬 在這裡，不只是買商品，更是與「餃子」交換一種誠實的情緒。<br>
-				謝謝你們喜歡這份不加掩飾的真誠，也謝謝你們陪著餃子一起在藝術裡使壞。<br>
-				希望 DUMPLING ART 能為你的生活，增添一點火辣辣的性感與浪漫。</p>
+            <h4 class="reveal-item">🎯 品牌的誕生</h4>
+            <p class="reveal-item delay-1">我相信每個人心裡都有一些隱藏的慾望或情感，社會不允許、或我們不敢說出口的事。<br>
+                餃子用插畫把它們畫出來，可能溫柔、可能騷氣性感、粗暴、甚至有點失禮，但一定真實。<br>
+                他們是藝術，也是真實的感受，不需為此感到羞恥，希望你可以面對自己的誠實。</p>
+            
+            <h4 class="reveal-item">💡 品牌價值</h4>
+            <p class="reveal-item delay-1">＊誠實：面對慾望、情感與社會壓抑，不粉飾，不假裝。<br>
+                ＊陪伴：用作品替你說出隱藏在心裡的渴望，讓孤獨的人知道「你並不孤單」。<br>
+                ＊挑釁：幽默、騷氣、粗暴的筆畫，反擊社會的不允許。<br>
+                ＊情緒：商品不只是商品，而是一種感受，面對自己的情緒。</p>
+            
+            <h4 class="reveal-item">🖌️ 關於Logo</h4>
+            <p class="reveal-item delay-1">👄 嘴唇：性感、神秘、帶著挑逗與不安分，是情慾的出口，也是誠實的入口。<br>
+                🫦 下唇=餃子：仔細看下唇是一個餃子的形狀，「餃子」是我。<br>
+                🖌️ 咬著畫筆：餃子是個插畫家，作品是用慾望與誠實去咬出來的。<br>
+                🥟 整體：餃子不是「隨便畫畫的人」，而是專門畫性感、騷氣、挑釁卻真實的畫圖仔。</p>
+            
+            <p class="reveal-item" style="margin-top: 50px; color: #fff;">
+                DUMPLING ART 不只是品牌，而是一種態度。<br>
+                💬 在這裡，不只是買商品，更是與「餃子」交換一種誠實的情緒。<br><br>
+                謝謝你們喜歡這份不加掩飾的真誠，也謝謝你們陪著餃子一起在藝術裡使壞。<br>
+                希望 DUMPLING ART 能為你的生活，增添一點火辣辣的性感與浪漫。
+            </p>
         </div>
 
     </section>
 
-    <footer>
-        <p>聯絡我們</p>
-        <p>Instagram：<a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank">@dumpling_arrrt_</a></p>
-        <p>E-mail：dumplinguu@gmail.com</p>
-        <p>2020 ® DUMPLING ART</p>
+    <footer class="overlap-footer">
+        <div class="footer-band">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <img src="images/Dumpling art(白邊).png" alt="DUMPLING ART Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-right">
+                    <h3>DUMPLING ART</h3>
+                    <p class="sub-title">Sensual Art Brand<br>In Stores Now</p>
+                    <a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank" class="footer-btn">Follow Instagram</a>
+                    <a href="mailto:dumplinguu@gmail.com" class="footer-mail">dumplinguu@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">© 2026 DUMPLING ART®. All rights reserved.</div>
     </footer>
 
     <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">
         💬 點我私訊
     </a>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal-item');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50; // 設定提早 50px 觸發
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        
+        // 監聽滾動事件
+        window.addEventListener('scroll', reveal);
+        // 剛載入時先執行一次，讓最上面的元素浮現
+        window.onload = reveal;
+    </script>
 
 </body>
 </html>
