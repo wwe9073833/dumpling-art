@@ -3,66 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全部商品｜DUMPLING ART</title> 
+    <title>商品總覽｜DUMPLING ART</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
     <style>
-        /* ================= 沿用原本的完美 CSS ================= */
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, "微軟正黑體", sans-serif;
-            margin: 0; padding: 0; background-color: #fafafa; color: #333; line-height: 1.6; padding-bottom: 60px; 
-        }
+    /* ================= 🎬 沿用核心品牌 CSS ================= */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif; margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.8; padding-bottom: 60px; }
 
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
-            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-        }
-        .brand-logo { font-size: 22px; font-weight: bold; letter-spacing: 2px; color: #111; text-decoration: none; }
-        .nav-links a { text-decoration: none; color: #555; margin-left: 20px; font-size: 15px; transition: 0.3s; }
-        .nav-links a:hover { color: #000; }
+    /* --- 1. 頂部導覽列 --- */
+    .navbar { background-color: rgba(184, 0, 0, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 12px 5%; border-bottom: 1px solid #8a0000; }
+    .brand-logo { font-size: 20px; font-weight: bold; letter-spacing: 4px; color: #fff; text-decoration: none; text-transform: uppercase; }
+    .nav-links a { text-decoration: none; color: #ffcccc; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+    .nav-links a:hover { color: #fff; }
 
-        .section-title { text-align: center; margin: 60px 0 40px; font-size: 28px; font-weight: 600; letter-spacing: 2px; }
-        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background-color: #333; margin: 15px auto 0; }
+    /* --- 2. 頁面標題 --- */
+    .page-header { text-align: center; margin: 80px 0 50px 0; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; letter-spacing: 6px; margin: 0 0 10px 0; color: #fff; text-transform: uppercase; }
+    .page-subtitle { font-size: 14px; color: #ff3b3b; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; }
 
-        .products-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
-        }
+    /* ================= 🛍️ 總覽頁專屬：左選單 右商品 佈局 ================= */
+    .catalog-container { max-width: 1300px; margin: 0 auto; padding: 0 5%; display: flex; gap: 50px; align-items: flex-start; }
+
+    /* 左側邊欄 (Sidebar) */
+    .sidebar { width: 220px; position: sticky; top: 100px; /* 跟著畫面往下滑 */ }
+    .sidebar-title { font-size: 16px; color: #888; letter-spacing: 3px; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .category-list { list-style: none; padding: 0; margin: 0; }
+    .category-list li { margin-bottom: 15px; }
+    .category-btn { 
+        background: none; border: none; color: #ccc; font-size: 15px; letter-spacing: 2px; 
+        cursor: pointer; padding: 5px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300;
+    }
+    .category-btn:hover { color: #fff; transform: translateX(5px); }
+    /* 被選中的分類 */
+    .category-btn.active { color: #ff3b3b; font-weight: bold; border-left: 3px solid #ff3b3b; padding-left: 10px; }
+
+    /* 右側商品網格 */
+    .products-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
+    
+    /* 商品卡片 (精簡版，專注於引導進內頁) */
+    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; display: block; text-decoration: none; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-img { width: 100%; height: 350px; object-fit: cover; transition: 0.8s ease; filter: grayscale(20%) contrast(110%); }
+    .product-card:hover .product-img { filter: grayscale(0%) contrast(100%); }
+    .product-info { padding: 20px 0; text-align: left; } 
+    .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; transition: 0.3s; }
+    .product-card:hover .product-title { color: #ff3b3b; }
+    .product-price { color: #888; font-size: 14px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .view-btn { 
+        display: inline-block; margin-top: 15px; padding: 10px 0; font-size: 13px; color: #fff; letter-spacing: 2px; text-transform: uppercase; 
+        border-bottom: 1px solid #555; transition: 0.3s; 
+    }
+    .product-card:hover .view-btn { border-color: #ff3b3b; color: #ff3b3b; }
+
+    /* --- 7. 網站底部 (Footer) --- */
+    .overlap-footer { position: relative; background-color: #000; padding: 90px 0 30px 0; margin-top: 80px; }
+    .footer-band { background-color: #b80000; padding: 35px 0; position: relative; }
+    .footer-content { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 80px; padding: 0 5%; }
+    .footer-left { flex: 0 0 35%; position: relative; margin-top: -100px; margin-bottom: -100px; z-index: 2; }
+    .footer-logo-img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(15px 20px 25px rgba(0, 0, 0, 0.7)); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .footer-left:hover .footer-logo-img { transform: translateY(-10px); }
+    .footer-right { flex: 1; text-align: center; z-index: 2; }
+    .footer-right h3 { font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 4px; margin-bottom: 15px; color: #fff; font-weight: 400; }
+    .footer-right .sub-title { font-size: 14px; color: #ffcccc; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase; line-height: 1.8; }
+    .footer-btn { display: inline-block; padding: 12px 35px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 3px; transition: 0.4s; text-transform: uppercase; margin-bottom: 20px; }
+    .footer-btn:hover { background-color: #fff; color: #b80000; } 
+    .footer-mail { display: block; color: #ffcccc; font-size: 13px; text-decoration: none; letter-spacing: 2px; transition: 0.3s; }
+    .footer-mail:hover { color: #fff; }
+    .copyright { margin-top: 100px; font-size: 12px; color: #555; letter-spacing: 1px; text-align: center; }
+
+    /* 右下角漂浮按鈕 */
+    .floating-btn { position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px; transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999; }
+    .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
+    a[href="cart.html"].floating-btn { bottom: 90px; }
+
+    /* 手機版排版 */
+    @media (max-width: 768px) {
+        .navbar { flex-direction: column; padding: 15px 10px; }
+        .brand-logo { font-size: 20px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;}
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .nav-links a { margin: 0 5px; font-size: 13px; }
         
-        .product-card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .page-header { margin: 40px 0 30px 0; }
+        .page-title { font-size: 30px; }
         
-        .product-img { width: 100%; height: 350px; object-fit: cover; }
-        .product-info { padding: 20px; text-align: center; }
-        .product-title { font-size: 18px; margin: 0 0 10px; font-weight: 600; }
-        .product-price { color: #888; font-size: 16px; margin-bottom: 20px; }
+        /* 手機版：左側邊欄變成頂部左右滑動標籤 */
+        .catalog-container { flex-direction: column; gap: 20px; }
+        .sidebar { width: 100%; position: relative; top: 0; }
+        .sidebar-title { display: none; } /* 手機版藏起標題 */
+        .category-list { display: flex; overflow-x: auto; padding-bottom: 10px; white-space: nowrap; border-bottom: 1px solid #333; }
+        .category-list li { margin-bottom: 0; margin-right: 15px; }
+        .category-btn { width: auto; padding: 5px 10px; font-size: 14px; }
+        .category-btn.active { border-left: none; border-bottom: 2px solid #ff3b3b; padding-left: 10px; }
+        
+        /* 隱藏卷軸 (美觀) */
+        .category-list::-webkit-scrollbar { display: none; }
 
-        .action-buttons { display: flex; flex-direction: column; gap: 10px; }
-        .btn { padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .btn-myship { background-color: #ff6b6b; color: white; border: 1px solid #ff6b6b; }
-        .btn-myship:hover { background-color: #fa5252; }
+        .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
+        .product-img { height: 220px; }
+        .product-title { font-size: 14px; }
+        .view-btn { font-size: 11px; }
 
-        footer { background-color: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 14px; }
-        footer a { color: #fff; text-decoration: none; }
-
-        .floating-btn {
-            position: fixed; bottom: 25px; right: 25px; background-color: #06C755; color: white;
-            padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
-            font-size: 16px; box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4); z-index: 9999;
-            transition: 0.3s ease; display: flex; align-items: center; gap: 5px;
-        }
-        .floating-btn:hover { transform: scale(1.05); background-color: #05b34c; }
-
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 12px 0; }
-            .brand-logo { font-size: 18px; margin-bottom: 10px; }
-            .nav-links a { margin: 0 12px; font-size: 14px; }
-            .section-title { font-size: 24px; margin: 40px 0 20px; }
-            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 14px; }
-        }
+        .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+        a[href="cart.html"].floating-btn { bottom: 65px; }
+        .overlap-footer { padding: 60px 0 30px 0; }
+        .footer-band { padding: 40px 0; }
+        .footer-content { flex-direction: column; gap: 40px; }
+        .footer-left { margin-top: -80px; margin-bottom: 0; width: 60%; } 
+    }
     </style>
 </head>
 <body>
@@ -70,95 +121,137 @@
     <nav class="navbar">
         <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
         <div class="nav-links">
-			<a href="index.html">🏠 回首頁</a>
-			<a href="about.html" target="_blank">關於我</a>
-			<a href="#all-products">全部商品</a>
-		</div>
+            <a href="index.html">🏠 回首頁</a>
+            <a href="about.html" target="_blank">關於我</a>
+            <a href="cart.html">🛒 結帳去</a>
+        </div>
     </nav>
 
-    <section id="all-products">
-        <h2 class="section-title">✨ 商品總覽 ✨</h2>
-        <div class="products-container">
+    <div class="page-header">
+        <h1 class="page-title">The Collection</h1>
+        <div class="page-subtitle">全部藝術商品</div>
+    </div>
+
+    <div class="catalog-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-title">分類 Categories</div>
+            <ul class="category-list">
+                <li><button class="category-btn active" onclick="filterProducts('all', this)">全部商品 All</button></li>
+                <li><button class="category-btn" onclick="filterProducts('painting', this)">無框畫 Paintings</button></li>
+                <li><button class="category-btn" onclick="filterProducts('coaster', this)">陶瓷杯墊 Coasters</button></li>
+                <li><button class="category-btn" onclick="filterProducts('tapestry', this)">藝術掛布 Tapestries</button></li>
+                <li><button class="category-btn" onclick="filterProducts('sticker', this)">電腦貼紙 Stickers</button></li>
+                <li><button class="category-btn" onclick="filterProducts('mat', this)">硅藻土地墊 Mats</button></li>
+            </ul>
+        </aside>
+
+        <div class="products-grid" id="product-grid">
             
-            <div class="product-card">
+            <a href="product-painting.html" class="product-card" data-category="painting">
                 <img src="images/hot_item2.jpg" alt="情慾無框畫" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">🫦情慾🫦無框畫</h3>
                     <p class="product-price">NT$ 450</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
+                    <span class="view-btn">查看款式 ➡️</span>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card">
+            <a href="product-coaster.html" class="product-card" data-category="coaster">
                 <img src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
                     <p class="product-price">NT$ 169</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
+                    <span class="view-btn">查看款式 ➡️</span>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card">
-                <img src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">❤️筆電、創意、電腦貼紙❤️</h3>
-                    <p class="product-price">NT$ 20</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="images/item3.jpg" alt="掛布" class="product-img">
+            <a href="product-tapestry.html" class="product-card" data-category="tapestry">
+                <img src="images/item3.jpg" alt="藝術掛布" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">情慾藝術🎨掛布</h3>
                     <p class="product-price">NT$ 480</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
+                    <span class="view-btn">查看款式 ➡️</span>
                 </div>
-            </div>
-            
-            <div class="product-card">
+            </a>
+
+            <a href="product-sticker.html" class="product-card" data-category="sticker">
+                <img src="images/hot_item3.jpg" alt="電腦貼紙" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">❤️創意電腦貼紙❤️</h3>
+                    <p class="product-price">NT$ 20</p>
+                    <span class="view-btn">查看款式 ➡️</span>
+                </div>
+            </a>
+
+            <a href="product-mat.html" class="product-card" data-category="mat">
                 <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
                     <p class="product-price">NT$ 369</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
+                    <span class="view-btn">查看款式 ➡️</span>
+                </div>
+            </a>
+
+            </div>
+
+    </div>
+
+    <footer class="overlap-footer">
+        <div class="footer-band">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <img src="images/Dumpling art(白邊).png" alt="DUMPLING ART Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-right">
+                    <h3>DUMPLING ART</h3>
+                    <p class="sub-title">Sensual Art Brand<br>In Stores Now</p>
+                    <a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank" class="footer-btn">Follow Instagram</a>
+                    <a href="mailto:dumplinguu@gmail.com" class="footer-mail">dumplinguu@gmail.com</a>
                 </div>
             </div>
-
-            <div class="product-card">
-                <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
-                    <p class="product-price">NT$ 369</p>
-                    <div class="action-buttons">
-                        <a href="https://myship.7-11.com.tw/general/detail/GM2305218801352" class="btn btn-myship" target="_blank">🛒 7-11 賣貨便下單</a>
-                    </div>
-                </div>
-            </div>
-
-            </div>
-    </section>
-
-    <footer>
-        <p>聯絡我們</p>
-        <p>Instagram：<a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank">@dumpling_arrrt_</a></p>
-        <p>E-mail：dumplinguu@gmail.com</p>
-        <p>2020 ® DUMPLING ART</p>
+        </div>
+        <div class="copyright">© 2026 DUMPLING ART®. All rights reserved.</div>
     </footer>
 
-    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">
-        💬 點我私訊
-    </a>
+    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">💬 點我私訊</a>
+    <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
+
+    <script>
+        // --- 購物車數字顯示 (Dreamweaver ES5 相容版) ---
+        function updateCartCount() {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var totalItems = 0;
+            for(var i = 0; i < cart.length; i++) {
+                totalItems += cart[i].quantity;
+            }
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+        window.onload = updateCartCount;
+
+        // --- 🌟 總覽頁專屬魔法：一秒分類篩選器 ---
+        function filterProducts(category, btnElement) {
+            // 1. 抓取所有的商品卡片
+            var cards = document.querySelectorAll('.product-card');
+            
+            // 2. 依照分類決定顯示或隱藏
+            for (var i = 0; i < cards.length; i++) {
+                // 如果選了 all，或者卡片的 data-category 等於選取的分類，就顯示
+                if (category === 'all' || cards[i].getAttribute('data-category') === category) {
+                    cards[i].style.display = 'block';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+
+            // 3. 把左邊選單的紅色標記 (active) 移到目前點擊的按鈕上
+            var buttons = document.querySelectorAll('.category-btn');
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove('active');
+            }
+            btnElement.classList.add('active');
+        }
+    </script>
 
 </body>
 </html>

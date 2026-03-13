@@ -1,0 +1,230 @@
+<!DOCTYPE html> 
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🫦情慾🫦無框畫｜DUMPLING ART</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================= 🎬 沿用核心品牌 CSS ================= */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif;
+            margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.8; padding-bottom: 60px; 
+        }
+
+        /* --- 頂部導覽列 --- */
+        .navbar {
+            background-color: rgba(184, 0, 0, 0.95); backdrop-filter: blur(10px); 
+            position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 5%; border-bottom: 1px solid #8a0000; 
+        }
+        .brand-logo { font-size: 20px; font-weight: bold; letter-spacing: 4px; color: #fff; text-decoration: none; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: #ffcccc; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a:hover { color: #fff; }
+
+        /* ================= 🛍️ 單品詳情頁專屬排版 ================= */
+        .product-detail-container {
+            max-width: 1100px; margin: 80px auto; padding: 0 5%;
+            display: flex; gap: 60px; align-items: flex-start;
+        }
+
+        /* 左側：大圖預覽區 */
+        .product-gallery {
+            flex: 1; position: relative;
+        }
+        .main-image {
+            width: 100%; height: auto; border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); object-fit: cover;
+            transition: opacity 0.3s ease; /* 切換圖片時的淡入淡出 */
+        }
+
+        /* 右側：商品資訊與選單 */
+        .product-info-box {
+            flex: 1; background-color: #0a0a0a; border: 1px solid #222;
+            padding: 50px 40px; position: relative; border-radius: 8px;
+        }
+        .product-info-box::before {
+            content: ""; position: absolute; top: -10px; left: -10px;
+            width: 60px; height: 60px; border-top: 2px solid #b80000; border-left: 2px solid #b80000;
+        }
+
+        .prod-title { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin: 0 0 15px 0; color: #fff; }
+        .prod-price { font-size: 22px; color: #ff3b3b; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 30px; letter-spacing: 1px; }
+        .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
+
+        /* 👑 款式選擇器 (深色精品風) */
+        .style-selector-group { margin-bottom: 30px; }
+        .style-label { display: block; font-size: 13px; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .style-select {
+            width: 100%; padding: 15px; background-color: #111; color: #fff;
+            border: 1px solid #444; border-radius: 4px; font-size: 15px; outline: none;
+            cursor: pointer; appearance: none; /* 隱藏預設箭頭 */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
+        }
+        .style-select:focus { border-color: #ff3b3b; }
+
+        /* 數量與購物車按鈕列 */
+        .action-row { display: flex; gap: 15px; align-items: center; }
+        
+        .quantity-control { 
+            display: flex; justify-content: center; align-items: center; 
+            border: 1px solid #444; border-radius: 4px; height: 50px; width: 120px;
+        }
+        .qty-btn { background-color: transparent; border: none; padding: 0 15px; cursor: pointer; font-size: 18px; color: #aaa; transition: 0.2s; }
+        .qty-btn:hover { color: #fff; }
+        .qty-input { width: 40px; text-align: center; background-color: transparent; border: none; font-size: 16px; color: #fff; font-weight: bold; outline: none; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        .btn-add-cart {
+            flex: 1; height: 50px; background-color: #ff3b3b; color: white;
+            border: none; border-radius: 4px; font-size: 15px; font-weight: bold; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-add-cart:hover { background-color: #b80000; }
+
+        /* 右下角漂浮按鈕 */
+        .floating-btn {
+            position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; 
+            padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px;
+            transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999;
+        }
+        .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
+        a[href="cart.html"].floating-btn { bottom: 90px; }
+
+        /* 手機版排版 */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 15px 10px; }
+            .brand-logo { font-size: 20px; margin-bottom: 10px; text-align: center; letter-spacing: 2px;}
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+            .nav-links a { margin: 0 5px; font-size: 13px; }
+            
+            .product-detail-container { flex-direction: column; gap: 30px; margin: 40px auto; }
+            .product-info-box { padding: 30px 20px; }
+            .action-row { flex-direction: column; }
+            .quantity-control { width: 100%; }
+            .btn-add-cart { width: 100%; }
+            .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+            a[href="cart.html"].floating-btn { bottom: 65px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
+        <div class="nav-links">
+            <a href="index.html">🏠 回首頁</a>
+            <a href="cart.html">🛒 結帳去</a>
+        </div>
+    </nav>
+
+    <div class="product-detail-container">
+        <div class="product-gallery">
+            <img id="main-product-image" src="images/hot_item2.jpg" alt="情慾無框畫預覽" class="main-image">
+        </div>
+
+        <div class="product-info-box">
+            <h1 class="prod-title">🫦情慾🫦無框畫</h1>
+            <div class="prod-price" id="prod-price" data-price="450">NT$ 450</div>
+            <div class="prod-desc">
+                極致的視覺張力，掛在房間的私密角落，每天提醒自己直視心裡的渴望。<br>
+                高質感無框畫印刷，防潑水材質，給懂得欣賞的你。<br><br>
+                💡 尺寸：30x40 cm (附無痕掛勾)
+            </div>
+
+            <div class="style-selector-group">
+                <label class="style-label">選擇畫作款式 Selection</label>
+                <select id="style-selector" class="style-select" onchange="changeProductStyle()">
+                    <option value="hot_item2.jpg">款式 A：只給你抓 (經典款)</option>
+                    <option value="信徒與魔鬼.JPG">款式 B：信徒與魔鬼</option>
+                    <option value="item1.jpg">款式 C：紅唇誘惑</option>
+                </select>
+            </div>
+
+            <div class="action-row">
+                <div class="quantity-control">
+                    <button class="qty-btn" onclick="changeQty(-1)">-</button>
+                    <input type="number" id="detail-qty" class="qty-input" value="1" min="1">
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartDetail()">🛒 Add to Bag</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">💬 點我私訊</a>
+    <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
+
+    <script>
+        // --- 1. 款式與圖片連動魔法 ---
+        function changeProductStyle() {
+            let selector = document.getElementById("style-selector");
+            let selectedImage = selector.value; // 抓取選單裡的 value (圖片檔名)
+            let mainImageEl = document.getElementById("main-product-image");
+            
+            // 讓圖片有微淡出的切換效果
+            mainImageEl.style.opacity = 0.5;
+            setTimeout(() => {
+                mainImageEl.src = "images/" + selectedImage; // 組合路徑切換圖片
+                mainImageEl.style.opacity = 1;
+            }, 150);
+        }
+
+        // --- 2. 數量控制 ---
+        function changeQty(amount) {
+            let input = document.getElementById("detail-qty");
+            let currentValue = parseInt(input.value);
+            if (currentValue + amount >= 1) { 
+                input.value = currentValue + amount;
+            }
+        }
+
+        // --- 3. 加入購物車 (包含款式名稱！) ---
+        function addToCartDetail() {
+            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            
+            let baseName = "🫦情慾🫦無框畫"; // 商品主名稱
+            let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
+            let qty = parseInt(document.getElementById("detail-qty").value);
+            
+            // 抓取客人選了什麼款式 (抓取 option 顯示的文字)
+            let selector = document.getElementById("style-selector");
+            let styleText = selector.options[selector.selectedIndex].text; 
+            
+            // 組合成最終的購物車品名：例如 "🫦情慾🫦無框畫 - 款式 B：信徒與魔鬼"
+            let finalProductName = baseName + " (" + styleText + ")";
+            
+            let existingItem = cart.find(item => item.name === finalProductName);
+            if (existingItem) {
+                existingItem.quantity += qty; 
+            } else {
+                cart.push({ name: finalProductName, price: price, quantity: qty });
+            }
+            
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount(); 
+            alert(`🎉 成功將 ${qty} 個「${finalProductName}」加入購物車！`); 
+            
+            // 重置數量回 1
+            document.getElementById("detail-qty").value = 1;
+        }
+
+        // --- 4. 購物車數量顯示 ---
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            let totalItems = 0;
+            cart.forEach(item => totalItems += item.quantity);
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+
+        window.onload = updateCartCount;
+    </script>
+
+</body>
+</html>
