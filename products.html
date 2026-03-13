@@ -25,39 +25,51 @@
     .page-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; letter-spacing: 6px; margin: 0 0 10px 0; color: #fff; text-transform: uppercase; }
     .page-subtitle { font-size: 14px; color: #ff3b3b; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; }
 
-    /* ================= 🛍️ 總覽頁專屬：左選單 右商品 佈局 ================= */
+    /* ================= 🛍️ 總覽頁專屬佈局 ================= */
     .catalog-container { max-width: 1300px; margin: 0 auto; padding: 0 5%; display: flex; gap: 50px; align-items: flex-start; }
 
     /* 左側邊欄 (Sidebar) */
-    .sidebar { width: 220px; position: sticky; top: 100px; /* 跟著畫面往下滑 */ }
-    .sidebar-title { font-size: 16px; color: #888; letter-spacing: 3px; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .sidebar { width: 220px; position: sticky; top: 100px; }
+    
+    /* 👉🏼 升級版的側邊欄主標題 */
+    .sidebar-title { 
+        font-size: 18px; color: #fff; letter-spacing: 3px; margin-bottom: 25px; 
+        border-bottom: 1px solid #333; padding-bottom: 10px; font-weight: bold;
+        cursor: pointer; transition: 0.3s; text-transform: uppercase;
+    }
+    .sidebar-title:hover { color: #ff3b3b; }
+
     .category-list { list-style: none; padding: 0; margin: 0; }
     .category-list li { margin-bottom: 15px; }
     .category-btn { 
         background: none; border: none; color: #ccc; font-size: 15px; letter-spacing: 2px; 
-        cursor: pointer; padding: 5px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300;
+        cursor: pointer; padding: 5px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
     }
     .category-btn:hover { color: #fff; transform: translateX(5px); }
-    /* 被選中的分類 */
     .category-btn.active { color: #ff3b3b; font-weight: bold; border-left: 3px solid #ff3b3b; padding-left: 10px; }
 
     /* 右側商品網格 */
     .products-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
     
-    /* 商品卡片 (精簡版，專注於引導進內頁) */
-    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; display: block; text-decoration: none; }
+    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; display: block; }
     .product-card:hover { transform: translateY(-5px); }
     .product-img { width: 100%; height: 350px; object-fit: cover; transition: 0.8s ease; filter: grayscale(20%) contrast(110%); }
     .product-card:hover .product-img { filter: grayscale(0%) contrast(100%); }
     .product-info { padding: 20px 0; text-align: left; } 
-    .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; transition: 0.3s; }
-    .product-card:hover .product-title { color: #ff3b3b; }
-    .product-price { color: #888; font-size: 14px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-    .view-btn { 
-        display: inline-block; margin-top: 15px; padding: 10px 0; font-size: 13px; color: #fff; letter-spacing: 2px; text-transform: uppercase; 
-        border-bottom: 1px solid #555; transition: 0.3s; 
-    }
-    .product-card:hover .view-btn { border-color: #ff3b3b; color: #ff3b3b; }
+    
+    .product-category-tag { font-size: 12px; color: #ff3b3b; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; }
+    .product-title { font-size: 16px; margin: 0 0 10px 0; font-weight: 500; letter-spacing: 1px; color: #fff; }
+    .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    /* 購物車操作按鈕 */
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
+    .btn-myship { background-color: transparent; color: white; border: 1px solid #555; border-radius: 50px; padding: 12px; letter-spacing: 1px; transition: 0.3s; text-align: center; text-decoration: none; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
+    .btn-myship:hover { background-color: #ff3b3b; border-color: #ff3b3b; }
+    .quantity-control { display: flex; justify-content: center; align-items: center; margin: 0 auto; border: 1px solid #444; border-radius: 50px; width: 100%; overflow: hidden; }
+    .qty-btn { background-color: transparent; border: none; padding: 8px 15px; cursor: pointer; font-size: 18px; font-weight: 300; transition: 0.2s; color: #888; }
+    .qty-btn:hover { color: #ff3b3b; }
+    .qty-input { width: 40px; text-align: center; background-color: transparent; border: none; padding: 5px 0; font-size: 16px; color: #fff; font-weight: bold; outline: none; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
     /* --- 7. 網站底部 (Footer) --- */
     .overlap-footer { position: relative; background-color: #000; padding: 90px 0 30px 0; margin-top: 80px; }
@@ -90,22 +102,20 @@
         .page-header { margin: 40px 0 30px 0; }
         .page-title { font-size: 30px; }
         
-        /* 手機版：左側邊欄變成頂部左右滑動標籤 */
         .catalog-container { flex-direction: column; gap: 20px; }
         .sidebar { width: 100%; position: relative; top: 0; }
-        .sidebar-title { display: none; } /* 手機版藏起標題 */
+        .sidebar-title { display: none; } /* 手機版藏起大標題 */
+        
+        /* 魔法：手機版專用的橫向滑動選單 */
         .category-list { display: flex; overflow-x: auto; padding-bottom: 10px; white-space: nowrap; border-bottom: 1px solid #333; }
         .category-list li { margin-bottom: 0; margin-right: 15px; }
         .category-btn { width: auto; padding: 5px 10px; font-size: 14px; }
         .category-btn.active { border-left: none; border-bottom: 2px solid #ff3b3b; padding-left: 10px; }
-        
-        /* 隱藏卷軸 (美觀) */
         .category-list::-webkit-scrollbar { display: none; }
 
         .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
         .product-img { height: 220px; }
         .product-title { font-size: 14px; }
-        .view-btn { font-size: 11px; }
 
         .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
         a[href="cart.html"].floating-btn { bottom: 65px; }
@@ -135,9 +145,13 @@
     <div class="catalog-container">
         
         <aside class="sidebar">
-            <div class="sidebar-title">分類 Categories</div>
+            <div class="sidebar-title" onclick="filterProducts('all', null)" title="點擊顯示全部商品">全部商品 All</div>
+            
             <ul class="category-list">
-                <li><button class="category-btn active" onclick="filterProducts('all', this)">全部商品 All</button></li>
+                <li class="mobile-all-btn" style="display: none;">
+                    <button class="category-btn active" onclick="filterProducts('all', this)">全部 All</button>
+                </li>
+                
                 <li><button class="category-btn" onclick="filterProducts('painting', this)">無框畫 Paintings</button></li>
                 <li><button class="category-btn" onclick="filterProducts('coaster', this)">陶瓷杯墊 Coasters</button></li>
                 <li><button class="category-btn" onclick="filterProducts('tapestry', this)">藝術掛布 Tapestries</button></li>
@@ -148,52 +162,126 @@
 
         <div class="products-grid" id="product-grid">
             
-            <a href="product-painting.html" class="product-card" data-category="painting">
-                <img src="images/hot_item2.jpg" alt="情慾無框畫" class="product-img">
+            <div class="product-card" data-category="painting">
+                <img src="images/hot_item2.jpg" alt="只給你抓" class="product-img">
                 <div class="product-info">
-                    <h3 class="product-title">🫦情慾🫦無框畫</h3>
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 A：只給你抓</h3>
                     <p class="product-price">NT$ 450</p>
-                    <span class="view-btn">查看款式 ➡️</span>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p1', -1)">-</button>
+                            <input type="number" id="qty-p1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 A：只給你抓)', 450, 'qty-p1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
                 </div>
-            </a>
-
-            <a href="product-coaster.html" class="product-card" data-category="coaster">
-                <img src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
-                    <p class="product-price">NT$ 169</p>
-                    <span class="view-btn">查看款式 ➡️</span>
-                </div>
-            </a>
-
-            <a href="product-tapestry.html" class="product-card" data-category="tapestry">
-                <img src="images/item3.jpg" alt="藝術掛布" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">情慾藝術🎨掛布</h3>
-                    <p class="product-price">NT$ 480</p>
-                    <span class="view-btn">查看款式 ➡️</span>
-                </div>
-            </a>
-
-            <a href="product-sticker.html" class="product-card" data-category="sticker">
-                <img src="images/hot_item3.jpg" alt="電腦貼紙" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">❤️創意電腦貼紙❤️</h3>
-                    <p class="product-price">NT$ 20</p>
-                    <span class="view-btn">查看款式 ➡️</span>
-                </div>
-            </a>
-
-            <a href="product-mat.html" class="product-card" data-category="mat">
-                <img src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
-                    <p class="product-price">NT$ 369</p>
-                    <span class="view-btn">查看款式 ➡️</span>
-                </div>
-            </a>
-
             </div>
+
+            <div class="product-card" data-category="painting">
+                <img src="images/信徒與魔鬼.JPG" alt="信徒與魔鬼" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 B：信徒與魔鬼</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p2', -1)">-</button>
+                            <input type="number" id="qty-p2" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p2', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 B：信徒與魔鬼)', 450, 'qty-p2')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="painting">
+                <img src="images/item1.jpg" alt="紅唇誘惑" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 C：紅唇誘惑</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p3', -1)">-</button>
+                            <input type="number" id="qty-p3" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p3', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 C：紅唇誘惑)', 450, 'qty-p3')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="coaster">
+                <img src="images/hot_item1.jpg" alt="深情撫摸" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">陶瓷杯墊 Coaster</div>
+                    <h3 class="product-title">🔥獨一無二🔥杯墊 - 款式 A：深情撫摸</h3>
+                    <p class="product-price">NT$ 169</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-c1', -1)">-</button>
+                            <input type="number" id="qty-c1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-c1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🔥獨一無二🔥陶瓷杯墊 (款式 A：深情撫摸)', 169, 'qty-c1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="tapestry">
+                <img src="images/item3.jpg" alt="藝術線條" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">藝術掛布 Tapestry</div>
+                    <h3 class="product-title">情慾藝術🎨掛布 - 款式 A：藝術線條</h3>
+                    <p class="product-price">NT$ 480</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-t1', -1)">-</button>
+                            <input type="number" id="qty-t1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-t1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('情慾藝術🎨掛布 (款式 A：藝術線條)', 480, 'qty-t1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="sticker">
+                <img src="images/hot_item3.jpg" alt="綜合拼貼" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">電腦貼紙 Sticker</div>
+                    <h3 class="product-title">❤️創意電腦貼紙❤️ - 款式 A：綜合拼貼</h3>
+                    <p class="product-price">NT$ 20</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-s1', -1)">-</button>
+                            <input type="number" id="qty-s1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-s1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('❤️創意電腦貼紙❤️ (款式 A：綜合拼貼)', 20, 'qty-s1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="mat">
+                <img src="images/item4.jpg" alt="紅線誘惑" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">硅藻土地墊 Mat</div>
+                    <h3 class="product-title">💗每一步都是誘惑💗 - 款式 A：紅線誘惑</h3>
+                    <p class="product-price">NT$ 369</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-m1', -1)">-</button>
+                            <input type="number" id="qty-m1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-m1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('💗每一步都是誘惑💗地墊 (款式 A：紅線誘惑)', 369, 'qty-m1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 
@@ -218,7 +306,7 @@
     <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
 
     <script>
-        // --- 購物車數字顯示 (Dreamweaver ES5 相容版) ---
+        // 1. 購物車數量顯示
         function updateCartCount() {
             var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
             var totalItems = 0;
@@ -229,14 +317,38 @@
         }
         window.onload = updateCartCount;
 
-        // --- 🌟 總覽頁專屬魔法：一秒分類篩選器 ---
+        // 2. 數量加減器
+        function changeQty(inputId, amount) {
+            var input = document.getElementById(inputId);
+            var currentValue = parseInt(input.value);
+            if (currentValue + amount >= 1) { 
+                input.value = currentValue + amount;
+            }
+        }
+
+        // 3. 直接將指定款式加入購物車
+        function addDirectToCart(finalName, price, qtyId) {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var qty = parseInt(document.getElementById(qtyId).value);
+            
+            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            if (existingItem) {
+                existingItem.quantity += qty; 
+            } else {
+                cart.push({ name: finalName, price: price, quantity: qty });
+            }
+            
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount(); 
+            alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！"); 
+            document.getElementById(qtyId).value = 1;
+        }
+
+        // 4. 總覽頁分類篩選器
         function filterProducts(category, btnElement) {
-            // 1. 抓取所有的商品卡片
             var cards = document.querySelectorAll('.product-card');
             
-            // 2. 依照分類決定顯示或隱藏
             for (var i = 0; i < cards.length; i++) {
-                // 如果選了 all，或者卡片的 data-category 等於選取的分類，就顯示
                 if (category === 'all' || cards[i].getAttribute('data-category') === category) {
                     cards[i].style.display = 'block';
                 } else {
@@ -244,12 +356,20 @@
                 }
             }
 
-            // 3. 把左邊選單的紅色標記 (active) 移到目前點擊的按鈕上
             var buttons = document.querySelectorAll('.category-btn');
             for (var j = 0; j < buttons.length; j++) {
                 buttons[j].classList.remove('active');
             }
-            btnElement.classList.add('active');
+            
+            // 💡 如果點擊的是底下的細項分類，加上紅色 highlight；如果點擊的是頂部標題(btnElement 為 null)，則全部取消 highlight
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+        }
+
+        // 手機版優化：判斷如果是手機螢幕，把第一個隱藏的「全部 All」按鈕叫出來
+        if (window.innerWidth <= 768) {
+            document.querySelector('.mobile-all-btn').style.display = 'inline-block';
         }
     </script>
 

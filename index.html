@@ -75,17 +75,66 @@
     .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; }
     .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     
-    /* 🌟 商品卡片專屬的款式選單 */
+    /* 🌟 商品卡片專屬的款式選單 (紅白精品版) */
     .card-style-select {
-        width: 100%; padding: 10px; background-color: #111; color: #fff;
-        border: 1px solid #444; border-radius: 4px; font-size: 13px; outline: none;
-        margin-bottom: 15px; cursor: pointer; letter-spacing: 1px;
+        width: 100%; 
+        padding: 12px 20px; 
+        background-color: transparent; 
+        color: #fff; 
+        border: 1px solid #ff3b3b; /* 俐落的紅框 */
+        border-radius: 50px; /* 👉🏼 改成膠囊圓角，跟加入購物車按鈕統一 */
+        font-size: 13px; 
+        outline: none;
+        margin-bottom: 15px; 
+        cursor: pointer; 
+        letter-spacing: 1px;
+        
+        /* 🔪 關鍵魔法：殺掉蘋果/微軟預設的醜醜漸層按鈕 */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        /* 加上自訂的紅色小箭頭 */
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff3b3b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+        background-repeat: no-repeat; 
+        background-position: right 15px top 50%; 
+        background-size: 12px auto;
+        transition: 0.3s;
     }
-    .card-style-select:focus { border-color: #ff3b3b; }
+    
+    /* 滑鼠摸到時背景稍微亮一點點的紅色 */
+    .card-style-select:hover {
+        background-color: rgba(255, 59, 59, 0.15);
+    }
 
+    /* 點開後的選項改成白底紅字，呼應「紅色白色呈現」 */
+    .card-style-select option {
+        background-color: #fff;
+        color: #b80000;
+        font-weight: bold;
+    }
     .action-buttons { display: flex; flex-direction: column; gap: 10px; }
-    .btn-myship { background-color: transparent; color: white; border: 1px solid #555; border-radius: 50px; padding: 12px; letter-spacing: 1px; transition: 0.3s; text-align: center; text-decoration: none; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
-    .btn-myship:hover { background-color: #ff3b3b; border-color: #ff3b3b; }
+    .btn-myship { 
+        display: block; /* 確保連結按鈕變成方塊 */
+        box-sizing: border-box; /* 👉🏼 關鍵魔法：強迫內距算在 100% 裡面，絕對不撐爆！ */
+        width: 100%; 
+        background-color: transparent; 
+        color: white; 
+        border: 1px solid #555; 
+        border-radius: 50px; 
+        padding: 12px; 
+        letter-spacing: 1px; 
+        transition: 0.3s; 
+        text-align: center; 
+        text-decoration: none; 
+        font-weight: bold; 
+        cursor: pointer; 
+        font-family: inherit; 
+    }
+    .btn-myship:hover { 
+        background-color: #ff3b3b; 
+        border-color: #ff3b3b; 
+    }
     .quantity-control { display: flex; justify-content: center; align-items: center; margin: 0 auto; border: 1px solid #444; border-radius: 50px; width: 100%; overflow: hidden; }
     .qty-btn { background-color: transparent; border: none; padding: 8px 15px; cursor: pointer; font-size: 18px; font-weight: 300; transition: 0.2s; color: #888; }
     .qty-btn:hover { color: #ff3b3b; }
@@ -340,7 +389,7 @@
                     <h3 class="product-title">全系列｜情慾無框畫</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👁️ 查看所有畫作</a>
+                        <a href="products.html" class="btn btn-myship">👀 所有無框畫</a>
                     </div>
                 </div>
             </div>
@@ -350,7 +399,7 @@
                     <h3 class="product-title">全系列｜藝術掛布</h3>
                     <p class="product-price">NT$ 480</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👁️ 查看所有掛布</a>
+                        <a href="products.html" class="btn btn-myship">👀 所有掛布</a>
                     </div>
                 </div>
             </div>
@@ -360,14 +409,14 @@
                     <h3 class="product-title">全系列｜陶瓷杯墊</h3>
                     <p class="product-price">NT$ 169</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👁️ 查看所有杯墊</a>
+                        <a href="products.html" class="btn btn-myship">👀 所有杯墊</a>
                     </div>
                 </div>
             </div>
         </div>
         
         <div style="text-align: center; margin-top: 60px;">
-            <a href="products.html" style="display: inline-block; padding: 18px 60px; background-color: #ff3b3b; color: white; border-radius: 50px; font-weight: bold; text-decoration: none; letter-spacing: 3px; font-size: 16px; transition: 0.4s; box-shadow: 0 10px 20px rgba(255,59,59,0.3);">進入商品總覽 ➡️</a>
+            <a href="products.html" style="display: inline-block; box-sizing: border-box; padding: 10px 40px; background-color: #ff3b3b; color: white; border-radius: 50px; font-weight: bold; text-decoration: none; letter-spacing: 3px; font-size: 16px; transition: 0.4s; box-shadow: 0 10px 20px rgba(255,59,59,0.3);">商品總覽 ➡️</a>
         </div>
     </section>
 
