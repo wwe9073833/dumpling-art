@@ -185,9 +185,28 @@
             }
         }
 
+        function safeGetCart() {
+            let rawCart = localStorage.getItem('dumpling_cart');
+            if (!rawCart) {
+                return [];
+            }
+
+            try {
+                let parsedCart = JSON.parse(rawCart);
+                if (Array.isArray(parsedCart)) {
+                    return parsedCart;
+                }
+            } catch (error) {
+                // 壞資料直接清掉，避免商品頁中斷
+            }
+
+            localStorage.removeItem('dumpling_cart');
+            return [];
+        }
+
         // --- 3. 加入購物車 (包含款式名稱！) ---
         function addToCartDetail() {
-            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            let cart = safeGetCart();
             
             let baseName = "🫦情慾🫦無框畫"; // 商品主名稱
             let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
@@ -217,7 +236,7 @@
 
         // --- 4. 購物車數量顯示 ---
         function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            let cart = safeGetCart();
             let totalItems = 0;
             cart.forEach(item => totalItems += item.quantity);
             document.getElementById('cart-count').innerText = totalItems;

@@ -307,8 +307,27 @@
 
     <script>
         // 1. 購物車數量顯示
+        function safeGetCart() {
+            var rawCart = localStorage.getItem('dumpling_cart');
+            if (!rawCart) {
+                return [];
+            }
+
+            try {
+                var parsedCart = JSON.parse(rawCart);
+                if (Array.isArray(parsedCart)) {
+                    return parsedCart;
+                }
+            } catch (error) {
+                // 壞資料直接清掉，避免商品總覽頁購物車數量顯示中斷
+            }
+
+            localStorage.removeItem('dumpling_cart');
+            return [];
+        }
+
         function updateCartCount() {
-            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var cart = safeGetCart();
             var totalItems = 0;
             for(var i = 0; i < cart.length; i++) {
                 totalItems += cart[i].quantity;
@@ -328,7 +347,7 @@
 
         // 3. 直接將指定款式加入購物車
         function addDirectToCart(finalName, price, qtyId) {
-            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var cart = safeGetCart();
             var qty = parseInt(document.getElementById(qtyId).value);
             
             var existingItem = cart.find(function(item) { return item.name === finalName; });

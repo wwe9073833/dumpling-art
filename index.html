@@ -553,7 +553,7 @@
                     <h3 class="product-title">全系列｜情慾無框畫</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👀 所有無框畫</a>
+                        <a href="product-painting.html" class="btn btn-myship">👀 所有無框畫</a>
                     </div>
                 </div>
             </div>
@@ -563,7 +563,7 @@
                     <h3 class="product-title">全系列｜藝術掛布</h3>
                     <p class="product-price">NT$ 480</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👀 所有掛布</a>
+                        <a href="product-tapestry.html" class="btn btn-myship">👀 所有掛布</a>
                     </div>
                 </div>
             </div>
@@ -573,7 +573,7 @@
                     <h3 class="product-title">全系列｜陶瓷杯墊</h3>
                     <p class="product-price">NT$ 169</p>
                     <div class="action-buttons">
-                        <a href="products.html" class="btn btn-myship">👀 所有杯墊</a>
+                        <a href="product-coaster.html" class="btn btn-myship">👀 所有杯墊</a>
                     </div>
                 </div>
             </div>
@@ -649,8 +649,27 @@
 
     <script>
         // 💡 全部改為 Dreamweaver 保證不報錯的 ES5 語法
+        function safeGetCart() {
+            var rawCart = localStorage.getItem('dumpling_cart');
+            if (!rawCart) {
+                return [];
+            }
+
+            try {
+                var parsedCart = JSON.parse(rawCart);
+                if (Array.isArray(parsedCart)) {
+                    return parsedCart;
+                }
+            } catch (error) {
+                // 壞資料直接清掉，避免首頁購物車數量顯示中斷
+            }
+
+            localStorage.removeItem('dumpling_cart');
+            return [];
+        }
+
         function updateCartCount() {
-            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var cart = safeGetCart();
             var totalItems = 0;
             cart.forEach(function(item) { totalItems += item.quantity; });
             document.getElementById('cart-count').innerText = totalItems;
@@ -676,7 +695,7 @@
 
         // 🌟 帶有「款式」的進階版加入購物車功能
         function addCardToCart(baseName, price, qtyId, selectId) {
-            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var cart = safeGetCart();
             var qty = parseInt(document.getElementById(qtyId).value);
             
             var selectEl = document.getElementById(selectId);

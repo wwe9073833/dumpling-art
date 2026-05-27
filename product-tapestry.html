@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🫦情慾🫦無框畫｜DUMPLING ART</title> 
+    <title>情慾藝術🎨掛布｜DUMPLING ART</title> 
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,24 +126,22 @@
 
     <div class="product-detail-container">
         <div class="product-gallery">
-            <img id="main-product-image" src="images/hot_item2.jpg" alt="情慾無框畫預覽" class="main-image">
+            <img id="main-product-image" src="images/item3.jpg" alt="藝術掛布預覽" class="main-image">
         </div>
 
         <div class="product-info-box">
-            <h1 class="prod-title">🫦情慾🫦無框畫</h1>
-            <div class="prod-price" id="prod-price" data-price="450">NT$ 450</div>
+            <h1 class="prod-title">情慾藝術🎨掛布</h1>
+            <div class="prod-price" id="prod-price" data-price="480">NT$ 480</div>
             <div class="prod-desc">
-                極致的視覺張力，掛在房間的私密角落，每天提醒自己直視心裡的渴望。<br>
-                高質感無框畫印刷，防潑水材質，給懂得欣賞的你。<br><br>
-                💡 尺寸：30x40 cm (附無痕掛勾)
+                讓牆面像一場正在慢慢流動的情緒電影，把曖昧感留在房間裡。<br>
+                輕盈布面好懸掛，適合作為房間主視覺，也適合作為私密收藏。<br><br>
+                💡 尺寸：約 95 x 73 cm
             </div>
 
             <div class="style-selector-group">
-                <label class="style-label">選擇畫作款式 Selection</label>
+                <label class="style-label">選擇商品款式 Selection</label>
                 <select id="style-selector" class="style-select" onchange="changeProductStyle()">
-                    <option value="hot_item2.jpg">款式 A：只給你抓 (經典款)</option>
-                    <option value="信徒與魔鬼.JPG">款式 B：信徒與魔鬼</option>
-                    <option value="item1.jpg">款式 C：紅唇誘惑</option>
+                    <option value="item3.jpg">款式 A：藝術線條</option>
                 </select>
             </div>
 
@@ -185,11 +183,30 @@
             }
         }
 
+        function safeGetCart() {
+            let rawCart = localStorage.getItem('dumpling_cart');
+            if (!rawCart) {
+                return [];
+            }
+
+            try {
+                let parsedCart = JSON.parse(rawCart);
+                if (Array.isArray(parsedCart)) {
+                    return parsedCart;
+                }
+            } catch (error) {
+                // 壞資料直接清掉，避免商品頁中斷
+            }
+
+            localStorage.removeItem('dumpling_cart');
+            return [];
+        }
+
         // --- 3. 加入購物車 (包含款式名稱！) ---
         function addToCartDetail() {
-            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            let cart = safeGetCart();
             
-            let baseName = "🫦情慾🫦無框畫"; // 商品主名稱
+            let baseName = "情慾藝術🎨掛布"; // 商品主名稱
             let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
             let qty = parseInt(document.getElementById("detail-qty").value);
             
@@ -197,7 +214,7 @@
             let selector = document.getElementById("style-selector");
             let styleText = selector.options[selector.selectedIndex].text; 
             
-            // 組合成最終的購物車品名：例如 "🫦情慾🫦無框畫 - 款式 B：信徒與魔鬼"
+            // 組合成最終的購物車品名：例如「商品名稱 (款式 A：xxx)」
             let finalProductName = baseName + " (" + styleText + ")";
             
             let existingItem = cart.find(item => item.name === finalProductName);
@@ -217,7 +234,7 @@
 
         // --- 4. 購物車數量顯示 ---
         function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            let cart = safeGetCart();
             let totalItems = 0;
             cart.forEach(item => totalItems += item.quantity);
             document.getElementById('cart-count').innerText = totalItems;
