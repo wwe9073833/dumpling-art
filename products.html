@@ -1,0 +1,377 @@
+<!DOCTYPE html> 
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品總覽｜DUMPLING ART</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+    /* ================= 🎬 沿用核心品牌 CSS ================= */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif; margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.8; padding-bottom: 60px; }
+
+    /* --- 1. 頂部導覽列 --- */
+    .navbar { background-color: rgba(184, 0, 0, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 12px 5%; border-bottom: 1px solid #8a0000; }
+    .brand-logo { font-size: 20px; font-weight: bold; letter-spacing: 4px; color: #fff; text-decoration: none; text-transform: uppercase; }
+    .nav-links a { text-decoration: none; color: #ffcccc; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --- 2. 頁面標題 --- */
+    .page-header { text-align: center; margin: 80px 0 50px 0; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; letter-spacing: 6px; margin: 0 0 10px 0; color: #fff; text-transform: uppercase; }
+    .page-subtitle { font-size: 14px; color: #ff3b3b; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; }
+
+    /* ================= 🛍️ 總覽頁專屬佈局 ================= */
+    .catalog-container { max-width: 1300px; margin: 0 auto; padding: 0 5%; display: flex; gap: 50px; align-items: flex-start; }
+
+    /* 左側邊欄 (Sidebar) */
+    .sidebar { width: 220px; position: sticky; top: 100px; }
+    
+    /* 👉🏼 升級版的側邊欄主標題 */
+    .sidebar-title { 
+        font-size: 18px; color: #fff; letter-spacing: 3px; margin-bottom: 25px; 
+        border-bottom: 1px solid #333; padding-bottom: 10px; font-weight: bold;
+        cursor: pointer; transition: 0.3s; text-transform: uppercase;
+    }
+    .sidebar-title:hover { color: #ff3b3b; }
+
+    .category-list { list-style: none; padding: 0; margin: 0; }
+    .category-list li { margin-bottom: 15px; }
+    .category-btn { 
+        background: none; border: none; color: #ccc; font-size: 15px; letter-spacing: 2px; 
+        cursor: pointer; padding: 5px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
+    }
+    .category-btn:hover { color: #fff; transform: translateX(5px); }
+    .category-btn.active { color: #ff3b3b; font-weight: bold; border-left: 3px solid #ff3b3b; padding-left: 10px; }
+
+    /* 右側商品網格 */
+    .products-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
+    
+    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; display: block; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-img { width: 100%; height: 350px; object-fit: cover; transition: 0.8s ease; filter: grayscale(20%) contrast(110%); }
+    .product-card:hover .product-img { filter: grayscale(0%) contrast(100%); }
+    .product-info { padding: 20px 0; text-align: left; } 
+    
+    .product-category-tag { font-size: 12px; color: #ff3b3b; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; }
+    .product-title { font-size: 16px; margin: 0 0 10px 0; font-weight: 500; letter-spacing: 1px; color: #fff; }
+    .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    /* 購物車操作按鈕 */
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
+    .btn-myship { background-color: transparent; color: white; border: 1px solid #555; border-radius: 50px; padding: 12px; letter-spacing: 1px; transition: 0.3s; text-align: center; text-decoration: none; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
+    .btn-myship:hover { background-color: #ff3b3b; border-color: #ff3b3b; }
+    .quantity-control { display: flex; justify-content: center; align-items: center; margin: 0 auto; border: 1px solid #444; border-radius: 50px; width: 100%; overflow: hidden; }
+    .qty-btn { background-color: transparent; border: none; padding: 8px 15px; cursor: pointer; font-size: 18px; font-weight: 300; transition: 0.2s; color: #888; }
+    .qty-btn:hover { color: #ff3b3b; }
+    .qty-input { width: 40px; text-align: center; background-color: transparent; border: none; padding: 5px 0; font-size: 16px; color: #fff; font-weight: bold; outline: none; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* --- 7. 網站底部 (Footer) --- */
+    .overlap-footer { position: relative; background-color: #000; padding: 90px 0 30px 0; margin-top: 80px; }
+    .footer-band { background-color: #b80000; padding: 35px 0; position: relative; }
+    .footer-content { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 80px; padding: 0 5%; }
+    .footer-left { flex: 0 0 35%; position: relative; margin-top: -100px; margin-bottom: -100px; z-index: 2; }
+    .footer-logo-img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(15px 20px 25px rgba(0, 0, 0, 0.7)); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .footer-left:hover .footer-logo-img { transform: translateY(-10px); }
+    .footer-right { flex: 1; text-align: center; z-index: 2; }
+    .footer-right h3 { font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 4px; margin-bottom: 15px; color: #fff; font-weight: 400; }
+    .footer-right .sub-title { font-size: 14px; color: #ffcccc; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase; line-height: 1.8; }
+    .footer-btn { display: inline-block; padding: 12px 35px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 3px; transition: 0.4s; text-transform: uppercase; margin-bottom: 20px; }
+    .footer-btn:hover { background-color: #fff; color: #b80000; } 
+    .footer-mail { display: block; color: #ffcccc; font-size: 13px; text-decoration: none; letter-spacing: 2px; transition: 0.3s; }
+    .footer-mail:hover { color: #fff; }
+    .copyright { margin-top: 100px; font-size: 12px; color: #555; letter-spacing: 1px; text-align: center; }
+
+    /* 右下角漂浮按鈕 */
+    .floating-btn { position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px; transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999; }
+    .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
+    a[href="cart.html"].floating-btn { bottom: 90px; }
+
+    /* 手機版排版 */
+    @media (max-width: 768px) {
+        .navbar { flex-direction: column; padding: 15px 10px; }
+        .brand-logo { font-size: 20px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;}
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .nav-links a { margin: 0 5px; font-size: 13px; }
+        
+        .page-header { margin: 40px 0 30px 0; }
+        .page-title { font-size: 30px; }
+        
+        .catalog-container { flex-direction: column; gap: 20px; }
+        .sidebar { width: 100%; position: relative; top: 0; }
+        .sidebar-title { display: none; } /* 手機版藏起大標題 */
+        
+        /* 魔法：手機版專用的橫向滑動選單 */
+        .category-list { display: flex; overflow-x: auto; padding-bottom: 10px; white-space: nowrap; border-bottom: 1px solid #333; }
+        .category-list li { margin-bottom: 0; margin-right: 15px; }
+        .category-btn { width: auto; padding: 5px 10px; font-size: 14px; }
+        .category-btn.active { border-left: none; border-bottom: 2px solid #ff3b3b; padding-left: 10px; }
+        .category-list::-webkit-scrollbar { display: none; }
+
+        .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
+        .product-img { height: 220px; }
+        .product-title { font-size: 14px; }
+
+        .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+        a[href="cart.html"].floating-btn { bottom: 65px; }
+        .overlap-footer { padding: 60px 0 30px 0; }
+        .footer-band { padding: 40px 0; }
+        .footer-content { flex-direction: column; gap: 40px; }
+        .footer-left { margin-top: -80px; margin-bottom: 0; width: 60%; } 
+    }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand-logo">DUMPLING ART｜官方網站</a> 
+        <div class="nav-links">
+            <a href="index.html">🏠 回首頁</a>
+            <a href="about.html" target="_blank" rel="noopener noreferrer">關於我</a>
+            <a href="cart.html">🛒 結帳去</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">The Collection</h1>
+        <div class="page-subtitle">全部藝術商品</div>
+    </div>
+
+    <div class="catalog-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-title" onclick="filterProducts('all', null)" title="點擊顯示全部商品">全部商品 All</div>
+            
+            <ul class="category-list">
+                <li class="mobile-all-btn" style="display: none;">
+                    <button class="category-btn active" onclick="filterProducts('all', this)">全部 All</button>
+                </li>
+                
+                <li><button class="category-btn" onclick="filterProducts('painting', this)">無框畫 Paintings</button></li>
+                <li><button class="category-btn" onclick="filterProducts('coaster', this)">陶瓷杯墊 Coasters</button></li>
+                <li><button class="category-btn" onclick="filterProducts('tapestry', this)">藝術掛布 Tapestries</button></li>
+                <li><button class="category-btn" onclick="filterProducts('sticker', this)">電腦貼紙 Stickers</button></li>
+                <li><button class="category-btn" onclick="filterProducts('mat', this)">硅藻土地墊 Mats</button></li>
+            </ul>
+        </aside>
+
+        <div class="products-grid" id="product-grid">
+            
+            <div class="product-card" data-category="painting">
+                <img src="images/hot_item2.jpg" alt="只給你抓" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 A：只給你抓</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p1', -1)">-</button>
+                            <input type="number" id="qty-p1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 A：只給你抓)', 450, 'qty-p1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="painting">
+                <img src="images/信徒與魔鬼.JPG" alt="信徒與魔鬼" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 B：信徒與魔鬼</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p2', -1)">-</button>
+                            <input type="number" id="qty-p2" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p2', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 B：信徒與魔鬼)', 450, 'qty-p2')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="painting">
+                <img src="images/item1.jpg" alt="紅唇誘惑" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">無框畫 Painting</div>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 C：紅唇誘惑</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-p3', -1)">-</button>
+                            <input type="number" id="qty-p3" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-p3', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 C：紅唇誘惑)', 450, 'qty-p3')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="coaster">
+                <img src="images/hot_item1.jpg" alt="深情撫摸" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">陶瓷杯墊 Coaster</div>
+                    <h3 class="product-title">🔥獨一無二🔥杯墊 - 款式 A：深情撫摸</h3>
+                    <p class="product-price">NT$ 169</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-c1', -1)">-</button>
+                            <input type="number" id="qty-c1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-c1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('🔥獨一無二🔥陶瓷杯墊 (款式 A：深情撫摸)', 169, 'qty-c1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="tapestry">
+                <img src="images/item3.jpg" alt="藝術線條" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">藝術掛布 Tapestry</div>
+                    <h3 class="product-title">情慾藝術🎨掛布 - 款式 A：藝術線條</h3>
+                    <p class="product-price">NT$ 480</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-t1', -1)">-</button>
+                            <input type="number" id="qty-t1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-t1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('情慾藝術🎨掛布 (款式 A：藝術線條)', 480, 'qty-t1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="sticker">
+                <img src="images/hot_item3.jpg" alt="綜合拼貼" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">電腦貼紙 Sticker</div>
+                    <h3 class="product-title">❤️創意電腦貼紙❤️ - 款式 A：綜合拼貼</h3>
+                    <p class="product-price">NT$ 20</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-s1', -1)">-</button>
+                            <input type="number" id="qty-s1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-s1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('❤️創意電腦貼紙❤️ (款式 A：綜合拼貼)', 20, 'qty-s1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="mat">
+                <img src="images/item4.jpg" alt="紅線誘惑" class="product-img">
+                <div class="product-info">
+                    <div class="product-category-tag">硅藻土地墊 Mat</div>
+                    <h3 class="product-title">💗每一步都是誘惑💗 - 款式 A：紅線誘惑</h3>
+                    <p class="product-price">NT$ 369</p>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-m1', -1)">-</button>
+                            <input type="number" id="qty-m1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-m1', 1)">+</button>
+                        </div>
+                        <button onclick="addDirectToCart('💗每一步都是誘惑💗地墊 (款式 A：紅線誘惑)', 369, 'qty-m1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer class="overlap-footer">
+        <div class="footer-band">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <img src="images/Dumpling art(白邊).png" alt="DUMPLING ART Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-right">
+                    <h3>DUMPLING ART</h3>
+                    <p class="sub-title">Sensual Art Brand<br>In Stores Now</p>
+                    <a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank" rel="noopener noreferrer" class="footer-btn">Follow Instagram</a>
+                    <a href="mailto:dumplinguu@gmail.com" class="footer-mail">dumplinguu@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">© 2026 DUMPLING ART®. All rights reserved.</div>
+    </footer>
+
+    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank" rel="noopener noreferrer">💬 點我私訊</a>
+    <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
+
+    <script>
+        // 1. 購物車數量顯示
+        function updateCartCount() {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var totalItems = 0;
+            for(var i = 0; i < cart.length; i++) {
+                totalItems += cart[i].quantity;
+            }
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+        window.onload = updateCartCount;
+
+        // 2. 數量加減器
+        function changeQty(inputId, amount) {
+            var input = document.getElementById(inputId);
+            var currentValue = parseInt(input.value);
+            if (currentValue + amount >= 1) { 
+                input.value = currentValue + amount;
+            }
+        }
+
+        // 3. 直接將指定款式加入購物車
+        function addDirectToCart(finalName, price, qtyId) {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var qty = parseInt(document.getElementById(qtyId).value);
+            
+            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            if (existingItem) {
+                existingItem.quantity += qty; 
+            } else {
+                cart.push({ name: finalName, price: price, quantity: qty });
+            }
+            
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount(); 
+            alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！"); 
+            document.getElementById(qtyId).value = 1;
+        }
+
+        // 4. 總覽頁分類篩選器
+        function filterProducts(category, btnElement) {
+            var cards = document.querySelectorAll('.product-card');
+            
+            for (var i = 0; i < cards.length; i++) {
+                if (category === 'all' || cards[i].getAttribute('data-category') === category) {
+                    cards[i].style.display = 'block';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+
+            var buttons = document.querySelectorAll('.category-btn');
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove('active');
+            }
+            
+            // 💡 如果點擊的是底下的細項分類，加上紅色 highlight；如果點擊的是頂部標題(btnElement 為 null)，則全部取消 highlight
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+        }
+
+        // 手機版優化：判斷如果是手機螢幕，把第一個隱藏的「全部 All」按鈕叫出來
+        if (window.innerWidth <= 768) {
+            document.querySelector('.mobile-all-btn').style.display = 'inline-block';
+        }
+    </script>
+
+</body>
+</html>

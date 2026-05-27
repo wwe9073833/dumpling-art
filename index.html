@@ -1,0 +1,597 @@
+<!DOCTYPE html> 
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUMPLING ART｜餃子的性藝術</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+    /* ================= 🎬 DUMPLING ART 電影片場版 CSS ================= */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif; margin: 0; padding: 0; background-color: #000; color: #fff; line-height: 1.8; padding-bottom: 60px; }
+
+    /* --- 1. 頂部導覽列 --- */
+    .navbar { background-color: rgba(184, 0, 0, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 1px solid #8a0000; }
+   
+	/* 🌟 導覽列品牌文字與 Logo 橫向排版 */
+    .brand-logo { 
+        display: flex; 
+        align-items: center; 
+        font-family: 'Helvetica Neue', Helvetica, Arial, 'Noto Sans TC', sans-serif; 
+        font-size: 20px; 
+        letter-spacing: 3px; /* 修改文字間距 */
+        
+        /* 🪄 關鍵魔法：拿掉粗體，改成 300 (極細體) 或 normal (正常) */
+        font-weight: 400; 
+        
+        color: #fff; 
+        text-decoration: none; 
+        text-transform: uppercase; 
+    }
+    .nav-logo-img {
+        height: 35px; 
+        width: auto;
+        object-fit: contain;
+        transform: scale(2.2); /* 把 Logo 放大 2.2 倍 */
+        
+        /* 🔪 殺手鐧：用「負邊距」把被透明空白擠過去的 Logo 硬拉回最左邊！ */
+        margin-left: -30px; 
+        /* 把右邊的文字推開，保持安全距離 */
+        margin-right: 20px; 
+    }
+    .nav-links a { text-decoration: none; color: #ffcccc; margin-left: 25px; font-size: 14px; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --- 2. 品牌門面首圖 --- */
+    @keyframes cinematicFadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    .hero { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('images/bg.jpg'); background-size: cover; background-position: center; height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 20px; position: relative; }
+    .hero::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36z8gAFWPAAnV1dX/5+fkM4ADRAADL7Q5555555555'); opacity: 0.2; pointer-events: none; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: 45px; margin-bottom: 15px; letter-spacing: 8px; font-weight: 400; text-transform: uppercase; opacity: 0; animation: cinematicFadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .hero p { font-size: 16px; font-weight: 300; letter-spacing: 2px; margin-bottom: 40px; color: #ccc; opacity: 0; animation: cinematicFadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards; }
+    .hero-btn { padding: 15px 40px; background-color: transparent; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; letter-spacing: 2px; border: 1px solid #fff; transition: 0.4s ease; text-transform: uppercase; opacity: 0; animation: cinematicFadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards; }
+    .hero-btn:hover { background-color: #ff3b3b; border-color: #ff3b3b; }
+
+    /* ================= 🆕 畫廊展示區 ================= */
+    .reveal-item { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal-item.active { opacity: 1; transform: translateY(0); }
+    .showcase-text-col.reveal-item { transition-delay: 0.2s; }
+    .editorial-showcase { background-color: #000; padding: 100px 5%; position: relative; }
+    .showcase-row { display: flex; align-items: center; max-width: 1100px; margin: 0 auto 120px auto; gap: 60px; }
+    .showcase-row:last-child { margin-bottom: 0; }
+    .showcase-row.reverse { flex-direction: row-reverse; }
+    .showcase-img-col { flex: 1; position: relative; z-index: 2; }
+    .showcase-img { width: 100%; height: auto; object-fit: cover; box-shadow: 15px 20px 50px rgba(0,0,0,0.9); border-radius: 4px; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .showcase-img-col:hover .showcase-img { transform: scale(1.03) rotate(-1deg); }
+    .showcase-text-col { flex: 1; position: relative; }
+    .showcase-text-bg { background-color: #0a0a0a; border: 1px solid #222; padding: 60px 40px; position: relative; }
+    .showcase-text-bg::before { content: ""; position: absolute; top: -10px; left: -10px; width: 60px; height: 60px; border-top: 2px solid #b80000; border-left: 2px solid #b80000; }
+    .showcase-row.reverse .showcase-text-bg::before { left: auto; right: -10px; border-left: none; border-right: 2px solid #b80000; }
+    .showcase-text-bg h3 { font-family: 'Playfair Display', serif; font-size: 34px; letter-spacing: 4px; color: #fff; margin: 0 0 10px 0; }
+    .showcase-text-bg .subtitle { color: #b80000; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; font-weight: bold; }
+    .showcase-text-bg .desc { color: #aaa; font-size: 15px; line-height: 1.8; letter-spacing: 1.5px; margin-bottom: 40px; font-weight: 300; }
+    .showcase-btn { display: inline-block; padding: 12px 35px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; transition: 0.4s; }
+    .showcase-btn:hover { background-color: #fff; color: #000; }
+
+    /* --- 3. 共同區塊標題設計 --- */
+    .section-title { text-align: center; margin: 100px 0 50px; font-size: 30px; font-weight: 300; letter-spacing: 8px; color: #fff; text-transform: uppercase; }
+
+    /* --- 4. 精品展示區 (加入款式下拉選單) --- */
+    .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 5%; max-width: 1200px; margin: 0 auto; }
+    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-img { 
+        width: 100%; 
+        height: 380px; 
+        object-fit: cover; 
+        /* 👉🏼 恢復 0.8秒 的極致絲滑變換，並保留換圖時的透明度漸變 */
+        transition: transform 0.8s ease, filter 0.8s ease, opacity 0.3s ease; 
+        /* 👉🏼 恢復 80% 濃烈灰階的暗黑電影濾鏡！ */
+        filter: grayscale(80%) contrast(120%); 
+    }
+    .product-card:hover .product-img { 
+        /* 👉🏼 恢復滑鼠摸到時的「微微放大」與「全彩覺醒」 */
+        transform: scale(1.05); 
+        filter: grayscale(0%) contrast(100%); 
+    }
+    .product-info { padding: 20px; text-align: left; } 
+    .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; }
+    .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    
+    /* 🌟 商品卡片專屬的款式選單 (紅白精品版) */
+    .card-style-select {
+        width: 100%; 
+        padding: 12px 20px; 
+        background-color: transparent; 
+        color: #fff; 
+        border: 1px solid #ff3b3b; /* 俐落的紅框 */
+        border-radius: 50px; /* 👉🏼 改成膠囊圓角，跟加入購物車按鈕統一 */
+        font-size: 13px; 
+        outline: none;
+        margin-bottom: 15px; 
+        cursor: pointer; 
+        letter-spacing: 1px;
+        
+        /* 🔪 關鍵魔法：殺掉蘋果/微軟預設的醜醜漸層按鈕 */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        /* 加上自訂的紅色小箭頭 */
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff3b3b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+        background-repeat: no-repeat; 
+        background-position: right 15px top 50%; 
+        background-size: 12px auto;
+        transition: 0.3s;
+    }
+    
+    /* 滑鼠摸到時背景稍微亮一點點的紅色 */
+    .card-style-select:hover {
+        background-color: rgba(255, 59, 59, 0.15);
+    }
+
+    /* 點開後的選項改成白底紅字，呼應「紅色白色呈現」 */
+    .card-style-select option {
+        background-color: #fff;
+        color: #b80000;
+        font-weight: bold;
+    }
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
+    .btn-myship { 
+        display: block; /* 確保連結按鈕變成方塊 */
+        box-sizing: border-box; /* 👉🏼 關鍵魔法：強迫內距算在 100% 裡面，絕對不撐爆！ */
+        width: 100%; 
+        background-color: transparent; 
+        color: white; 
+        border: 1px solid #555; 
+        border-radius: 50px; 
+        padding: 12px; 
+        letter-spacing: 1px; 
+        transition: 0.3s; 
+        text-align: center; 
+        text-decoration: none; 
+        font-weight: bold; 
+        cursor: pointer; 
+        font-family: inherit; 
+    }
+    .btn-myship:hover { 
+        background-color: #ff3b3b; 
+        border-color: #ff3b3b; 
+    }
+    .quantity-control { display: flex; justify-content: center; align-items: center; margin: 0 auto; border: 1px solid #444; border-radius: 50px; width: 100%; overflow: hidden; }
+    .qty-btn { background-color: transparent; border: none; padding: 8px 15px; cursor: pointer; font-size: 18px; font-weight: 300; transition: 0.2s; color: #888; }
+    .qty-btn:hover { color: #ff3b3b; }
+    .qty-input { width: 40px; text-align: center; background-color: transparent; border: none; padding: 5px 0; font-size: 16px; color: #fff; font-weight: bold; outline: none; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
+    /* --- 5. 顧客好評區塊 --- */
+    .reviews-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 0 5%; max-width: 1000px; margin: 0 auto; }
+    .review-card { background: transparent; border-radius: 12px; padding: 25px; border: 1px solid #222; transition: 0.3s ease; }
+    .review-card:hover { border-color: #555; }
+    .review-stars { color: #ff3b3b; font-size: 16px; margin-bottom: 10px; } 
+    .review-text { font-size: 14px; color: #ccc; margin-bottom: 15px; font-style: italic; font-weight: 300; }
+    .review-author { font-size: 13px; font-weight: 500; color: #fff; text-align: right; letter-spacing: 1px; }
+
+    /* --- 6. 購物須知 --- */
+    .guide-container { max-width: 800px; margin: 60px auto; padding: 50px; background: transparent; border-radius: 12px; border: 1px solid #222; }
+    .guide-box { background: #111; padding: 20px; border-left: 4px solid #ff3b3b; margin-bottom: 20px; } 
+    .bank-info { font-size: 15px; font-weight: 500; color: #fff; letter-spacing: 2px; margin: 15px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    /* --- 7. 網站底部 (Footer) --- */
+    .overlap-footer { position: relative; background-color: #000; padding: 90px 0 30px 0; margin-top: 40px; }
+    .footer-band { background-color: #b80000; padding: 35px 0; position: relative; }
+    .footer-content { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 80px; padding: 0 5%; }
+    .footer-left { flex: 0 0 35%; position: relative; margin-top: -100px; margin-bottom: -100px; z-index: 2; }
+    .footer-logo-img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(15px 20px 25px rgba(0, 0, 0, 0.7)); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .footer-left:hover .footer-logo-img { transform: translateY(-10px); }
+    .footer-right { flex: 1; text-align: center; z-index: 2; }
+    .footer-right h3 { font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 4px; margin-bottom: 15px; color: #fff; font-weight: 400; }
+    .footer-right .sub-title { font-size: 14px; color: #ffcccc; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase; line-height: 1.8; }
+    .footer-btn { display: inline-block; padding: 12px 35px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 3px; transition: 0.4s; text-transform: uppercase; margin-bottom: 20px; }
+    .footer-btn:hover { background-color: #fff; color: #b80000; } 
+    .footer-mail { display: block; color: #ffcccc; font-size: 13px; text-decoration: none; letter-spacing: 2px; transition: 0.3s; }
+    .footer-mail:hover { color: #fff; }
+    .copyright { margin-top: 100px; font-size: 12px; color: #555; letter-spacing: 1px; text-align: center; }
+
+    /* 右下角漂浮按鈕 */
+    .floating-btn { position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px; transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999; }
+    .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
+    a[href="cart.html"].floating-btn { bottom: 90px; }
+        
+    /* 手機版 */
+    @media (max-width: 768px) {
+        .navbar { flex-direction: column; padding: 15px 10px; }
+        .brand-logo { 
+            font-size: 16px; 
+            margin-bottom: 15px; 
+            justify-content: center; /* 保持手機版置中 */
+            letter-spacing: 2px;
+        }
+        .nav-logo-img { 
+            height: 28px; 
+            transform: scale(2); 
+            margin-left: -5px; /* 手機版也往左拉一點點抵消空白 */
+            margin-right: 15px;
+        }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .nav-links a { margin: 0 5px; font-size: 13px; }
+        .hero { height: auto; padding: 80px 15px; }
+        .hero h1 { font-size: 28px; line-height: 1.3; }
+        .hero p { font-size: 14px; line-height: 1.8; text-align: left; margin-bottom: 30px; }
+        .editorial-showcase { padding: 60px 20px; }
+        .showcase-row, .showcase-row.reverse { flex-direction: column; gap: 40px; margin-bottom: 80px; }
+        .showcase-text-bg { padding: 40px 20px; text-align: center; }
+        .showcase-text-bg::before { display: none; } 
+        .section-title { font-size: 26px; margin: 60px 0 30px; letter-spacing: 4px; }
+        .guide-container { padding: 30px; margin: 30px 15px; }
+        .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
+        a[href="cart.html"].floating-btn { bottom: 65px; }
+        .overlap-footer { padding: 60px 0 30px 0; }
+        .footer-band { padding: 40px 0; }
+        .footer-content { flex-direction: column; gap: 40px; }
+        .footer-left { margin-top: -80px; margin-bottom: 0; width: 60%; } 
+    }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand-logo">
+            <img src="images/DUMPLING ART.png" alt="DUMPLING ART Logo" class="nav-logo-img">
+            DUMPLING ART｜OFFICIAL SITE
+        </a>
+        <div class="nav-links">
+            <a href="about.html" target="_blank">關於我</a>
+            <a href="#artworks">熱銷商品</a>
+            <a href="products.html" target="_blank">商品總覽</a>
+            <a href="#reviews">顧客好評</a>
+            <a href="#guide">購物須知</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>DUMPLING ART｜一個情慾藝術品牌</h1> 
+        <p>我是餃子🥟不會畫畫，畫風甚至不乖，但你一定會記得。<br>
+        喜歡騷氣的「藝術」、擅長粗暴式的「溫柔」，用顏色擁抱「愛與性」。<br>
+        敢於畫出「你不敢說的誠實」、收藏「你偷偷壓抑的慾望」。<br>
+        渴望與你分享那份赤裸的真誠。</p>
+        <a href="#artworks" class="hero-btn">立即選購</a>
+    </header>
+
+    <section class="editorial-showcase">
+        <div class="showcase-row">
+            <div class="showcase-img-col">
+                <img src="images/只給你抓.png" alt="精選畫作展示" class="showcase-img">
+            </div>
+            <div class="showcase-text-col">
+                <div class="showcase-text-bg">
+                    <h3>The Signature</h3>
+                    <p class="subtitle">Sensual Art Collection</p>
+                    <p class="desc">不是對誰都這樣。<br>身體、慾望、反應、放鬆的一面，都是為你保留。<br>#專屬感就是最有魅力的地方</p>
+                    <a href="#artworks" class="showcase-btn">View Artwork</a>
+                </div>
+            </div>
+        </div>
+        <div class="showcase-row reverse">
+            <div class="showcase-img-col">
+                <img src="images/信徒與魔鬼.JPG" alt="經典畫作展示" class="showcase-img">
+            </div>
+            <div class="showcase-text-col">
+                <div class="showcase-text-bg">
+                    <h3>Deep Desires</h3>
+                    <p class="subtitle">Limited Edition</p>
+                    <p class="desc">#高級博弈<br>關於這場遊戲<br>妳抓著我的頭，想看穿我在想什麼？<br>別白費力氣。<br>在我的世界裡，心臟只是維持供血的器官，<br>而大腦，才是這場親密遊戲的主宰者。</p>
+                    <a href="#artworks" class="showcase-btn">Discover More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="artworks">
+        <h2 class="section-title">🔥 熱銷商品 🔥</h2>
+        <div class="products-container">
+            
+            <div class="product-card">
+                <img id="img-hot-1" src="images/hot_item2.jpg" alt="情慾無框畫" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">🫦情慾🫦無框畫</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <select id="style-hot-1" class="card-style-select" onchange="changeCardImage('img-hot-1', this)">
+                        <option value="hot_item2.jpg">款式 A：只給你抓</option>
+                        <option value="信徒與魔鬼.JPG">款式 B：信徒與魔鬼</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-1', -1)">-</button>
+                            <input type="number" id="qty-hot-1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-1', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('🫦情慾🫦無框畫', 450, 'qty-hot-1', 'style-hot-1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img id="img-hot-2" src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
+                    <p class="product-price">NT$ 169</p>
+                    <select id="style-hot-2" class="card-style-select" onchange="changeCardImage('img-hot-2', this)">
+                        <option value="hot_item1.jpg">款式 A：深情撫摸</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-2', -1)">-</button>
+                            <input type="number" id="qty-hot-2" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-2', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('🔥獨一無二🔥陶瓷杯墊', 169, 'qty-hot-2', 'style-hot-2')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img id="img-hot-3" src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">❤️創意電腦貼紙❤️</h3>
+                    <p class="product-price">NT$ 20</p>
+                    <select id="style-hot-3" class="card-style-select" onchange="changeCardImage('img-hot-3', this)">
+                        <option value="hot_item3.jpg">款式 A：綜合拼貼</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-3', -1)">-</button>
+                            <input type="number" id="qty-hot-3" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-hot-3', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('❤️創意電腦貼紙❤️', 20, 'qty-hot-3', 'style-hot-3')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="merch">
+        <h2 class="section-title">❗️家裡擺飾不可缺少❗️</h2>
+        <div class="products-container">
+            
+            <div class="product-card">
+                <img id="img-merch-1" src="images/item1.jpg" alt="情慾無框畫" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">🫦情慾🫦無框畫</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <select id="style-merch-1" class="card-style-select" onchange="changeCardImage('img-merch-1', this)">
+                        <option value="item1.jpg">款式 A：紅唇誘惑</option>
+                        <option value="hot_item2.jpg">款式 B：只給你抓</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-1', -1)">-</button>
+                            <input type="number" id="qty-merch-1" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-1', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('🫦情慾🫦無框畫', 450, 'qty-merch-1', 'style-merch-1')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img id="img-merch-2" src="images/item3.jpg" alt="掛布" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">情慾藝術🎨掛布</h3>
+                    <p class="product-price">NT$ 480</p>
+                    <select id="style-merch-2" class="card-style-select" onchange="changeCardImage('img-merch-2', this)">
+                        <option value="item3.jpg">款式 A：藝術線條</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-2', -1)">-</button>
+                            <input type="number" id="qty-merch-2" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-2', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('情慾藝術🎨掛布', 480, 'qty-merch-2', 'style-merch-2')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img id="img-merch-3" src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
+                    <p class="product-price">NT$ 369</p>
+                    <select id="style-merch-3" class="card-style-select" onchange="changeCardImage('img-merch-3', this)">
+                        <option value="item4.jpg">款式 A：紅線誘惑</option>
+                    </select>
+                    <div class="action-buttons">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-3', -1)">-</button>
+                            <input type="number" id="qty-merch-3" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="changeQty('qty-merch-3', 1)">+</button>
+                        </div>
+                        <button onclick="addCardToCart('💗每一步都是誘惑💗地墊', 369, 'qty-merch-3', 'style-merch-3')" class="btn-myship">🛒 ADD TO BAG</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="all-products-preview">
+        <h2 class="section-title">✨ 全部商品 ✨</h2>
+        <div class="products-container">
+            <div class="product-card">
+                <img src="images/hot_item2.jpg" alt="無框畫預覽" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">全系列｜情慾無框畫</h3>
+                    <p class="product-price">NT$ 450</p>
+                    <div class="action-buttons">
+                        <a href="products.html" class="btn btn-myship">👀 所有無框畫</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="images/item3.jpg" alt="掛布預覽" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">全系列｜藝術掛布</h3>
+                    <p class="product-price">NT$ 480</p>
+                    <div class="action-buttons">
+                        <a href="products.html" class="btn btn-myship">👀 所有掛布</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="images/hot_item1.jpg" alt="杯墊預覽" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">全系列｜陶瓷杯墊</h3>
+                    <p class="product-price">NT$ 169</p>
+                    <div class="action-buttons">
+                        <a href="products.html" class="btn btn-myship">👀 所有杯墊</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="products.html" style="display: inline-block; box-sizing: border-box; padding: 10px 40px; background-color: #ff3b3b; color: white; border-radius: 50px; font-weight: bold; text-decoration: none; letter-spacing: 3px; font-size: 16px; transition: 0.4s; box-shadow: 0 10px 20px rgba(255,59,59,0.3);">商品總覽 ➡️</a>
+        </div>
+    </section>
+
+    <section id="reviews">
+        <h2 class="section-title">💌 來自粉濕們的真誠回饋</h2>
+        <div class="reviews-container">
+            <div class="review-card">
+              <div class="review-stars">★★★★★</div>
+                <p class="review-text">「畫風真的超級喜歡！大膽又充滿張力，掛在房間每天看著心情都很好，實體質感好到哭😭 期待餃子更多作品。」</p>
+                <div class="review-author">— 匿名</div>
+            </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+                <p class="review-text">「已經跟隨餃子好久，每一次出新款的無框畫都一定要下單收藏，家裡一大面牆都獻給餃子了！」</p>
+                <div class="review-author">— 忠實粉絲</div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">「餃子的文創商品很平價，東西質感也不錯，懷疑到底有沒有在賺錢🥹期待更多商品和創作。」</p>
+                <div class="review-author">— 買家</div>
+          </div>
+        </div>
+    </section>
+
+    <section id="guide">
+        <h2 class="section-title">購物須知</h2>
+        <div class="guide-container">
+            <h3>📦 購買方式</h3>
+            <p>請選擇最適合您的結帳管道：</p>
+            <div class="guide-box">
+                <strong>方法 A：7-11 賣貨便 (推薦)</strong>
+                <p>點擊商品下方的「賣貨便下單」按鈕，即可享受 7-11 超商取貨付款服務，運費優惠且安全有保障。</p>
+            </div>
+            <div class="guide-box">
+                <strong>方法 B：銀行轉帳 + 官方LINE 寄件</strong>
+                <p>若您希望直接轉帳匯款，請將款項匯至下方帳號。<br>
+                    匯款完成後，請務必點擊右下角的「💬 點我私訊」漂浮按鈕，<br>
+                    傳送您的「帳號末五碼」、「姓名」、「電話」及「7-11門市」給我們對帳喔！</p>
+                <div class="bank-info">
+                    🏦 銀行代碼：(812) 台新銀行<br>
+                    💳 帳號：2888-10-0431522-2
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="overlap-footer">
+        <div class="footer-band">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <img src="images/Dumpling art(白邊).png" alt="DUMPLING ART Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-right">
+                    <h3>DUMPLING ART</h3>
+                    <p class="sub-title">Sensual Art Brand<br>In Stores Now</p>
+                    <a href="https://www.instagram.com/dumpling_arrrt_/" target="_blank" class="footer-btn">Follow Instagram</a>
+                    <a href="mailto:dumplinguu@gmail.com" class="footer-mail">dumplinguu@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">© 2026 DUMPLING ART®. All rights reserved.</div>
+    </footer>
+
+    <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank">💬 點我私訊</a>
+    <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
+
+    <script>
+        // 💡 全部改為 Dreamweaver 保證不報錯的 ES5 語法
+        function updateCartCount() {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var totalItems = 0;
+            cart.forEach(function(item) { totalItems += item.quantity; });
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+
+        function changeQty(inputId, amount) {
+            var input = document.getElementById(inputId);
+            var currentValue = parseInt(input.value);
+            if (currentValue + amount >= 1) { 
+                input.value = currentValue + amount;
+            }
+        }
+
+        // 🌟 卡片圖片跟著選單切換
+        function changeCardImage(imgId, selectElement) {
+            var img = document.getElementById(imgId);
+            img.style.opacity = 0.5; 
+            setTimeout(function() {
+                img.src = 'images/' + selectElement.value; 
+                img.style.opacity = 1; 
+            }, 150);
+        }
+
+        // 🌟 帶有「款式」的進階版加入購物車功能
+        function addCardToCart(baseName, price, qtyId, selectId) {
+            var cart = JSON.parse(localStorage.getItem('dumpling_cart')) || [];
+            var qty = parseInt(document.getElementById(qtyId).value);
+            
+            var selectEl = document.getElementById(selectId);
+            var styleText = selectEl.options[selectEl.selectedIndex].text;
+            
+            var finalName = baseName + " (" + styleText + ")";
+            
+            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            if (existingItem) {
+                existingItem.quantity += qty; 
+            } else {
+                cart.push({ name: finalName, price: price, quantity: qty });
+            }
+            
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount(); 
+            alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！"); 
+            document.getElementById(qtyId).value = 1;
+        }
+
+        // 畫廊滾動魔法
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal-item');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight; 
+                var elementTop = reveals[i].getBoundingClientRect().top; 
+                var elementVisible = 100; 
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        
+        window.addEventListener('scroll', reveal);
+        window.onload = function() {
+            updateCartCount();
+            reveal();
+        };
+    </script>
+
+</body>
+</html>
