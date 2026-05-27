@@ -176,6 +176,80 @@
     .showcase-voice-line:nth-child(2) { animation-delay: 4s; }
     .showcase-voice-line:nth-child(3) { animation-delay: 8s; }
 
+    /* --- 2.5 委託創作秘密入口 --- */
+    .commission-entry {
+        position: relative;
+        padding: 84px 5% 46px;
+        background:
+            radial-gradient(circle at 50% 0%, rgba(184, 0, 0, 0.14), transparent 52%),
+            linear-gradient(180deg, #000 0%, #070707 100%);
+        overflow: hidden;
+    }
+    .commission-entry::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.16) 18%, rgba(0, 0, 0, 0.16) 82%, rgba(0, 0, 0, 0.92) 100%);
+        pointer-events: none;
+    }
+    .commission-entry-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 42px 44px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(10, 10, 10, 0.84), rgba(0, 0, 0, 0.94));
+        box-shadow: 0 28px 64px rgba(0, 0, 0, 0.42);
+        text-align: center;
+    }
+    .commission-kicker {
+        display: inline-block;
+        margin-bottom: 18px;
+        color: #ffb4b4;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+    .commission-title {
+        margin: 0 0 16px;
+        font-family: 'Playfair Display', serif;
+        font-size: 36px;
+        font-weight: 400;
+        letter-spacing: 4px;
+        color: #fff;
+        text-transform: uppercase;
+    }
+    .commission-copy {
+        max-width: 620px;
+        margin: 0 auto 28px;
+        color: #cfcfcf;
+        font-size: 15px;
+        line-height: 2;
+        letter-spacing: 1.6px;
+        font-weight: 300;
+    }
+    .commission-btn {
+        display: inline-block;
+        padding: 14px 34px;
+        border: 1px solid rgba(255, 255, 255, 0.54);
+        border-radius: 999px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        transition: 0.35s ease;
+    }
+    .commission-btn:hover {
+        background-color: #ff3b3b;
+        border-color: #ff3b3b;
+        color: #fff;
+    }
+
     /* --- 3. 共同區塊標題設計 --- */
     .section-title { text-align: center; margin: 100px 0 50px; font-size: 30px; font-weight: 300; letter-spacing: 8px; color: #fff; text-transform: uppercase; }
 
@@ -338,6 +412,12 @@
             letter-spacing: 1px;
             line-height: 1.8;
         }
+        .commission-entry { padding: 66px 15px 28px; }
+        .commission-entry-inner { padding: 32px 22px; border-radius: 18px; }
+        .commission-kicker { margin-bottom: 14px; letter-spacing: 3px; }
+        .commission-title { font-size: 28px; letter-spacing: 2px; line-height: 1.3; }
+        .commission-copy { margin-bottom: 24px; font-size: 14px; letter-spacing: 1px; line-height: 1.9; }
+        .commission-btn { width: 100%; max-width: 280px; padding: 13px 18px; }
         .section-title { font-size: 26px; margin: 60px 0 30px; letter-spacing: 4px; }
         .guide-container { padding: 30px; margin: 30px 15px; }
         .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
@@ -411,6 +491,15 @@
                 <p class="showcase-voice-line">有些親密，只適合被收藏。</p>
                 <p class="showcase-voice-line">你偷偷壓抑的，正在慢慢流動。</p>
             </div>
+        </div>
+    </section>
+
+    <section class="commission-entry">
+        <div class="commission-entry-inner">
+            <span class="commission-kicker">CUSTOM DESIRE</span>
+            <h2 class="commission-title">畫出你的秘密</h2>
+            <p class="commission-copy">把不敢說的慾望留下來。<br>如果你心裡有一幅還沒被看見的畫，這裡是它最安靜的入口。</p>
+            <a href="https://wwe9073833.github.io/commission-form/" target="_blank" rel="noopener noreferrer" class="commission-btn">進入委託創作</a>
         </div>
     </section>
 
