@@ -130,7 +130,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(78%) contrast(112%) brightness(0.8);
+        filter: grayscale(34%) contrast(108%) brightness(0.92);
         transform: scale(1.03);
         transition: transform 0.45s ease, filter 0.45s ease;
     }
@@ -140,17 +140,17 @@
             box-shadow: 0 28px 62px rgba(0, 0, 0, 0.56);
         }
         .showcase-frame:hover .showcase-img {
-            filter: grayscale(68%) contrast(108%) brightness(0.88);
-            transform: scale(1.05);
+            filter: grayscale(22%) contrast(106%) brightness(0.97);
+            transform: scale(1.04);
         }
     }
     .showcase-voice {
         position: absolute;
         left: 50%;
-        bottom: -20px;
+        bottom: -96px;
         transform: translateX(-50%);
-        width: min(680px, calc(100% - 48px));
-        min-height: 96px;
+        width: min(560px, calc(100% - 80px));
+        min-height: 72px;
         z-index: 3;
         text-align: center;
     }
@@ -161,16 +161,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 26px 28px;
-        color: rgba(255, 255, 255, 0.92);
+        padding: 18px 16px;
+        color: rgba(255, 255, 255, 0.76);
         font-family: 'Playfair Display', serif;
-        font-size: 28px;
-        letter-spacing: 2px;
-        line-height: 1.7;
-        background: rgba(0, 0, 0, 0.34);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(184, 0, 0, 0.35);
-        backdrop-filter: blur(10px);
+        font-size: 19px;
+        letter-spacing: 1.5px;
+        line-height: 1.9;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
         opacity: 0;
         animation: showcaseVoiceFade 12s ease-in-out infinite;
     }
@@ -329,15 +328,15 @@
         .showcase-frame-wide,
         .showcase-frame-square { width: 188px; height: 188px; }
         .showcase-voice {
-            bottom: -12px;
-            width: calc(100% - 28px);
-            min-height: 88px;
+            bottom: -82px;
+            width: calc(100% - 52px);
+            min-height: 64px;
         }
         .showcase-voice-line {
-            padding: 20px 18px;
-            font-size: 20px;
+            padding: 14px 8px;
+            font-size: 15px;
             letter-spacing: 1px;
-            line-height: 1.6;
+            line-height: 1.8;
         }
         .section-title { font-size: 26px; margin: 60px 0 30px; letter-spacing: 4px; }
         .guide-container { padding: 30px; margin: 30px 15px; }
