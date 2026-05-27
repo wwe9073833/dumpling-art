@@ -141,9 +141,9 @@
             <div class="style-selector-group">
                 <label class="style-label">選擇畫作款式 Selection</label>
                 <select id="style-selector" class="style-select" onchange="changeProductStyle()">
-                    <option value="hot_item2.jpg">款式 A：只給你抓 (經典款)</option>
-                    <option value="信徒與魔鬼.JPG">款式 B：信徒與魔鬼</option>
-                    <option value="item1.jpg">款式 C：紅唇誘惑</option>
+                    <option value="images/hot_item2.jpg" data-price="450">款式 A：只給你抓 (經典款)</option>
+                    <option value="images/信徒與魔鬼.JPG" data-price="450">款式 B：信徒與魔鬼</option>
+                    <option value="images/item1.jpg" data-price="450">款式 C：紅唇誘惑</option>
                 </select>
             </div>
 
@@ -162,18 +162,52 @@
     <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
 
     <script>
+        const PAINTING_PRODUCT_ID = "painting";
+        const PAINTING_API_URL = "https://script.google.com/macros/s/AKfycbz_BGaTE11V_ixmxBIdqWcWts2EydUm7z61OrFovgB9x4XkWYXzO7WXd3GCbiejs3Ll7w/exec?product_id=painting";
+
         // --- 1. 款式與圖片連動魔法 ---
-        function changeProductStyle() {
-            let selector = document.getElementById("style-selector");
-            let selectedImage = selector.value; // 抓取選單裡的 value (圖片檔名)
+        function resolveImageUrl(imageUrl) {
+            if (!imageUrl) {
+                return "";
+            }
+
+            if (imageUrl.indexOf("http://") === 0 || imageUrl.indexOf("https://") === 0) {
+                return imageUrl;
+            }
+
+            if (imageUrl.indexOf("images/") === 0) {
+                return imageUrl;
+            }
+
+            return "images/" + imageUrl;
+        }
+
+        function applyVariantToView(option) {
+            if (!option) {
+                return;
+            }
+
             let mainImageEl = document.getElementById("main-product-image");
-            
-            // 讓圖片有微淡出的切換效果
+            let resolvedImageUrl = resolveImageUrl(option.value);
+            let nextPrice = parseInt(option.getAttribute("data-price"), 10);
+
             mainImageEl.style.opacity = 0.5;
             setTimeout(() => {
-                mainImageEl.src = "images/" + selectedImage; // 組合路徑切換圖片
+                mainImageEl.src = resolvedImageUrl;
                 mainImageEl.style.opacity = 1;
             }, 150);
+
+            if (!isNaN(nextPrice)) {
+                let priceEl = document.getElementById("prod-price");
+                priceEl.setAttribute("data-price", nextPrice);
+                priceEl.innerText = "NT$ " + nextPrice;
+            }
+        }
+
+        function changeProductStyle() {
+            let selector = document.getElementById("style-selector");
+            let selectedOption = selector.options[selector.selectedIndex];
+            applyVariantToView(selectedOption);
         }
 
         // --- 2. 數量控制 ---
@@ -202,6 +236,48 @@
 
             localStorage.removeItem('dumpling_cart');
             return [];
+        }
+
+        function buildVariantOption(variant) {
+            let option = document.createElement("option");
+            option.value = resolveImageUrl(variant.image_url);
+            option.text = variant.variant_name;
+            option.setAttribute("data-price", variant.price);
+            return option;
+        }
+
+        function renderPaintingVariants(variants) {
+            if (!Array.isArray(variants) || variants.length === 0) {
+                return;
+            }
+
+            let selector = document.getElementById("style-selector");
+            selector.innerHTML = "";
+
+            variants.forEach(variant => {
+                selector.appendChild(buildVariantOption(variant));
+            });
+
+            selector.selectedIndex = 0;
+            applyVariantToView(selector.options[0]);
+        }
+
+        async function loadPaintingVariants() {
+            try {
+                let response = await fetch(PAINTING_API_URL, { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch painting variants");
+                }
+
+                let payload = await response.json();
+                if (!payload || payload.ok !== true || payload.product_id !== PAINTING_PRODUCT_ID) {
+                    throw new Error("Unexpected painting variants payload");
+                }
+
+                renderPaintingVariants(payload.variants);
+            } catch (error) {
+                // API 失敗時保留目前 HTML 內建款式，避免商品頁失效
+            }
         }
 
         // --- 3. 加入購物車 (包含款式名稱！) ---
@@ -242,7 +318,11 @@
             document.getElementById('cart-count').innerText = totalItems;
         }
 
-        window.onload = updateCartCount;
+        window.onload = function() {
+            updateCartCount();
+            changeProductStyle();
+            loadPaintingVariants();
+        };
     </script>
 
 </body>
