@@ -335,6 +335,13 @@
             let finalProductName = baseName + " (" + styleText + ")";
             
             let existingItem = cart.find(item => item.name === finalProductName);
+            let existingQty = existingItem ? existingItem.quantity : 0;
+
+            if (existingQty + qty > currentStock) {
+                alert("目前庫存不足，購物車內已有 " + existingQty + " 件，這次最多還能加入 " + Math.max(currentStock - existingQty, 0) + " 件");
+                return;
+            }
+
             if (existingItem) {
                 existingItem.quantity += qty; 
             } else {

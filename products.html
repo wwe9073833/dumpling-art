@@ -162,11 +162,11 @@
 
         <div class="products-grid" id="product-grid">
             
-            <div class="product-card" data-category="painting">
-                <img src="images/hot_item2.jpg" alt="只給你抓" class="product-img">
+            <div class="product-card painting-fallback-card" data-category="painting">
+                <img src="images/解鎖加入會員.jpg" alt="解鎖加入會員" class="product-img">
                 <div class="product-info">
                     <div class="product-category-tag">無框畫 Painting</div>
-                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 A：只給你抓</h3>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 A：解鎖加入會員</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
                         <div class="quantity-control">
@@ -174,16 +174,16 @@
                             <input type="number" id="qty-p1" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-p1', 1)">+</button>
                         </div>
-                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 A：只給你抓)', 450, 'qty-p1')" class="btn-myship">🛒 ADD TO BAG</button>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 A：解鎖加入會員)', 450, 'qty-p1')" class="btn-myship">🛒 ADD TO BAG</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card" data-category="painting">
-                <img src="images/信徒與魔鬼.JPG" alt="信徒與魔鬼" class="product-img">
+            <div class="product-card painting-fallback-card" data-category="painting">
+                <img src="images/被掌控的安穩.jpg" alt="被掌控的安穩" class="product-img">
                 <div class="product-info">
                     <div class="product-category-tag">無框畫 Painting</div>
-                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 B：信徒與魔鬼</h3>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 B：被掌控的安穩</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
                         <div class="quantity-control">
@@ -191,16 +191,16 @@
                             <input type="number" id="qty-p2" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-p2', 1)">+</button>
                         </div>
-                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 B：信徒與魔鬼)', 450, 'qty-p2')" class="btn-myship">🛒 ADD TO BAG</button>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 B：被掌控的安穩)', 450, 'qty-p2')" class="btn-myship">🛒 ADD TO BAG</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card" data-category="painting">
-                <img src="images/item1.jpg" alt="紅唇誘惑" class="product-img">
+            <div class="product-card painting-fallback-card" data-category="painting">
+                <img src="images/衝突後的親密.jpg" alt="衝突後的親密" class="product-img">
                 <div class="product-info">
                     <div class="product-category-tag">無框畫 Painting</div>
-                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 C：紅唇誘惑</h3>
+                    <h3 class="product-title">🫦情慾🫦無框畫 - 款式 C：衝突後的親密</h3>
                     <p class="product-price">NT$ 450</p>
                     <div class="action-buttons">
                         <div class="quantity-control">
@@ -208,7 +208,7 @@
                             <input type="number" id="qty-p3" class="qty-input" value="1" min="1">
                             <button class="qty-btn" onclick="changeQty('qty-p3', 1)">+</button>
                         </div>
-                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 C：紅唇誘惑)', 450, 'qty-p3')" class="btn-myship">🛒 ADD TO BAG</button>
+                        <button onclick="addDirectToCart('🫦情慾🫦無框畫 (款式 C：衝突後的親密)', 450, 'qty-p3')" class="btn-myship">🛒 ADD TO BAG</button>
                     </div>
                 </div>
             </div>
@@ -307,6 +307,9 @@
 
     <script>
         // 1. 購物車數量顯示
+        var PAINTING_PRODUCT_ID = "painting";
+        var PAINTING_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?product_id=painting";
+
         function safeGetCart() {
             var rawCart = localStorage.getItem('dumpling_cart');
             if (!rawCart) {
@@ -326,6 +329,31 @@
             return [];
         }
 
+        function resolveImageUrl(imageUrl) {
+            if (!imageUrl) {
+                return "";
+            }
+
+            if (imageUrl.indexOf("http://") === 0 || imageUrl.indexOf("https://") === 0) {
+                return imageUrl;
+            }
+
+            if (imageUrl.indexOf("images/") === 0) {
+                return imageUrl;
+            }
+
+            return "images/" + imageUrl;
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
         function updateCartCount() {
             var cart = safeGetCart();
             var totalItems = 0;
@@ -334,7 +362,6 @@
             }
             document.getElementById('cart-count').innerText = totalItems;
         }
-        window.onload = updateCartCount;
 
         // 2. 數量加減器
         function changeQty(inputId, amount) {
@@ -361,6 +388,116 @@
             updateCartCount(); 
             alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！"); 
             document.getElementById(qtyId).value = 1;
+        }
+
+        function addPaintingDirectToCart(buttonEl, qtyId) {
+            var cart = safeGetCart();
+            var qty = parseInt(document.getElementById(qtyId).value, 10);
+            var finalName = buttonEl.getAttribute("data-final-name");
+            var price = parseInt(buttonEl.getAttribute("data-price"), 10);
+            var stock = parseInt(buttonEl.getAttribute("data-stock"), 10);
+            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            var existingQty = existingItem ? existingItem.quantity : 0;
+
+            if (!qty || qty < 1) {
+                qty = 1;
+            }
+
+            if (isNaN(stock) || stock <= 0) {
+                alert("目前這款已售完，暫時無法加入購物車");
+                return;
+            }
+
+            if (existingQty + qty > stock) {
+                alert("目前庫存不足，購物車內已有 " + existingQty + " 件，這次最多還能加入 " + Math.max(stock - existingQty, 0) + " 件");
+                return;
+            }
+
+            if (existingItem) {
+                existingItem.quantity += qty;
+            } else {
+                cart.push({ name: finalName, price: price, quantity: qty });
+            }
+
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount();
+            alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！");
+            document.getElementById(qtyId).value = 1;
+        }
+
+        function buildPaintingProductCardHtml(variant, index) {
+            var variantName = String(variant.variant_name || "").trim();
+            var finalName = "🫦情慾🫦無框畫 (" + variantName + ")";
+            var qtyId = "qty-painting-" + index;
+            var price = parseInt(variant.price, 10) || 0;
+            var stock = parseInt(variant.stock, 10) || 0;
+
+            return '' +
+                '<div class="product-card painting-api-card" data-category="painting">' +
+                    '<img src="' + escapeHtml(resolveImageUrl(variant.image_url)) + '" alt="' + escapeHtml(variantName) + '" class="product-img">' +
+                    '<div class="product-info">' +
+                        '<div class="product-category-tag">無框畫 Painting</div>' +
+                        '<h3 class="product-title">🫦情慾🫦無框畫 - ' + escapeHtml(variantName) + '</h3>' +
+                        '<p class="product-price">NT$ ' + price + '</p>' +
+                        '<div class="action-buttons">' +
+                            '<div class="quantity-control">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', -1)">-</button>' +
+                                '<input type="number" id="' + qtyId + '" class="qty-input" value="1" min="1">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', 1)">+</button>' +
+                            '</div>' +
+                            '<button onclick="addPaintingDirectToCart(this, \'' + qtyId + '\')" class="btn-myship" data-final-name="' + escapeHtml(finalName) + '" data-price="' + price + '" data-stock="' + stock + '">🛒 ADD TO BAG</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function renderPaintingProducts(variants) {
+            var fallbackCards = document.querySelectorAll('.painting-fallback-card');
+            var firstFallback = fallbackCards.length ? fallbackCards[0] : null;
+            var productGrid = document.getElementById('product-grid');
+            var oldApiCards = document.querySelectorAll('.painting-api-card');
+            var html = '';
+            var i = 0;
+
+            for (i = 0; i < oldApiCards.length; i++) {
+                oldApiCards[i].parentNode.removeChild(oldApiCards[i]);
+            }
+
+            if (!productGrid || !firstFallback) {
+                return;
+            }
+
+            for (i = 0; i < variants.length; i++) {
+                html += buildPaintingProductCardHtml(variants[i], i + 1);
+            }
+
+            if (html) {
+                firstFallback.insertAdjacentHTML('beforebegin', html);
+            }
+
+            for (i = 0; i < fallbackCards.length; i++) {
+                fallbackCards[i].parentNode.removeChild(fallbackCards[i]);
+            }
+        }
+
+        function loadPaintingProducts() {
+            fetch(PAINTING_API_URL, { cache: "no-store" })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch painting variants");
+                    }
+                    return response.json();
+                })
+                .then(function(payload) {
+                    if (!payload || payload.ok !== true || payload.product_id !== PAINTING_PRODUCT_ID || !Array.isArray(payload.variants)) {
+                        throw new Error("Unexpected painting variants payload");
+                    }
+
+                    renderPaintingProducts(payload.variants);
+                })
+                .catch(function() {
+                    // API 失敗時保留 HTML 內建 fallback 無框畫卡片，避免總覽頁失效
+                });
         }
 
         // 4. 總覽頁分類篩選器
@@ -390,6 +527,11 @@
         if (window.innerWidth <= 768) {
             document.querySelector('.mobile-all-btn').style.display = 'inline-block';
         }
+
+        window.onload = function() {
+            updateCartCount();
+            loadPaintingProducts();
+        };
     </script>
 
 </body>
