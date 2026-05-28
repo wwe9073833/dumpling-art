@@ -87,6 +87,12 @@
             cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
         .btn-add-cart:hover { background-color: #b80000; }
+        .btn-add-cart:disabled {
+            background-color: #444;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
 
         /* 右下角漂浮按鈕 */
         .floating-btn {
@@ -132,6 +138,7 @@
         <div class="product-info-box">
             <h1 class="prod-title">❤️創意電腦貼紙❤️</h1>
             <div class="prod-price" id="prod-price" data-price="20">NT$ 20</div>
+            <div class="prod-stock" id="prod-stock" data-stock="">請選擇款式</div>
             <div class="prod-desc">
                 小小一張，也能把你的筆電、平板或日記本變成私密收藏。<br>
                 防潑水材質、輕巧好貼，適合低調點綴每個你常用的角落。<br><br>
@@ -151,7 +158,7 @@
                     <input type="number" id="detail-qty" class="qty-input" value="1" min="1">
                     <button class="qty-btn" onclick="changeQty(1)">+</button>
                 </div>
-                <button class="btn-add-cart" onclick="addToCartDetail()">🛒 Add to Bag</button>
+                <button class="btn-add-cart" id="add-to-cart-btn" onclick="addToCartDetail()">🛒 Add to Bag</button>
             </div>
         </div>
     </div>
@@ -160,18 +167,134 @@
     <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
 
     <script>
+        const STICKER_PRODUCT_ID = "sticker";
+        const STICKER_PRODUCT_NAME = "❤️創意電腦貼紙❤️";
+        const STICKER_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?resource=variants&product_id=sticker";
+
+        function resolveImageUrl(imageUrl) {
+            if (!imageUrl) {
+                return "";
+            }
+
+            if (imageUrl.indexOf("http://") === 0 || imageUrl.indexOf("https://") === 0) {
+                return imageUrl;
+            }
+
+            if (imageUrl.indexOf("images/") === 0) {
+                return imageUrl;
+            }
+
+            return "images/" + imageUrl;
+        }
+
+        function updateStockState(stock) {
+            let stockValue = parseInt(stock, 10);
+            let stockEl = document.getElementById("prod-stock");
+            let addToCartBtn = document.getElementById("add-to-cart-btn");
+
+            if (!stockEl || !addToCartBtn) {
+                return;
+            }
+
+            if (isNaN(stockValue)) {
+                stockEl.innerText = "請選擇款式";
+                stockEl.classList.remove("sold-out");
+                stockEl.setAttribute("data-stock", "");
+                addToCartBtn.disabled = false;
+                addToCartBtn.innerText = "🛒 Add to Bag";
+                return;
+            }
+
+            if (stockValue <= 0) {
+                stockValue = 0;
+                stockEl.innerText = "已售完";
+                stockEl.classList.add("sold-out");
+                stockEl.setAttribute("data-stock", stockValue);
+                addToCartBtn.disabled = true;
+                addToCartBtn.innerText = "SOLD OUT";
+                return;
+            }
+
+            stockEl.innerText = "剩餘庫存：" + stockValue + " 件";
+            stockEl.classList.remove("sold-out");
+            stockEl.setAttribute("data-stock", stockValue);
+            addToCartBtn.disabled = false;
+            addToCartBtn.innerText = "🛒 Add to Bag";
+        }
+
+        function applyVariantToView(option) {
+            if (!option) {
+                return;
+            }
+
+            let mainImageEl = document.getElementById("main-product-image");
+            let resolvedImageUrl = resolveImageUrl(option.value);
+            let nextPrice = parseInt(option.getAttribute("data-price"), 10);
+            let nextStock = parseInt(option.getAttribute("data-stock"), 10);
+
+            mainImageEl.style.opacity = 0.5;
+            setTimeout(function() {
+                mainImageEl.src = resolvedImageUrl;
+                mainImageEl.style.opacity = 1;
+            }, 150);
+
+            if (!isNaN(nextPrice)) {
+                let priceEl = document.getElementById("prod-price");
+                priceEl.setAttribute("data-price", nextPrice);
+                priceEl.innerText = "NT$ " + nextPrice;
+            }
+
+            updateStockState(nextStock);
+        }
+
         // --- 1. 款式與圖片連動魔法 ---
         function changeProductStyle() {
             let selector = document.getElementById("style-selector");
-            let selectedImage = selector.value; // 抓取選單裡的 value (圖片檔名)
-            let mainImageEl = document.getElementById("main-product-image");
-            
-            // 讓圖片有微淡出的切換效果
-            mainImageEl.style.opacity = 0.5;
-            setTimeout(() => {
-                mainImageEl.src = "images/" + selectedImage; // 組合路徑切換圖片
-                mainImageEl.style.opacity = 1;
-            }, 150);
+            let selectedOption = selector.options[selector.selectedIndex];
+            applyVariantToView(selectedOption);
+        }
+
+        function buildVariantOption(variant) {
+            let option = document.createElement("option");
+            option.value = variant.image_url;
+            option.textContent = variant.variant_name;
+            option.setAttribute("data-price", variant.price);
+            option.setAttribute("data-stock", variant.stock);
+            return option;
+        }
+
+        function renderVariants(variants) {
+            if (!Array.isArray(variants) || variants.length === 0) {
+                return;
+            }
+
+            let selector = document.getElementById("style-selector");
+            selector.innerHTML = "";
+
+            variants.forEach(function(variant) {
+                selector.appendChild(buildVariantOption(variant));
+            });
+
+            selector.selectedIndex = 0;
+            applyVariantToView(selector.options[0]);
+        }
+
+        async function loadStickerVariants() {
+            try {
+                let response = await fetch(STICKER_API_URL, { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch sticker variants");
+                }
+
+                let payload = await response.json();
+                if (!payload || payload.ok !== true || payload.product_id !== STICKER_PRODUCT_ID || !Array.isArray(payload.variants)) {
+                    throw new Error("Unexpected sticker variants payload");
+                }
+
+                renderVariants(payload.variants);
+            } catch (error) {
+                // API 失敗時保留目前 HTML 內建款式，避免商品頁失效
+            }
         }
 
         // --- 2. 數量控制 ---
@@ -205,19 +328,35 @@
         // --- 3. 加入購物車 (包含款式名稱！) ---
         function addToCartDetail() {
             let cart = safeGetCart();
-            
-            let baseName = "❤️創意電腦貼紙❤️"; // 商品主名稱
-            let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
-            let qty = parseInt(document.getElementById("detail-qty").value);
-            
-            // 抓取客人選了什麼款式 (抓取 option 顯示的文字)
+            let currentStock = parseInt(document.getElementById("prod-stock").getAttribute("data-stock"), 10);
             let selector = document.getElementById("style-selector");
-            let styleText = selector.options[selector.selectedIndex].text; 
-            
-            // 組合成最終的購物車品名：例如「商品名稱 (款式 A：xxx)」
+            let selectedOption = selector.options[selector.selectedIndex];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            if (!isNaN(currentStock) && currentStock <= 0) {
+                alert("目前這款已售完");
+                return;
+            }
+
+            let qty = parseInt(document.getElementById("detail-qty").value, 10);
+            let baseName = STICKER_PRODUCT_NAME;
+            let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"), 10);
+            let styleText = selectedOption.textContent || selectedOption.text; 
             let finalProductName = baseName + " (" + styleText + ")";
             
-            let existingItem = cart.find(item => item.name === finalProductName);
+            let existingItem = cart.find(function(item) {
+                return item.name === finalProductName;
+            });
+            let existingQty = existingItem ? existingItem.quantity : 0;
+
+            if (!isNaN(currentStock) && existingQty + qty > currentStock) {
+                alert("目前庫存不足，購物車內已有 " + existingQty + " 件，這次最多還能加入 " + Math.max(currentStock - existingQty, 0) + " 件");
+                return;
+            }
+
             if (existingItem) {
                 existingItem.quantity += qty; 
             } else {
@@ -240,7 +379,10 @@
             document.getElementById('cart-count').innerText = totalItems;
         }
 
-        window.onload = updateCartCount;
+        window.onload = function() {
+            updateCartCount();
+            loadStickerVariants();
+        };
     </script>
 
 </body>
