@@ -355,6 +355,11 @@
                 .replace(/'/g, "&#39;");
         }
 
+        function isActive(value) {
+            var normalized = String(value).replace(/^\s+|\s+$/g, '').toLowerCase();
+            return normalized === 'true' || normalized === '1' || normalized === 'yes';
+        }
+
         function updateCartCount() {
             var cart = safeGetCart();
             var totalItems = 0;
@@ -378,6 +383,7 @@
                     }
 
                     console.log("products API payload:", payload.products);
+                    renderNonPaintingProducts(payload.products);
                 })
                 .catch(function(error) {
                     console.warn("products API unavailable:", error);
@@ -444,6 +450,114 @@
             updateCartCount();
             alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！");
             document.getElementById(qtyId).value = 1;
+        }
+
+        function escapeJsString(value) {
+            return String(value)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r/g, '')
+                .replace(/\n/g, ' ');
+        }
+
+        function getCategoryLabel(category) {
+            var map = {
+                tapestry: '藝術掛布 Tapestry',
+                coaster: '陶瓷杯墊 Coaster',
+                sticker: '電腦貼紙 Sticker',
+                mat: '硅藻土地墊 Mat'
+            };
+
+            if (map[category]) {
+                return map[category];
+            }
+
+            return String(category || '');
+        }
+
+        function buildNonPaintingProductCardHtml(product) {
+            var productId = String(product.product_id || '').trim();
+            var productName = String(product.product_name || '').trim();
+            var category = String(product.category || '').trim();
+            var basePrice = parseInt(product.base_price, 10) || 0;
+            var coverImageUrl = resolveImageUrl(product.cover_image_url);
+            var qtyId = 'qty-' + productId;
+            var safeTitle = escapeHtml(productName);
+            var safeCategory = escapeHtml(getCategoryLabel(category));
+            var safeImage = escapeHtml(coverImageUrl);
+            var safeButtonName = escapeJsString(productName);
+
+            return '' +
+                '<div class="product-card painting-api-card" data-category="' + escapeHtml(category) + '">' +
+                    '<img src="' + safeImage + '" alt="' + safeTitle + '" class="product-img">' +
+                    '<div class="product-info">' +
+                        '<div class="product-category-tag">' + safeCategory + '</div>' +
+                        '<h3 class="product-title">' + safeTitle + '</h3>' +
+                        '<p class="product-price">NT$ ' + basePrice + '</p>' +
+                        '<div class="action-buttons">' +
+                            '<div class="quantity-control">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', -1)">-</button>' +
+                                '<input type="number" id="' + qtyId + '" class="qty-input" value="1" min="1">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', 1)">+</button>' +
+                            '</div>' +
+                            '<button onclick="addDirectToCart(\'' + safeButtonName + '\', ' + basePrice + ', \'' + qtyId + '\')" class="btn-myship">🛒 ADD TO BAG</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function renderNonPaintingProducts(products) {
+            var productGrid = document.getElementById('product-grid');
+            var cards = document.querySelectorAll('#product-grid .product-card');
+            var fallbackCards = [];
+            var insertBeforeCard = null;
+            var html = '';
+            var i = 0;
+
+            if (!productGrid || !products || !products.length) {
+                return;
+            }
+
+            for (i = 0; i < cards.length; i++) {
+                var category = cards[i].getAttribute('data-category');
+                if (category && category !== 'painting') {
+                    fallbackCards.push(cards[i]);
+                    if (!insertBeforeCard) {
+                        insertBeforeCard = cards[i];
+                    }
+                }
+            }
+
+            for (i = 0; i < products.length; i++) {
+                var product = products[i];
+                if (!product || String(product.category || '').trim() === 'painting') {
+                    continue;
+                }
+
+                if (!isActive(product.show_in_products)) {
+                    continue;
+                }
+
+                if (isActive(product.has_variants)) {
+                    continue;
+                }
+
+                html += buildNonPaintingProductCardHtml(product);
+            }
+
+            if (!html) {
+                return;
+            }
+
+            if (insertBeforeCard) {
+                insertBeforeCard.insertAdjacentHTML('beforebegin', html);
+            } else {
+                productGrid.insertAdjacentHTML('beforeend', html);
+            }
+
+            for (i = 0; i < fallbackCards.length; i++) {
+                fallbackCards[i].parentNode.removeChild(fallbackCards[i]);
+            }
         }
 
         function buildPaintingProductCardHtml(variant, index) {
