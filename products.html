@@ -309,6 +309,7 @@
         // 1. 購物車數量顯示
         var PAINTING_PRODUCT_ID = "painting";
         var PAINTING_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?product_id=painting";
+        var PRODUCTS_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?resource=products";
 
         function safeGetCart() {
             var rawCart = localStorage.getItem('dumpling_cart');
@@ -361,6 +362,26 @@
                 totalItems += cart[i].quantity;
             }
             document.getElementById('cart-count').innerText = totalItems;
+        }
+
+        function loadProductsData() {
+            fetch(PRODUCTS_API_URL, { cache: "no-store" })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch products");
+                    }
+                    return response.json();
+                })
+                .then(function(payload) {
+                    if (!payload || payload.ok !== true || !Array.isArray(payload.products)) {
+                        throw new Error("Unexpected products payload");
+                    }
+
+                    console.log("products API payload:", payload.products);
+                })
+                .catch(function(error) {
+                    console.warn("products API unavailable:", error);
+                });
         }
 
         // 2. 數量加減器
@@ -530,6 +551,7 @@
 
         window.onload = function() {
             updateCartCount();
+            loadProductsData();
             loadPaintingProducts();
         };
     </script>
