@@ -354,8 +354,16 @@
                 .replace(/'/g, "&#39;");
         }
 
+        function normalizeText(value) {
+            if (value === null || value === undefined) {
+                return "";
+            }
+
+            return String(value).replace(/^\s+|\s+$/g, '');
+        }
+
         function isActive(value) {
-            var normalized = String(value).replace(/^\s+|\s+$/g, '').toLowerCase();
+            var normalized = normalizeText(value).toLowerCase();
             return normalized === 'true' || normalized === '1' || normalized === 'yes';
         }
 
@@ -383,6 +391,7 @@
 
                     console.log("products API payload:", payload.products);
                     renderNonPaintingProducts(payload.products);
+                    loadNonPaintingVariants(payload.products);
                 })
                 .catch(function(error) {
                     console.warn("products API unavailable:", error);
@@ -474,6 +483,31 @@
             return String(category || '');
         }
 
+        function replaceProductCardHtml(productId, category, html, apiClassName) {
+            var productGrid = document.getElementById('product-grid');
+            var existingApiCard = null;
+            var fallbackCard = null;
+
+            if (!productGrid) {
+                return false;
+            }
+
+            existingApiCard = productGrid.querySelector('.' + apiClassName + '[data-product-id="' + productId + '"]');
+            if (existingApiCard && existingApiCard.parentNode) {
+                existingApiCard.parentNode.removeChild(existingApiCard);
+            }
+
+            fallbackCard = productGrid.querySelector('.product-card[data-category="' + category + '"]');
+            if (fallbackCard) {
+                fallbackCard.insertAdjacentHTML('beforebegin', html);
+                fallbackCard.parentNode.removeChild(fallbackCard);
+                return true;
+            }
+
+            productGrid.insertAdjacentHTML('beforeend', html);
+            return true;
+        }
+
         function buildNonPaintingProductCardHtml(product) {
             var productId = String(product.product_id || '').trim();
             var productName = String(product.product_name || '').trim();
@@ -487,7 +521,7 @@
             var safeButtonName = escapeJsString(productName);
 
             return '' +
-                '<div class="product-card painting-api-card" data-category="' + escapeHtml(category) + '">' +
+                '<div class="product-card non-painting-api-card" data-product-id="' + escapeHtml(productId) + '" data-category="' + escapeHtml(category) + '">' +
                     '<img src="' + safeImage + '" alt="' + safeTitle + '" class="product-img">' +
                     '<div class="product-info">' +
                         '<div class="product-category-tag">' + safeCategory + '</div>' +
@@ -495,43 +529,35 @@
                         '<p class="product-price">NT$ ' + basePrice + '</p>' +
                         '<div class="action-buttons">' +
                             '<div class="quantity-control">' +
-                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', -1)">-</button>' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + safeQtyId + '\', -1)">-</button>' +
                                 '<input type="number" id="' + qtyId + '" class="qty-input" value="1" min="1">' +
-                                '<button class="qty-btn" onclick="changeQty(\'' + qtyId + '\', 1)">+</button>' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + safeQtyId + '\', 1)">+</button>' +
                             '</div>' +
-                            '<button onclick="addDirectToCart(\'' + safeButtonName + '\', ' + basePrice + ', \'' + qtyId + '\')" class="btn-myship">🛒 ADD TO BAG</button>' +
+                            '<button onclick="addNonPaintingVariantToCart(this, \'' + safeQtyId + '\')" class="btn-myship" data-final-name="' + safeFinalName + '" data-price="' + price + '" data-stock="' + stock + '">🛒 ADD TO BAG</button>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
         }
 
         function renderNonPaintingProducts(products) {
-            var productGrid = document.getElementById('product-grid');
-            var cards = document.querySelectorAll('#product-grid .product-card');
-            var fallbackCards = [];
-            var insertBeforeCard = null;
-            var html = '';
             var i = 0;
 
-            if (!productGrid || !products || !products.length) {
+            if (!products || !products.length) {
                 return;
-            }
-
-            for (i = 0; i < cards.length; i++) {
-                var category = cards[i].getAttribute('data-category');
-                if (category && category !== 'painting') {
-                    fallbackCards.push(cards[i]);
-                    if (!insertBeforeCard) {
-                        insertBeforeCard = cards[i];
-                    }
-                }
             }
 
             for (i = 0; i < products.length; i++) {
                 var product = products[i];
+                var html = '';
+                var productId = '';
+                var category = '';
+
                 if (!product || String(product.category || '').trim() === 'painting') {
                     continue;
                 }
+
+                productId = String(product.product_id || '').trim();
+                category = String(product.category || '').trim();
 
                 if (!isActive(product.show_in_products)) {
                     continue;
@@ -541,21 +567,148 @@
                     continue;
                 }
 
-                html += buildNonPaintingProductCardHtml(product);
+                html = buildNonPaintingProductCardHtml(product);
+                replaceProductCardHtml(productId, category, html, 'non-painting-api-card');
+            }
+        }
+
+        function buildNonPaintingVariantCardHtml(product, variant, index) {
+            var productId = String(product.product_id || '').trim();
+            var productName = String(product.product_name || '').trim();
+            var category = String(product.category || '').trim();
+            var variantId = String(variant.variant_id || '').trim();
+            var variantName = String(variant.variant_name || variant.variant_label || '').trim();
+            var finalName = productName + ' (' + variantName + ')';
+            var price = parseInt(variant.price, 10) || 0;
+            var stock = parseInt(variant.stock, 10) || 0;
+            var imageUrl = resolveImageUrl(variant.image_url || product.cover_image_url);
+            var qtyId = 'qty-nonpainting-' + productId + '-' + (variantId || index);
+            var safeCategory = escapeHtml(getCategoryLabel(category));
+            var safeTitle = escapeHtml(productName + ' - ' + variantName);
+            var safeImage = escapeHtml(imageUrl);
+            var safeFinalName = escapeHtml(finalName);
+            var safeQtyId = escapeJsString(qtyId);
+
+            return '' +
+                '<div class="product-card non-painting-variant-api-card" data-product-id="' + escapeHtml(productId) + '" data-category="' + escapeHtml(category) + '" data-final-name="' + safeFinalName + '" data-price="' + price + '" data-stock="' + stock + '">' +
+                    '<img src="' + safeImage + '" alt="' + safeTitle + '" class="product-img">' +
+                    '<div class="product-info">' +
+                        '<div class="product-category-tag">' + safeCategory + '</div>' +
+                        '<h3 class="product-title">' + safeTitle + '</h3>' +
+                        '<p class="product-price">NT$ ' + price + '</p>' +
+                        '<div class="action-buttons">' +
+                            '<div class="quantity-control">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + safeQtyId + '\', -1)">-</button>' +
+                                '<input type="number" id="' + qtyId + '" class="qty-input" value="1" min="1">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + safeQtyId + '\', 1)">+</button>' +
+                            '</div>' +
+                            '<button onclick="addNonPaintingVariantToCart(this, \'' + safeQtyId + '\')" class="btn-myship" data-final-name="' + safeFinalName + '" data-price="' + price + '" data-stock="' + stock + '">🛒 ADD TO BAG</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function addNonPaintingVariantToCart(buttonEl, qtyId) {
+            var cart = safeGetCart();
+            var qty = parseInt(document.getElementById(qtyId).value, 10);
+            var finalName = buttonEl.getAttribute("data-final-name");
+            var price = parseInt(buttonEl.getAttribute("data-price"), 10);
+            var stock = parseInt(buttonEl.getAttribute("data-stock"), 10);
+            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            var existingQty = existingItem ? existingItem.quantity : 0;
+
+            if (!qty || qty < 1) {
+                qty = 1;
             }
 
-            if (!html) {
+            if (isNaN(stock) || stock <= 0) {
+                alert("目前這款已售完");
                 return;
             }
 
-            if (insertBeforeCard) {
-                insertBeforeCard.insertAdjacentHTML('beforebegin', html);
-            } else {
-                productGrid.insertAdjacentHTML('beforeend', html);
+            if (existingQty + qty > stock) {
+                alert("目前庫存不足，購物車內已有 " + existingQty + " 件，這次最多還能加入 " + Math.max(stock - existingQty, 0) + " 件");
+                return;
             }
 
-            for (i = 0; i < fallbackCards.length; i++) {
-                fallbackCards[i].parentNode.removeChild(fallbackCards[i]);
+            if (existingItem) {
+                existingItem.quantity += qty;
+            } else {
+                cart.push({ name: finalName, price: price, quantity: qty });
+            }
+
+            localStorage.setItem('dumpling_cart', JSON.stringify(cart));
+            updateCartCount();
+            alert("🎉 成功將 " + qty + " 個「" + finalName + "」加入購物車！");
+            document.getElementById(qtyId).value = 1;
+        }
+
+        function loadNonPaintingVariantCardsForProduct(product) {
+            var productId = String(product.product_id || '').trim();
+            var productCategory = String(product.category || '').trim();
+            var variantsApiUrl = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?resource=variants&product_id=" + encodeURIComponent(productId);
+
+            if (!productId || productCategory === 'painting') {
+                return;
+            }
+
+            fetch(variantsApiUrl, { cache: "no-store" })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch variants for " + productId);
+                    }
+                    return response.json();
+                })
+                .then(function(payload) {
+                    if (!payload || payload.ok !== true || payload.product_id !== productId || !Array.isArray(payload.variants)) {
+                        throw new Error("Unexpected variants payload for " + productId);
+                    }
+
+                    if (!payload.variants.length) {
+                        console.warn("variants API returned no variants for:", productId);
+                        return;
+                    }
+
+                    console.log("variants API payload for " + productId + ":", payload.variants);
+                    var html = '';
+                    var j = 0;
+
+                    for (j = 0; j < payload.variants.length; j++) {
+                        html += buildNonPaintingVariantCardHtml(product, payload.variants[j], j + 1);
+                    }
+
+                    replaceProductCardHtml(productId, productCategory, html, 'non-painting-variant-api-card');
+                })
+                .catch(function(error) {
+                    console.warn("variants API unavailable for " + productId + ":", error);
+                });
+        }
+
+        function loadNonPaintingVariants(products) {
+            var i = 0;
+
+            if (!products || !products.length) {
+                return;
+            }
+
+            for (i = 0; i < products.length; i++) {
+                if (!products[i]) {
+                    continue;
+                }
+
+                if (String(products[i].category || '').trim() === 'painting') {
+                    continue;
+                }
+
+                if (!isActive(products[i].show_in_products)) {
+                    continue;
+                }
+
+                if (!isActive(products[i].has_variants)) {
+                    continue;
+                }
+
+                loadNonPaintingVariantCardsForProduct(products[i]);
             }
         }
 
