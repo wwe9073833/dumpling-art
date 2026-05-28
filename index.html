@@ -530,11 +530,11 @@
             </div>
 
             <div class="product-card">
-                <img id="img-hot-2" src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img">
+                <img id="img-hot-2" src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img" data-cover-image="images/hot_item1.jpg">
                 <div class="product-info">
                     <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
-                    <p class="product-price">NT$ 169</p>
-                    <select id="style-hot-2" class="card-style-select" onchange="changeCardImage('img-hot-2', this)">
+                    <p class="product-price" id="price-hot-2" data-base-price="169">NT$ 169</p>
+                    <select id="style-hot-2" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-hot-2', 'price-hot-2', this)">
                         <option value="hot_item1.jpg">款式 A：深情撫摸</option>
                     </select>
                     <div class="action-buttons">
@@ -549,11 +549,11 @@
             </div>
 
             <div class="product-card">
-                <img id="img-hot-3" src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img">
+                <img id="img-hot-3" src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img" data-cover-image="images/hot_item3.jpg">
                 <div class="product-info">
                     <h3 class="product-title">❤️創意電腦貼紙❤️</h3>
-                    <p class="product-price">NT$ 20</p>
-                    <select id="style-hot-3" class="card-style-select" onchange="changeCardImage('img-hot-3', this)">
+                    <p class="product-price" id="price-hot-3" data-base-price="20">NT$ 20</p>
+                    <select id="style-hot-3" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-hot-3', 'price-hot-3', this)">
                         <option value="hot_item3.jpg">款式 A：綜合拼貼</option>
                     </select>
                     <div class="action-buttons">
@@ -597,11 +597,11 @@
             </div>
 
             <div class="product-card">
-                <img id="img-merch-2" src="images/item3.jpg" alt="掛布" class="product-img">
+                <img id="img-merch-2" src="images/item3.jpg" alt="掛布" class="product-img" data-cover-image="images/item3.jpg">
                 <div class="product-info">
                     <h3 class="product-title">情慾藝術🎨掛布</h3>
-                    <p class="product-price">NT$ 480</p>
-                    <select id="style-merch-2" class="card-style-select" onchange="changeCardImage('img-merch-2', this)">
+                    <p class="product-price" id="price-merch-2" data-base-price="480">NT$ 480</p>
+                    <select id="style-merch-2" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-2', 'price-merch-2', this)">
                         <option value="item3.jpg">款式 A：藝術線條</option>
                     </select>
                     <div class="action-buttons">
@@ -616,11 +616,11 @@
             </div>
             
             <div class="product-card">
-                <img id="img-merch-3" src="images/item4.jpg" alt="硅藻土地墊" class="product-img">
+                <img id="img-merch-3" src="images/item4.jpg" alt="硅藻土地墊" class="product-img" data-cover-image="images/item4.jpg">
                 <div class="product-info">
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
-                    <p class="product-price">NT$ 369</p>
-                    <select id="style-merch-3" class="card-style-select" onchange="changeCardImage('img-merch-3', this)">
+                    <p class="product-price" id="price-merch-3" data-base-price="369">NT$ 369</p>
+                    <select id="style-merch-3" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-3', 'price-merch-3', this)">
                         <option value="item4.jpg">款式 A：紅線誘惑</option>
                     </select>
                     <div class="action-buttons">
@@ -744,6 +744,7 @@
         // 💡 全部改為 Dreamweaver 保證不報錯的 ES5 語法
         var PAINTING_PRODUCT_ID = "painting";
         var PAINTING_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?product_id=painting";
+        var HOMEPAGE_VARIANTS_API_BASE_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?resource=variants&product_id=";
         var PAINTING_DEFAULT_PRICE = 450;
         var PAINTING_COVER_IMAGE = "images/painting-cover.jpg";
 
@@ -805,6 +806,139 @@
                 img.src = resolveImageUrl(selectElement.value); 
                 img.style.opacity = 1; 
             }, 150);
+        }
+
+        function isHomepagePlaceholderOption(option) {
+            return !!option && option.getAttribute("data-placeholder") === "true";
+        }
+
+        function setHomepageCardToCover(imgId, priceId) {
+            var img = document.getElementById(imgId);
+            var priceEl = document.getElementById(priceId);
+            var coverImage = img ? img.getAttribute("data-cover-image") : "";
+            var basePrice = priceEl ? parseInt(priceEl.getAttribute("data-base-price"), 10) : NaN;
+
+            if (img && coverImage) {
+                img.style.opacity = 0.5;
+                setTimeout(function() {
+                    img.src = resolveImageUrl(coverImage);
+                    img.style.opacity = 1;
+                }, 150);
+            }
+
+            if (priceEl && !isNaN(basePrice)) {
+                priceEl.innerText = "NT$ " + basePrice;
+            }
+        }
+
+        function buildHomepagePlaceholderOption(basePrice) {
+            var option = document.createElement("option");
+            option.value = "";
+            option.text = "請選擇款式";
+            option.setAttribute("data-placeholder", "true");
+            option.setAttribute("data-price", basePrice);
+            option.setAttribute("data-stock", "0");
+            return option;
+        }
+
+        function buildHomepageVariantOption(variant) {
+            var option = document.createElement("option");
+            var imageUrl = resolveImageUrl(variant.image_url);
+            option.value = imageUrl;
+            option.text = String(variant.variant_name || "").trim();
+            option.setAttribute("data-image-url", imageUrl);
+            option.setAttribute("data-price", parseInt(variant.price, 10) || 0);
+            option.setAttribute("data-stock", parseInt(variant.stock, 10) || 0);
+            return option;
+        }
+
+        function changeHomepageVariantCardSelection(imgId, priceId, selectElement) {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var img = document.getElementById(imgId);
+            var priceEl = document.getElementById(priceId);
+            var selectedPrice = 0;
+            var selectedImage = "";
+
+            if (!img || !priceEl) {
+                return;
+            }
+
+            if (isHomepagePlaceholderOption(selectedOption) || !selectedOption) {
+                setHomepageCardToCover(imgId, priceId);
+                return;
+            }
+
+            selectedImage = selectedOption.getAttribute("data-image-url") || selectElement.value;
+            selectedPrice = parseInt(selectedOption.getAttribute("data-price"), 10);
+
+            img.style.opacity = 0.5;
+            setTimeout(function() {
+                img.src = resolveImageUrl(selectedImage);
+                img.style.opacity = 1;
+            }, 150);
+
+            if (!isNaN(selectedPrice)) {
+                priceEl.innerText = "NT$ " + selectedPrice;
+            }
+        }
+
+        function renderHomepageVariantSelect(selectId, imgId, priceId, variants) {
+            var selectEl = document.getElementById(selectId);
+            var priceEl = document.getElementById(priceId);
+            var basePrice = priceEl ? parseInt(priceEl.getAttribute("data-base-price"), 10) : NaN;
+            var i = 0;
+
+            if (!selectEl || !variants || !variants.length) {
+                return;
+            }
+
+            selectEl.innerHTML = "";
+            selectEl.appendChild(buildHomepagePlaceholderOption(isNaN(basePrice) ? 0 : basePrice));
+
+            for (i = 0; i < variants.length; i++) {
+                selectEl.appendChild(buildHomepageVariantOption(variants[i]));
+            }
+
+            selectEl.selectedIndex = 0;
+            setHomepageCardToCover(imgId, priceId);
+        }
+
+        function loadHomepageVariantsForCard(cardConfig) {
+            fetch(HOMEPAGE_VARIANTS_API_BASE_URL + encodeURIComponent(cardConfig.productId), { cache: "no-store" })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch variants for " + cardConfig.productId);
+                    }
+                    return response.json();
+                })
+                .then(function(payload) {
+                    if (!payload || payload.ok !== true || payload.product_id !== cardConfig.productId || !Array.isArray(payload.variants)) {
+                        throw new Error("Unexpected variants payload for " + cardConfig.productId);
+                    }
+
+                    if (!payload.variants.length) {
+                        return;
+                    }
+
+                    renderHomepageVariantSelect(cardConfig.selectId, cardConfig.imgId, cardConfig.priceId, payload.variants);
+                })
+                .catch(function(error) {
+                    console.warn("homepage variants API unavailable for " + cardConfig.productId + ":", error);
+                });
+        }
+
+        function loadHomepageVariantsForIndex() {
+            var cards = [
+                { productId: "coaster", imgId: "img-hot-2", selectId: "style-hot-2", priceId: "price-hot-2" },
+                { productId: "sticker", imgId: "img-hot-3", selectId: "style-hot-3", priceId: "price-hot-3" },
+                { productId: "tapestry", imgId: "img-merch-2", selectId: "style-merch-2", priceId: "price-merch-2" },
+                { productId: "mat", imgId: "img-merch-3", selectId: "style-merch-3", priceId: "price-merch-3" }
+            ];
+            var i = 0;
+
+            for (i = 0; i < cards.length; i++) {
+                loadHomepageVariantsForCard(cards[i]);
+            }
         }
 
         function setPaintingCardToCover(imgId, priceId) {
@@ -914,13 +1048,52 @@
         function addCardToCart(baseName, price, qtyId, selectId) {
             var cart = safeGetCart();
             var qty = parseInt(document.getElementById(qtyId).value);
-            
             var selectEl = document.getElementById(selectId);
-            var styleText = selectEl.options[selectEl.selectedIndex].text;
-            
-            var finalName = baseName + " (" + styleText + ")";
-            
-            var existingItem = cart.find(function(item) { return item.name === finalName; });
+            var selectedOption = selectEl ? selectEl.options[selectEl.selectedIndex] : null;
+            var selectedPrice = price;
+            var stock = NaN;
+            var existingQty = 0;
+            var finalName = baseName;
+            var existingItem = null;
+
+            if (!qty || qty < 1) {
+                qty = 1;
+            }
+
+            if (!selectEl || !selectedOption) {
+                return;
+            }
+
+            if (isHomepagePlaceholderOption(selectedOption)) {
+                alert("請先選擇款式");
+                return;
+            }
+
+            finalName = baseName + " (" + selectedOption.text + ")";
+            selectedPrice = parseInt(selectedOption.getAttribute("data-price"), 10);
+            stock = parseInt(selectedOption.getAttribute("data-stock"), 10);
+
+            if (isNaN(selectedPrice)) {
+                selectedPrice = price;
+            }
+
+            if (!isNaN(stock)) {
+                existingItem = cart.find(function(item) { return item.name === finalName; });
+                existingQty = existingItem ? existingItem.quantity : 0;
+
+                if (stock <= 0) {
+                    alert("目前這款已售完");
+                    return;
+                }
+
+                if (existingQty + qty > stock) {
+                    alert("目前庫存不足，購物車內已有 " + existingQty + " 件，這次最多還能加入 " + Math.max(stock - existingQty, 0) + " 件");
+                    return;
+                }
+            }
+
+            price = selectedPrice;
+            existingItem = cart.find(function(item) { return item.name === finalName; });
             if (existingItem) {
                 existingItem.quantity += qty; 
             } else {
@@ -1004,6 +1177,7 @@
         window.onload = function() {
             updateCartCount();
             loadPaintingVariantsForIndex();
+            loadHomepageVariantsForIndex();
             reveal();
         };
     </script>
