@@ -534,6 +534,7 @@
                 <div class="product-info">
                     <h3 class="product-title">🔥獨一無二🔥陶瓷杯墊</h3>
                     <p class="product-price" id="price-hot-2" data-base-price="169">NT$ 169</p>
+                    <div class="prod-stock" id="stock-hot-2">請選擇款式</div>
                     <select id="style-hot-2" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-hot-2', 'price-hot-2', this)">
                         <option value="hot_item1.jpg">款式 A：深情撫摸</option>
                     </select>
@@ -553,6 +554,7 @@
                 <div class="product-info">
                     <h3 class="product-title">❤️創意電腦貼紙❤️</h3>
                     <p class="product-price" id="price-hot-3" data-base-price="20">NT$ 20</p>
+                    <div class="prod-stock" id="stock-hot-3">請選擇款式</div>
                     <select id="style-hot-3" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-hot-3', 'price-hot-3', this)">
                         <option value="hot_item3.jpg">款式 A：綜合拼貼</option>
                     </select>
@@ -601,6 +603,7 @@
                 <div class="product-info">
                     <h3 class="product-title">情慾藝術🎨掛布</h3>
                     <p class="product-price" id="price-merch-2" data-base-price="480">NT$ 480</p>
+                    <div class="prod-stock" id="stock-merch-2">請選擇款式</div>
                     <select id="style-merch-2" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-2', 'price-merch-2', this)">
                         <option value="item3.jpg">款式 A：藝術線條</option>
                     </select>
@@ -620,6 +623,7 @@
                 <div class="product-info">
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
                     <p class="product-price" id="price-merch-3" data-base-price="369">NT$ 369</p>
+                    <div class="prod-stock" id="stock-merch-3">請選擇款式</div>
                     <select id="style-merch-3" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-3', 'price-merch-3', this)">
                         <option value="item4.jpg">款式 A：紅線誘惑</option>
                     </select>
@@ -852,12 +856,44 @@
             return option;
         }
 
+        function getHomepageStockId(imgId) {
+            return String(imgId || "").replace("img-", "stock-");
+        }
+
+        function updateHomepageStockState(stockId, stock, hasSelection) {
+            var stockEl = document.getElementById(stockId);
+            var stockValue = parseInt(stock, 10);
+
+            if (!stockEl) {
+                return;
+            }
+
+            if (!hasSelection) {
+                stockEl.innerText = "請選擇款式";
+                return;
+            }
+
+            if (isNaN(stockValue)) {
+                stockEl.innerText = "請選擇款式";
+                return;
+            }
+
+            if (stockValue <= 0) {
+                stockEl.innerText = "目前這款已售完";
+                return;
+            }
+
+            stockEl.innerText = "剩餘庫存：" + stockValue + " 件";
+        }
+
         function changeHomepageVariantCardSelection(imgId, priceId, selectElement) {
             var selectedOption = selectElement.options[selectElement.selectedIndex];
             var img = document.getElementById(imgId);
             var priceEl = document.getElementById(priceId);
+            var stockId = getHomepageStockId(imgId);
             var selectedPrice = 0;
             var selectedImage = "";
+            var selectedStock = 0;
 
             if (!img || !priceEl) {
                 return;
@@ -865,11 +901,13 @@
 
             if (isHomepagePlaceholderOption(selectedOption) || !selectedOption) {
                 setHomepageCardToCover(imgId, priceId);
+                updateHomepageStockState(stockId, null, false);
                 return;
             }
 
             selectedImage = selectedOption.getAttribute("data-image-url") || selectElement.value;
             selectedPrice = parseInt(selectedOption.getAttribute("data-price"), 10);
+            selectedStock = parseInt(selectedOption.getAttribute("data-stock"), 10);
 
             img.style.opacity = 0.5;
             setTimeout(function() {
@@ -880,6 +918,8 @@
             if (!isNaN(selectedPrice)) {
                 priceEl.innerText = "NT$ " + selectedPrice;
             }
+
+            updateHomepageStockState(stockId, selectedStock, true);
         }
 
         function renderHomepageVariantSelect(selectId, imgId, priceId, variants) {
@@ -900,7 +940,7 @@
             }
 
             selectEl.selectedIndex = 0;
-            setHomepageCardToCover(imgId, priceId);
+            changeHomepageVariantCardSelection(imgId, priceId, selectEl);
         }
 
         function loadHomepageVariantsForCard(cardConfig) {
