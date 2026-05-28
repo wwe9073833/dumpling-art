@@ -508,11 +508,12 @@
         <div class="products-container">
             
             <div class="product-card">
-                <img id="img-hot-1" src="images/解鎖加入會員.jpg" alt="情慾無框畫 解鎖加入會員" class="product-img">
+                <img id="img-hot-1" src="images/painting-cover.jpg" alt="情慾無框畫系列封面" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">🫦情慾🫦無框畫</h3>
                     <p class="product-price" id="price-hot-1">NT$ 450</p>
                     <select id="style-hot-1" class="card-style-select" onchange="changePaintingCardSelection('img-hot-1', 'price-hot-1', this)">
+                        <option value="" data-placeholder="true" data-price="450">請選擇款式</option>
                         <option value="解鎖加入會員.jpg">款式 A：解鎖加入會員</option>
                         <option value="被掌控的安穩.jpg">款式 B：被掌控的安穩</option>
                         <option value="衝突後的親密.jpg">款式 C：衝突後的親密</option>
@@ -574,11 +575,12 @@
         <div class="products-container">
             
             <div class="product-card">
-                <img id="img-merch-1" src="images/解鎖加入會員.jpg" alt="情慾無框畫 解鎖加入會員" class="product-img">
+                <img id="img-merch-1" src="images/painting-cover.jpg" alt="情慾無框畫系列封面" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">🫦情慾🫦無框畫</h3>
                     <p class="product-price" id="price-merch-1">NT$ 450</p>
                     <select id="style-merch-1" class="card-style-select" onchange="changePaintingCardSelection('img-merch-1', 'price-merch-1', this)">
+                        <option value="" data-placeholder="true" data-price="450">請選擇款式</option>
                         <option value="解鎖加入會員.jpg">款式 A：解鎖加入會員</option>
                         <option value="被掌控的安穩.jpg">款式 B：被掌控的安穩</option>
                         <option value="衝突後的親密.jpg">款式 C：衝突後的親密</option>
@@ -639,7 +641,7 @@
         <h2 class="section-title">✨ 全部商品 ✨</h2>
         <div class="products-container">
             <div class="product-card">
-                <img src="images/解鎖加入會員.jpg" alt="無框畫預覽 解鎖加入會員" class="product-img">
+                <img src="images/painting-cover.jpg" alt="情慾無框畫系列封面" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">全系列｜情慾無框畫</h3>
                     <p class="product-price">NT$ 450</p>
@@ -742,6 +744,8 @@
         // 💡 全部改為 Dreamweaver 保證不報錯的 ES5 語法
         var PAINTING_PRODUCT_ID = "painting";
         var PAINTING_API_URL = "https://script.google.com/macros/s/AKfycbx7q2hY29LQpv_23HHG27_ZW0eZNIwtx25YoX_KHYoyb1j-5xRgFs_XqomiMHOqwGIBhg/exec?product_id=painting";
+        var PAINTING_DEFAULT_PRICE = 450;
+        var PAINTING_COVER_IMAGE = "images/painting-cover.jpg";
 
         function safeGetCart() {
             var rawCart = localStorage.getItem('dumpling_cart');
@@ -803,10 +807,33 @@
             }, 150);
         }
 
+        function setPaintingCardToCover(imgId, priceId) {
+            var img = document.getElementById(imgId);
+            if (img) {
+                img.style.opacity = 0.5;
+                setTimeout(function() {
+                    img.src = PAINTING_COVER_IMAGE;
+                    img.style.opacity = 1;
+                }, 150);
+            }
+
+            document.getElementById(priceId).innerText = "NT$ " + PAINTING_DEFAULT_PRICE;
+        }
+
+        function isPaintingPlaceholderOption(option) {
+            return !!option && option.getAttribute("data-placeholder") === "true";
+        }
+
         function updatePaintingCardView(imgId, priceId, selectElement) {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            if (isPaintingPlaceholderOption(selectedOption)) {
+                setPaintingCardToCover(imgId, priceId);
+                return;
+            }
+
             changeCardImage(imgId, selectElement);
 
-            var selectedPrice = parseInt(selectElement.options[selectElement.selectedIndex].getAttribute("data-price"), 10);
+            var selectedPrice = parseInt(selectedOption.getAttribute("data-price"), 10);
             if (!isNaN(selectedPrice)) {
                 document.getElementById(priceId).innerText = "NT$ " + selectedPrice;
             }
@@ -825,6 +852,15 @@
             return option;
         }
 
+        function buildPaintingPlaceholderOption() {
+            var option = document.createElement("option");
+            option.value = "";
+            option.text = "請選擇款式";
+            option.setAttribute("data-placeholder", "true");
+            option.setAttribute("data-price", PAINTING_DEFAULT_PRICE);
+            return option;
+        }
+
         function renderPaintingSelect(selectId, imgId, priceId, variants) {
             var selectEl = document.getElementById(selectId);
             if (!selectEl) {
@@ -835,23 +871,22 @@
             selectEl.innerHTML = "";
 
             if (!variants || !variants.length) {
-                var unavailableOption = document.createElement("option");
-                unavailableOption.value = "";
+                var unavailableOption = buildPaintingPlaceholderOption();
                 unavailableOption.text = "目前無可販售款式";
-                unavailableOption.setAttribute("data-price", "0");
                 unavailableOption.setAttribute("data-stock", "0");
                 selectEl.appendChild(unavailableOption);
                 selectEl.disabled = true;
-                document.getElementById(priceId).innerText = "NT$ --";
+                setPaintingCardToCover(imgId, priceId);
                 return;
             }
 
+            selectEl.appendChild(buildPaintingPlaceholderOption());
             variants.forEach(function(variant) {
                 selectEl.appendChild(buildPaintingOption(variant));
             });
 
             selectEl.selectedIndex = 0;
-            updatePaintingCardView(imgId, priceId, selectEl);
+            setPaintingCardToCover(imgId, priceId);
         }
 
         function loadPaintingVariantsForIndex() {
@@ -908,6 +943,11 @@
             }
 
             var selectedOption = selectEl.options[selectEl.selectedIndex];
+            if (isPaintingPlaceholderOption(selectedOption)) {
+                alert("請先選擇款式");
+                return;
+            }
+
             var styleText = selectedOption.text;
             var price = parseInt(selectedOption.getAttribute("data-price"), 10);
             var stock = parseInt(selectedOption.getAttribute("data-stock"), 10);
