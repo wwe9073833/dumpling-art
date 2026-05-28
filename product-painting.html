@@ -56,7 +56,8 @@
         .prod-title { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin: 0 0 15px 0; color: #fff; }
         .prod-price { font-size: 22px; color: #ff3b3b; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 12px; letter-spacing: 1px; }
         .prod-stock { font-size: 13px; color: #bbb; margin-bottom: 30px; letter-spacing: 1.5px; font-weight: 400; }
-        .prod-stock.sold-out { color: #ff8f8f; }        .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
+        .prod-stock.sold-out { color: #ff8f8f; }
+        .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
 
         /* 👑 款式選擇器 (深色精品風) */
         .style-selector-group { margin-bottom: 30px; }
@@ -88,6 +89,7 @@
             cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
         .btn-add-cart:hover { background-color: #b80000; }
+        .btn-add-cart:disabled { background-color: #444; color: #999; cursor: not-allowed; opacity: 0.6; }
 
         /* 右下角漂浮按鈕 */
         .floating-btn {
@@ -319,6 +321,11 @@
             let baseName = "🫦情慾🫦無框畫"; // 商品主名稱
             let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
             let qty = parseInt(document.getElementById("detail-qty").value);
+
+            if (qty > currentStock) {
+                alert("目前庫存不足，剩餘 " + currentStock + " 件");
+                return;
+            }
             
             // 抓取客人選了什麼款式 (抓取 option 顯示的文字)
             let selector = document.getElementById("style-selector");
