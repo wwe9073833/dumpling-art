@@ -54,8 +54,9 @@
         }
 
         .prod-title { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin: 0 0 15px 0; color: #fff; }
-        .prod-price { font-size: 22px; color: #ff3b3b; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 30px; letter-spacing: 1px; }
-        .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
+        .prod-price { font-size: 22px; color: #ff3b3b; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 12px; letter-spacing: 1px; }
+        .prod-stock { font-size: 13px; color: #bbb; margin-bottom: 30px; letter-spacing: 1.5px; font-weight: 400; }
+        .prod-stock.sold-out { color: #ff8f8f; }        .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
 
         /* 👑 款式選擇器 (深色精品風) */
         .style-selector-group { margin-bottom: 30px; }
@@ -132,6 +133,7 @@
         <div class="product-info-box">
             <h1 class="prod-title">🫦情慾🫦無框畫</h1>
             <div class="prod-price" id="prod-price" data-price="450">NT$ 450</div>
+            <div class="prod-stock" id="prod-stock" data-stock="1">剩餘庫存：1 件</div>
             <div class="prod-desc">
                 極致的視覺張力，掛在房間的私密角落，每天提醒自己直視心裡的渴望。<br>
                 高質感無框畫印刷，防潑水材質，給懂得欣賞的你。<br><br>
@@ -141,9 +143,9 @@
             <div class="style-selector-group">
                 <label class="style-label">選擇畫作款式 Selection</label>
                 <select id="style-selector" class="style-select" onchange="changeProductStyle()">
-                    <option value="images/解鎖加入會員.jpg" data-price="450">解鎖加入會員</option>
-                    <option value="images/被掌控的安穩.jpg" data-price="450">被掌控的安穩</option>
-                    <option value="images/衝突後的親密.jpg" data-price="450">衝突後的親密</option>
+                    <option value="images/解鎖加入會員.jpg" data-price="450" data-stock="1">解鎖加入會員</option>
+                    <option value="images/被掌控的安穩.jpg" data-price="450" data-stock="1">被掌控的安穩</option>
+                    <option value="images/衝突後的親密.jpg" data-price="450" data-stock="1">衝突後的親密</option>
                 </select>
             </div>
 
@@ -153,7 +155,7 @@
                     <input type="number" id="detail-qty" class="qty-input" value="1" min="1">
                     <button class="qty-btn" onclick="changeQty(1)">+</button>
                 </div>
-                <button class="btn-add-cart" onclick="addToCartDetail()">🛒 Add to Bag</button>
+                <button class="btn-add-cart" id="add-to-cart-btn" onclick="addToCartDetail()">🛒 Add to Bag</button>
             </div>
         </div>
     </div>
@@ -182,27 +184,51 @@
             return "images/" + imageUrl;
         }
 
-        function applyVariantToView(option) {
-            if (!option) {
+        function updateStockState(stock) {
+            let stockValue = parseInt(stock, 10);
+            let stockEl = document.getElementById("prod-stock");
+            let addToCartBtn = document.getElementById("add-to-cart-btn");
+            if (isNaN(stockValue) || stockValue <= 0) {
+                stockValue = 0;
+                stockEl.innerText = "已售完";
+                stockEl.classList.add("sold-out");
+                stockEl.setAttribute("data-stock", stockValue);
+                addToCartBtn.disabled = true;
+                addToCartBtn.innerText = "SOLD OUT";
                 return;
             }
-
-            let mainImageEl = document.getElementById("main-product-image");
-            let resolvedImageUrl = resolveImageUrl(option.value);
-            let nextPrice = parseInt(option.getAttribute("data-price"), 10);
-
-            mainImageEl.style.opacity = 0.5;
-            setTimeout(() => {
-                mainImageEl.src = resolvedImageUrl;
-                mainImageEl.style.opacity = 1;
-            }, 150);
-
-            if (!isNaN(nextPrice)) {
-                let priceEl = document.getElementById("prod-price");
-                priceEl.setAttribute("data-price", nextPrice);
-                priceEl.innerText = "NT$ " + nextPrice;
-            }
+            
+            stockEl.innerText = "剩餘庫存：" + stockValue + " 件";
+            stockEl.classList.remove("sold-out");
+            stockEl.setAttribute("data-stock", stockValue);
+            addToCartBtn.disabled = false;
+            addToCartBtn.innerText = "🛒 Add to Bag";
         }
+
+        function applyVariantToView(option) {
+    if (!option) {
+        return;
+    }
+
+    let mainImageEl = document.getElementById("main-product-image");
+    let resolvedImageUrl = resolveImageUrl(option.value);
+    let nextPrice = parseInt(option.getAttribute("data-price"), 10);
+    let nextStock = parseInt(option.getAttribute("data-stock"), 10);
+
+    mainImageEl.style.opacity = 0.5;
+    setTimeout(() => {
+        mainImageEl.src = resolvedImageUrl;
+        mainImageEl.style.opacity = 1;
+    }, 150);
+
+    if (!isNaN(nextPrice)) {
+        let priceEl = document.getElementById("prod-price");
+        priceEl.setAttribute("data-price", nextPrice);
+        priceEl.innerText = "NT$ " + nextPrice;
+    }
+
+    updateStockState(nextStock);
+}
 
         function changeProductStyle() {
             let selector = document.getElementById("style-selector");
@@ -239,12 +265,13 @@
         }
 
         function buildVariantOption(variant) {
-            let option = document.createElement("option");
-            option.value = resolveImageUrl(variant.image_url);
-            option.text = variant.variant_name;
-            option.setAttribute("data-price", variant.price);
-            return option;
-        }
+    let option = document.createElement("option");
+    option.value = resolveImageUrl(variant.image_url);
+    option.text = variant.variant_name;
+    option.setAttribute("data-price", variant.price);
+    option.setAttribute("data-stock", variant.stock);
+    return option;
+}
 
         function renderPaintingVariants(variants) {
             if (!Array.isArray(variants) || variants.length === 0) {
@@ -282,7 +309,12 @@
 
         // --- 3. 加入購物車 (包含款式名稱！) ---
         function addToCartDetail() {
-            let cart = safeGetCart();
+    let cart = safeGetCart();
+    let currentStock = parseInt(document.getElementById("prod-stock").getAttribute("data-stock"), 10);
+
+    if (isNaN(currentStock) || currentStock <= 0) {
+        return;
+    }
             
             let baseName = "🫦情慾🫦無框畫"; // 商品主名稱
             let price = parseInt(document.getElementById("prod-price").getAttribute("data-price"));
