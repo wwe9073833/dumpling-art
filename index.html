@@ -428,7 +428,11 @@
     #cursor-ring.expand {
         transform: translate3d(-50%, -50%, 0) scale(1.55);
     }
-    @media (hover: none), (pointer: coarse), (max-width: 900px) {
+    html.cursor-enabled,
+    body.cursor-enabled {
+        cursor: none;
+    }
+    @media (hover: none), (pointer: coarse) {
         #cursor,
         #cursor-ring {
             display: none !important;
@@ -1421,6 +1425,8 @@
                 return;
             }
 
+            document.documentElement.classList.add("cursor-enabled");
+            document.body.classList.add("cursor-enabled");
             cursor.classList.add("is-visible");
             ring.classList.add("is-visible");
 
@@ -1441,7 +1447,7 @@
             }
 
             function animateRing() {
-                var ease = reduceMotion ? 1 : 0.18;
+                var ease = reduceMotion ? 1 : 0.10;
                 ringX += (mouseX - ringX) * ease;
                 ringY += (mouseY - ringY) * ease;
                 ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0) translate(-50%, -50%)" + (ring.classList.contains("expand") ? " scale(1.55)" : "");
@@ -1449,14 +1455,18 @@
             }
 
             document.addEventListener("mousemove", moveCursor, { passive: true });
-            document.addEventListener("mouseenter", function() {
+            window.addEventListener("mouseenter", function() {
                 cursor.classList.add("is-visible");
                 ring.classList.add("is-visible");
-            }, true);
-            document.addEventListener("mouseleave", function() {
+                document.documentElement.classList.add("cursor-enabled");
+                document.body.classList.add("cursor-enabled");
+            });
+            window.addEventListener("mouseleave", function() {
                 cursor.classList.remove("is-visible");
                 ring.classList.remove("is-visible");
-            }, true);
+                document.documentElement.classList.remove("cursor-enabled");
+                document.body.classList.remove("cursor-enabled");
+            });
 
             document.addEventListener("pointerover", function(event) {
                 var target = event.target;
