@@ -251,7 +251,35 @@
     }
 
     /* --- 3. 共同區塊標題設計 --- */
-    .section-title { text-align: center; margin: 100px 0 50px; font-size: 30px; font-weight: 300; letter-spacing: 8px; color: #fff; text-transform: uppercase; }
+    .section-heading-block {
+        max-width: 1200px;
+        margin: 88px auto 38px;
+        padding: 18px 5% 0;
+        border-top: 1px solid rgba(184, 0, 0, 0.22);
+    }
+    .section-kicker {
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #b48a44;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+    }
+    .section-title {
+        text-align: center;
+        margin: 0;
+        font-family: 'Playfair Display', serif;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: 8px;
+        line-height: 1.25;
+        color: #fff;
+        text-transform: uppercase;
+    }
 
     /* --- 4. 精品展示區 (加入款式下拉選單) --- */
     .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 5%; max-width: 1200px; margin: 0 auto; }
@@ -488,7 +516,9 @@
         .commission-title { font-size: 28px; letter-spacing: 2px; line-height: 1.3; }
         .commission-copy { margin-bottom: 24px; font-size: 14px; letter-spacing: 1px; line-height: 1.9; }
         .commission-btn { width: 100%; max-width: 280px; padding: 13px 18px; }
-        .section-title { font-size: 26px; margin: 60px 0 30px; letter-spacing: 4px; }
+        .section-heading-block { margin: 54px auto 28px; padding: 14px 15px 0; }
+        .section-kicker { font-size: 9px; letter-spacing: 0.22em; margin-bottom: 8px; }
+        .section-title { font-size: 24px; letter-spacing: 4px; line-height: 1.3; }
         .guide-container { padding: 30px; margin: 30px 15px; }
         .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
         a[href="cart.html"].floating-btn { bottom: 65px; }
@@ -576,7 +606,10 @@
     </section>
 
     <section id="artworks">
-        <h2 class="section-title">🔥 熱銷商品 🔥</h2>
+        <div class="section-heading-block">
+            <span class="section-kicker">— Featured Desire</span>
+            <h2 class="section-title">🔥 熱銷商品 🔥</h2>
+        </div>
         <div class="products-container">
             
             <div class="product-card">
@@ -649,7 +682,10 @@
     </section>
 
     <section id="merch">
-        <h2 class="section-title">❗️家裡擺飾不可缺少❗️</h2>
+        <div class="section-heading-block">
+            <span class="section-kicker">— Home Collection</span>
+            <h2 class="section-title">❗️家裡擺飾不可缺少❗️</h2>
+        </div>
         <div class="products-container">
             
             <div class="product-card">
@@ -718,7 +754,10 @@
     </section>
 
     <section id="all-products-preview">
-        <h2 class="section-title">✨ 全部商品 ✨</h2>
+        <div class="section-heading-block">
+            <span class="section-kicker">— All Products</span>
+            <h2 class="section-title">✨ 全部商品 ✨</h2>
+        </div>
         <div class="products-container">
             <div class="product-card">
                 <img src="images/painting-cover.jpg" alt="情慾無框畫系列封面" class="product-img">
@@ -758,7 +797,10 @@
     </section>
 
     <section id="reviews">
-        <h2 class="section-title">💌 來自粉濕們的真誠回饋</h2>
+        <div class="section-heading-block">
+            <span class="section-kicker">— Collector Voices</span>
+            <h2 class="section-title">💌 來自粉濕們的真誠回饋</h2>
+        </div>
         <div class="reviews-container">
             <div class="review-card">
               <div class="review-stars">★★★★★</div>
@@ -779,7 +821,10 @@
     </section>
 
     <section id="guide">
-        <h2 class="section-title">購物須知</h2>
+        <div class="section-heading-block">
+            <span class="section-kicker">— Shopping Guide</span>
+            <h2 class="section-title">購物須知</h2>
+        </div>
         <div class="guide-container">
             <h3>📦 購買方式</h3>
             <p>請選擇最適合您的結帳管道：</p>
