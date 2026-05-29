@@ -23,9 +23,17 @@
     .nav-links a:hover { color: #fff; }
 
     /* --- 2. 頁面標題 --- */
-    .page-header { text-align: center; margin: 80px 0 50px 0; }
-    .page-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; letter-spacing: 6px; margin: 0 0 10px 0; color: #fff; text-transform: uppercase; }
-    .page-subtitle { font-size: 14px; color: #ff3b3b; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; }
+    .page-header { text-align: center; margin: 96px 0 66px 0; }
+    .page-title { position: relative; font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; letter-spacing: 10px; margin: 0; color: #fff; text-transform: uppercase; }
+    .page-title::after {
+        content: "";
+        display: block;
+        width: 92px;
+        height: 1px;
+        margin: 24px auto 0;
+        background: rgba(184, 0, 0, 0.28);
+    }
+    .page-subtitle { font-size: 12px; color: #7c5e5e; letter-spacing: 5px; text-transform: uppercase; font-weight: 500; margin-top: 18px; }
 
     /* ================= 🛍️ 總覽頁專屬佈局 ================= */
     .catalog-container { max-width: 1300px; margin: 0 auto; padding: 0 5%; display: flex; gap: 50px; align-items: flex-start; }
@@ -35,20 +43,28 @@
     
     /* 👉🏼 升級版的側邊欄主標題 */
     .sidebar-title { 
-        font-size: 18px; color: #fff; letter-spacing: 3px; margin-bottom: 25px; 
-        border-bottom: 1px solid #333; padding-bottom: 10px; font-weight: bold;
+        font-size: 18px; color: #fff; letter-spacing: 3px; margin-bottom: 30px; 
+        border-bottom: 1px solid #333; padding-bottom: 14px; font-weight: 500;
         cursor: pointer; transition: 0.3s; text-transform: uppercase;
+        display: flex; flex-direction: column; gap: 4px;
     }
     .sidebar-title:hover { color: #ff3b3b; }
+    .sidebar-title-zh { font-size: 18px; line-height: 1.2; }
+    .sidebar-title-en { font-size: 10px; color: #666; letter-spacing: 0.32em; line-height: 1; }
 
     .category-list { list-style: none; padding: 0; margin: 0; }
-    .category-list li { margin-bottom: 15px; }
+    .category-list li { margin-bottom: 18px; }
     .category-btn { 
         background: none; border: none; color: #ccc; font-size: 15px; letter-spacing: 2px; 
-        cursor: pointer; padding: 5px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
+        cursor: pointer; padding: 6px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
+        display: flex; flex-direction: column; gap: 4px; align-items: flex-start;
     }
-    .category-btn:hover { color: #fff; transform: translateX(5px); }
-    .category-btn.active { color: #ff3b3b; font-weight: bold; border-left: 3px solid #ff3b3b; padding-left: 10px; }
+    .category-btn:hover { color: #fff; transform: translateX(4px); }
+    .category-btn.active { color: #fff; font-weight: 500; }
+    .category-btn.active .category-zh { color: #fff; }
+    .category-btn.active .category-en { color: #b80000; }
+    .category-zh { font-size: 15px; line-height: 1.2; }
+    .category-en { font-size: 10px; color: #666; letter-spacing: 0.32em; line-height: 1; text-transform: uppercase; }
 
     /* 右側商品網格 */
     .products-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
@@ -101,8 +117,10 @@
         .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
         .nav-links a { margin: 0 5px; font-size: 13px; }
         
-        .page-header { margin: 40px 0 30px 0; }
-        .page-title { font-size: 30px; }
+        .page-header { margin: 44px 0 36px 0; }
+        .page-title { font-size: 30px; letter-spacing: 6px; }
+        .page-title::after { width: 72px; margin-top: 18px; }
+        .page-subtitle { margin-top: 14px; font-size: 11px; letter-spacing: 3px; }
         
         .catalog-container { flex-direction: column; gap: 20px; }
         .sidebar { width: 100%; position: relative; top: 0; }
@@ -110,9 +128,11 @@
         
         /* 魔法：手機版專用的橫向滑動選單 */
         .category-list { display: flex; overflow-x: auto; padding-bottom: 10px; white-space: nowrap; border-bottom: 1px solid #333; }
-        .category-list li { margin-bottom: 0; margin-right: 15px; }
-        .category-btn { width: auto; padding: 5px 10px; font-size: 14px; }
-        .category-btn.active { border-left: none; border-bottom: 2px solid #ff3b3b; padding-left: 10px; }
+        .category-list li { margin-bottom: 0; margin-right: 16px; }
+        .category-btn { width: auto; padding: 6px 8px 8px; font-size: 14px; gap: 3px; }
+        .category-zh { font-size: 14px; }
+        .category-en { font-size: 9px; letter-spacing: 0.24em; }
+        .category-btn.active { border-bottom: 1px solid rgba(184, 0, 0, 0.85); }
         .category-list::-webkit-scrollbar { display: none; }
 
         .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
@@ -146,18 +166,24 @@
     <div class="catalog-container">
         
         <aside class="sidebar">
-            <div class="sidebar-title" onclick="filterProducts('all', null)" title="點擊顯示全部商品">全部商品 All</div>
+            <div class="sidebar-title" onclick="filterProducts('all', null)" title="點擊顯示全部商品">
+                <span class="sidebar-title-zh">全部商品</span>
+                <span class="sidebar-title-en">ALL COLLECTIONS</span>
+            </div>
             
             <ul class="category-list">
                 <li class="mobile-all-btn" style="display: none;">
-                    <button class="category-btn active" onclick="filterProducts('all', this)">全部 All</button>
+                    <button class="category-btn active" onclick="filterProducts('all', this)">
+                        <span class="category-zh">全部商品</span>
+                        <span class="category-en">ALL COLLECTIONS</span>
+                    </button>
                 </li>
                 
-                <li><button class="category-btn" onclick="filterProducts('painting', this)">無框畫 Paintings</button></li>
-                <li><button class="category-btn" onclick="filterProducts('coaster', this)">陶瓷杯墊 Coasters</button></li>
-                <li><button class="category-btn" onclick="filterProducts('tapestry', this)">藝術掛布 Tapestries</button></li>
-                <li><button class="category-btn" onclick="filterProducts('sticker', this)">電腦貼紙 Stickers</button></li>
-                <li><button class="category-btn" onclick="filterProducts('mat', this)">硅藻土地墊 Mats</button></li>
+                <li><button class="category-btn" onclick="filterProducts('painting', this)"><span class="category-zh">無框畫</span><span class="category-en">PAINTINGS</span></button></li>
+                <li><button class="category-btn" onclick="filterProducts('coaster', this)"><span class="category-zh">陶瓷杯墊</span><span class="category-en">COASTERS</span></button></li>
+                <li><button class="category-btn" onclick="filterProducts('tapestry', this)"><span class="category-zh">藝術掛布</span><span class="category-en">TAPESTRIES</span></button></li>
+                <li><button class="category-btn" onclick="filterProducts('sticker', this)"><span class="category-zh">電腦貼紙</span><span class="category-en">STICKERS</span></button></li>
+                <li><button class="category-btn" onclick="filterProducts('mat', this)"><span class="category-zh">硅藻土地墊</span><span class="category-en">MATS</span></button></li>
             </ul>
         </aside>
 
