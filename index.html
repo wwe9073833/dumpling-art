@@ -394,6 +394,52 @@
     .floating-btn { position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; letter-spacing: 2px; transition: 0.4s ease; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); z-index: 9999; }
     .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
     a[href="cart.html"].floating-btn { bottom: 90px; }
+
+    /* --- 自訂鼠標（桌機版） --- */
+    #cursor,
+    #cursor-ring {
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 100000;
+        opacity: 0;
+        transform: translate3d(-50%, -50%, 0);
+        will-change: transform, opacity;
+        transition: opacity 0.2s ease;
+    }
+    #cursor {
+        width: 8px;
+        height: 8px;
+        background: #7a0000;
+        box-shadow: 0 0 0 1px rgba(122, 0, 0, 0.3);
+    }
+    #cursor-ring {
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(212, 175, 55, 0.92);
+        box-shadow: 0 0 12px rgba(212, 175, 55, 0.08);
+    }
+    #cursor.is-visible,
+    #cursor-ring.is-visible {
+        opacity: 1;
+    }
+    #cursor-ring.expand {
+        transform: translate3d(-50%, -50%, 0) scale(1.55);
+    }
+    @media (hover: none), (pointer: coarse), (max-width: 900px) {
+        #cursor,
+        #cursor-ring {
+            display: none !important;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #cursor,
+        #cursor-ring {
+            transition: opacity 0.01s linear;
+        }
+    }
         
     /* 手機版 */
     @media (max-width: 768px) {
@@ -450,6 +496,8 @@
     </style>
 </head>
 <body>
+    <div id="cursor" aria-hidden="true"></div>
+    <div id="cursor-ring" aria-hidden="true"></div>
 
     <nav class="navbar">
         <a href="index.html" class="brand-logo">
@@ -627,8 +675,8 @@
                 <div class="product-info">
                     <h3 class="product-title">情慾藝術🎨掛布</h3>
                     <p class="product-price" id="price-merch-2" data-base-price="480">NT$ 480</p>
-                    <div class="prod-stock" id="stock-merch-2">請選擇款式</div>
                     <select id="style-merch-2" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-2', 'price-merch-2', this)">
+                        <option value="" data-placeholder="true" data-price="450">請選擇款式</option>
                         <option value="item3.jpg">款式 A：藝術線條</option>
                     </select>
                     <div class="action-buttons">
@@ -647,8 +695,8 @@
                 <div class="product-info">
                     <h3 class="product-title">💗每一步都是誘惑💗地墊</h3>
                     <p class="product-price" id="price-merch-3" data-base-price="369">NT$ 369</p>
-                    <div class="prod-stock" id="stock-merch-3">請選擇款式</div>
                     <select id="style-merch-3" class="card-style-select" onchange="changeHomepageVariantCardSelection('img-merch-3', 'price-merch-3', this)">
+                        <option value="" data-placeholder="true" data-price="450">請選擇款式</option>
                         <option value="item4.jpg">款式 A：紅線誘惑</option>
                     </select>
                     <div class="action-buttons">
@@ -1104,6 +1152,10 @@
             updateFeaturedHomepageCardState(cardConfig.stockId, cardConfig.buttonId, cardConfig.badgeId, variant.stock);
         }
 
+        function updateFeaturedHomepageVariantBadge(cardConfig, stock) {
+            updateFeaturedHomepageCardState(cardConfig.stockId, cardConfig.buttonId, cardConfig.badgeId, stock);
+        }
+
         function loadFeaturedHomepageVariants() {
             fetch(FEATURED_HOMEPAGE_API_URL, { cache: "no-store" })
                 .then(function(response) {
@@ -1353,6 +1405,80 @@
             document.getElementById(qtyId).value = 1;
         }
 
+        function initDesktopCursor() {
+            var cursor = document.getElementById("cursor");
+            var ring = document.getElementById("cursor-ring");
+            var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            var desktopPointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+            var hideCursor = !desktopPointer;
+            var mouseX = window.innerWidth / 2;
+            var mouseY = window.innerHeight / 2;
+            var ringX = mouseX;
+            var ringY = mouseY;
+            var rafId = null;
+
+            if (!cursor || !ring || hideCursor) {
+                return;
+            }
+
+            cursor.classList.add("is-visible");
+            ring.classList.add("is-visible");
+
+            if (reduceMotion) {
+                cursor.classList.add("reduce-motion");
+                ring.classList.add("reduce-motion");
+            }
+
+            function moveCursor(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursor.style.transform = "translate3d(" + mouseX + "px, " + mouseY + "px, 0) translate(-50%, -50%)";
+                if (reduceMotion) {
+                    ringX = mouseX;
+                    ringY = mouseY;
+                    ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0) translate(-50%, -50%)" + (ring.classList.contains("expand") ? " scale(1.55)" : "");
+                }
+            }
+
+            function animateRing() {
+                var ease = reduceMotion ? 1 : 0.18;
+                ringX += (mouseX - ringX) * ease;
+                ringY += (mouseY - ringY) * ease;
+                ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0) translate(-50%, -50%)" + (ring.classList.contains("expand") ? " scale(1.55)" : "");
+                rafId = window.requestAnimationFrame(animateRing);
+            }
+
+            document.addEventListener("mousemove", moveCursor, { passive: true });
+            document.addEventListener("mouseenter", function() {
+                cursor.classList.add("is-visible");
+                ring.classList.add("is-visible");
+            }, true);
+            document.addEventListener("mouseleave", function() {
+                cursor.classList.remove("is-visible");
+                ring.classList.remove("is-visible");
+            }, true);
+
+            document.addEventListener("pointerover", function(event) {
+                var target = event.target;
+                if (target && target.closest && target.closest("a, button, select, input")) {
+                    ring.classList.add("expand");
+                }
+            });
+
+            document.addEventListener("pointerout", function(event) {
+                var related = event.relatedTarget;
+                if (!related || !related.closest || !related.closest("a, button, select, input")) {
+                    ring.classList.remove("expand");
+                }
+            });
+
+            if (!reduceMotion) {
+                animateRing();
+            } else {
+                ring.style.transform = "translate3d(" + mouseX + "px, " + mouseY + "px, 0) translate(-50%, -50%)";
+            }
+        }
+
         // 畫廊滾動魔法
         function reveal() {
             var reveals = document.querySelectorAll('.reveal-item');
@@ -1372,6 +1498,7 @@
             loadPaintingVariantsForIndex();
             loadHomepageVariantsForIndex();
             loadFeaturedHomepageVariants();
+            initDesktopCursor();
             reveal();
         };
     </script>
