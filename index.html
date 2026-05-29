@@ -285,24 +285,37 @@
 
     /* --- 4. 精品展示區 (加入款式下拉選單) --- */
     .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 5%; max-width: 1200px; margin: 0 auto; }
-    .product-card { position: relative; background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; }
-    .product-card:hover { transform: translateY(-5px); }
+    .product-card { position: relative; background: transparent; border-radius: 8px; overflow: hidden; transition: none; }
     .product-img { 
         width: 100%; 
         height: 380px; 
         object-fit: cover; 
-        /* 👉🏼 恢復 0.8秒 的極致絲滑變換，並保留換圖時的透明度漸變 */
-        transition: transform 0.8s ease, filter 0.8s ease, opacity 0.3s ease; 
-        /* 👉🏼 恢復 80% 濃烈灰階的暗黑電影濾鏡！ */
+        transition: transform 0.35s ease, filter 0.35s ease, opacity 0.3s ease; 
         filter: grayscale(80%) contrast(120%); 
     }
     .product-card:hover .product-img { 
-        /* 👉🏼 恢復滑鼠摸到時的「微微放大」與「全彩覺醒」 */
-        transform: scale(1.05); 
-        filter: grayscale(0%) contrast(100%); 
+        transform: scale(1.03); 
+        filter: grayscale(0%) contrast(100%) brightness(1.08); 
     }
     .product-info { padding: 20px; text-align: left; } 
-    .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; }
+    .product-title { position: relative; display: inline-block; font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; transition: transform 0.35s ease; }
+    .product-title::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 1px;
+        margin-top: 8px;
+        background: rgba(184, 160, 92, 0.72);
+        transition: width 0.35s ease, opacity 0.35s ease;
+        opacity: 0;
+    }
+    .product-card:hover .product-title {
+        transform: translateY(-3px);
+    }
+    .product-card:hover .product-title::after {
+        width: 100%;
+        opacity: 1;
+    }
     .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     .sold-badge {
         position: absolute;
