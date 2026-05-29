@@ -55,16 +55,37 @@
     .category-list { list-style: none; padding: 0; margin: 0; }
     .category-list li { margin-bottom: 18px; }
     .category-btn { 
+        position: relative;
         background: none; border: none; color: #ccc; font-size: 15px; letter-spacing: 2px; 
-        cursor: pointer; padding: 6px 0; transition: 0.3s; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
+        cursor: pointer; padding: 6px 0 6px 18px; transition: color 0.3s ease; text-align: left; width: 100%; font-family: inherit; font-weight: 300; outline: none;
         display: flex; flex-direction: column; gap: 4px; align-items: flex-start;
     }
-    .category-btn:hover { color: #fff; transform: translateX(4px); }
+    .category-btn::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 2px;
+        height: 0;
+        background: #b80000;
+        opacity: 0;
+        transition: height 0.3s ease, opacity 0.3s ease;
+    }
+    .category-btn:hover::before {
+        height: 24px;
+        opacity: 0.85;
+    }
+    .category-btn:hover .category-zh { color: #f0f0f0; }
+    .category-btn:hover .category-en { color: #8d8d8d; }
     .category-btn.active { color: #fff; font-weight: 500; }
+    .category-btn.active::before {
+        height: 24px;
+        opacity: 1;
+    }
     .category-btn.active .category-zh { color: #fff; }
-    .category-btn.active .category-en { color: #b80000; }
-    .category-zh { font-size: 15px; line-height: 1.2; }
-    .category-en { font-size: 10px; color: #666; letter-spacing: 0.32em; line-height: 1; text-transform: uppercase; }
+    .category-btn.active .category-en { color: #9b7d7d; }
+    .category-zh { font-size: 15px; line-height: 1.2; transition: color 0.3s ease; }
+    .category-en { font-size: 10px; color: #666; letter-spacing: 0.32em; line-height: 1; text-transform: uppercase; transition: color 0.3s ease; }
 
     /* 右側商品網格 */
     .products-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
@@ -129,10 +150,12 @@
         /* 魔法：手機版專用的橫向滑動選單 */
         .category-list { display: flex; overflow-x: auto; padding-bottom: 10px; white-space: nowrap; border-bottom: 1px solid #333; }
         .category-list li { margin-bottom: 0; margin-right: 16px; }
-        .category-btn { width: auto; padding: 6px 8px 8px; font-size: 14px; gap: 3px; }
+        .category-btn { width: auto; padding: 6px 8px 8px 12px; font-size: 14px; gap: 3px; }
+        .category-btn::before { top: 7px; height: 18px; opacity: 0.9; }
+        .category-btn:hover::before { height: 18px; opacity: 0.9; }
         .category-zh { font-size: 14px; }
         .category-en { font-size: 9px; letter-spacing: 0.24em; }
-        .category-btn.active { border-bottom: 1px solid rgba(184, 0, 0, 0.85); }
+        .category-btn.active::before { height: 18px; }
         .category-list::-webkit-scrollbar { display: none; }
 
         .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
