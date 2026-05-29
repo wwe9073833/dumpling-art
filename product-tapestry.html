@@ -49,22 +49,24 @@
             flex: 1; position: relative;
         }
         .main-image {
-            width: 100%; height: auto; border-radius: 8px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8); object-fit: cover;
+            width: 100%; height: auto; border-radius: 0;
+            box-shadow: none; object-fit: cover;
             transition: opacity 0.3s ease; /* 切換圖片時的淡入淡出 */
         }
 
         /* 右側：商品資訊與選單 */
         .product-info-box {
             flex: 1; background-color: #0a0a0a; border: 1px solid #222;
-            padding: 50px 40px; position: relative; border-radius: 8px;
+            padding: 50px 40px; position: relative; border-radius: 0;
         }
         .product-info-box::before {
             content: ""; position: absolute; top: -10px; left: -10px;
             width: 60px; height: 60px; border-top: 2px solid #b80000; border-left: 2px solid #b80000;
         }
 
-        .prod-title { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin: 0 0 15px 0; color: #fff; }
+        .prod-title { margin: 0 0 15px 0; color: #fff; }
+        .prod-title-main { display: block; font-size: 28px; font-weight: 300; letter-spacing: 3px; line-height: 1.2; }
+        .prod-title-sub { display: block; margin-top: 8px; font-size: 11px; font-weight: 400; letter-spacing: 4px; color: #666; text-transform: uppercase; }
         .prod-price { font-size: 22px; color: #ff3b3b; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 30px; letter-spacing: 1px; }
         .prod-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 2; letter-spacing: 1.5px; font-weight: 300; }
 
@@ -130,6 +132,8 @@
             
             .product-detail-container { flex-direction: column; gap: 30px; margin: 40px auto; }
             .product-info-box { padding: 30px 20px; }
+            .prod-title-main { font-size: 24px; }
+            .prod-title-sub { font-size: 10px; letter-spacing: 3px; }
             .action-row { flex-direction: column; }
             .quantity-control { width: 100%; }
             .btn-add-cart { width: 100%; }
@@ -157,7 +161,7 @@
         </div>
 
         <div class="product-info-box">
-            <h1 class="prod-title">情慾藝術🎨掛布</h1>
+            <h1 class="prod-title"><span class="prod-title-main">藝術掛布</span><span class="prod-title-sub">ART TAPESTRY</span></h1>
             <div class="prod-price" id="prod-price" data-price="480">NT$ 480</div>
             <div class="prod-stock" id="prod-stock" data-stock="">請選擇款式</div>
             <div class="prod-desc">
