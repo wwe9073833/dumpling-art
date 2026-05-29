@@ -1,0 +1,55 @@
+#cursor,
+#cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100000;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform, opacity;
+    transition: opacity 0.2s ease;
+}
+
+#cursor {
+    width: 8px;
+    height: 8px;
+    background: #7a0000;
+    box-shadow: 0 0 0 1px rgba(122, 0, 0, 0.3);
+}
+
+#cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(212, 175, 55, 0.92);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.08);
+}
+
+#cursor.is-visible,
+#cursor-ring.is-visible {
+    opacity: 1;
+}
+
+#cursor-ring.expand {
+    transform: translate3d(-50%, -50%, 0) scale(1.55);
+}
+
+html.cursor-enabled,
+body.cursor-enabled {
+    cursor: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+    #cursor,
+    #cursor-ring {
+        display: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #cursor,
+    #cursor-ring {
+        transition: opacity 0.01s linear;
+    }
+}

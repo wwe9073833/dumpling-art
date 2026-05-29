@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/cursor.css">
+    <script defer src="js/cursor.js"></script>
 
     <style>
     /* ================= 🎬 DUMPLING ART 電影片場版 CSS ================= */
@@ -423,56 +425,6 @@
     .floating-btn:hover { transform: scale(1.05); background-color: #ff3b3b; color: white; }
     a[href="cart.html"].floating-btn { bottom: 90px; }
 
-    /* --- 自訂鼠標（桌機版） --- */
-    #cursor,
-    #cursor-ring {
-        position: fixed;
-        top: 0;
-        left: 0;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 100000;
-        opacity: 0;
-        transform: translate3d(-50%, -50%, 0);
-        will-change: transform, opacity;
-        transition: opacity 0.2s ease;
-    }
-    #cursor {
-        width: 8px;
-        height: 8px;
-        background: #7a0000;
-        box-shadow: 0 0 0 1px rgba(122, 0, 0, 0.3);
-    }
-    #cursor-ring {
-        width: 34px;
-        height: 34px;
-        border: 1px solid rgba(212, 175, 55, 0.92);
-        box-shadow: 0 0 12px rgba(212, 175, 55, 0.08);
-    }
-    #cursor.is-visible,
-    #cursor-ring.is-visible {
-        opacity: 1;
-    }
-    #cursor-ring.expand {
-        transform: translate3d(-50%, -50%, 0) scale(1.55);
-    }
-    html.cursor-enabled,
-    body.cursor-enabled {
-        cursor: none;
-    }
-    @media (hover: none), (pointer: coarse) {
-        #cursor,
-        #cursor-ring {
-            display: none !important;
-        }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        #cursor,
-        #cursor-ring {
-            transition: opacity 0.01s linear;
-        }
-    }
-        
     /* 手機版 */
     @media (max-width: 768px) {
         .navbar { flex-direction: column; padding: 15px 10px; }
@@ -530,9 +482,6 @@
     </style>
 </head>
 <body>
-    <div id="cursor" aria-hidden="true"></div>
-    <div id="cursor-ring" aria-hidden="true"></div>
-
     <nav class="navbar">
         <a href="index.html" class="brand-logo">
             <img src="images/DUMPLING ART.png" alt="DUMPLING ART Logo" class="nav-logo-img">
@@ -1454,86 +1403,6 @@
             document.getElementById(qtyId).value = 1;
         }
 
-        function initDesktopCursor() {
-            var cursor = document.getElementById("cursor");
-            var ring = document.getElementById("cursor-ring");
-            var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            var desktopPointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-            var hideCursor = !desktopPointer;
-            var mouseX = window.innerWidth / 2;
-            var mouseY = window.innerHeight / 2;
-            var ringX = mouseX;
-            var ringY = mouseY;
-            var rafId = null;
-
-            if (!cursor || !ring || hideCursor) {
-                return;
-            }
-
-            document.documentElement.classList.add("cursor-enabled");
-            document.body.classList.add("cursor-enabled");
-            cursor.classList.add("is-visible");
-            ring.classList.add("is-visible");
-
-            if (reduceMotion) {
-                cursor.classList.add("reduce-motion");
-                ring.classList.add("reduce-motion");
-            }
-
-            function moveCursor(e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                cursor.style.transform = "translate3d(" + mouseX + "px, " + mouseY + "px, 0) translate(-50%, -50%)";
-                if (reduceMotion) {
-                    ringX = mouseX;
-                    ringY = mouseY;
-                    ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0) translate(-50%, -50%)" + (ring.classList.contains("expand") ? " scale(1.55)" : "");
-                }
-            }
-
-            function animateRing() {
-                var ease = reduceMotion ? 1 : 0.10;
-                ringX += (mouseX - ringX) * ease;
-                ringY += (mouseY - ringY) * ease;
-                ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0) translate(-50%, -50%)" + (ring.classList.contains("expand") ? " scale(1.55)" : "");
-                rafId = window.requestAnimationFrame(animateRing);
-            }
-
-            document.addEventListener("mousemove", moveCursor, { passive: true });
-            window.addEventListener("mouseenter", function() {
-                cursor.classList.add("is-visible");
-                ring.classList.add("is-visible");
-                document.documentElement.classList.add("cursor-enabled");
-                document.body.classList.add("cursor-enabled");
-            });
-            window.addEventListener("mouseleave", function() {
-                cursor.classList.remove("is-visible");
-                ring.classList.remove("is-visible");
-                document.documentElement.classList.remove("cursor-enabled");
-                document.body.classList.remove("cursor-enabled");
-            });
-
-            document.addEventListener("pointerover", function(event) {
-                var target = event.target;
-                if (target && target.closest && target.closest("a, button, select, input")) {
-                    ring.classList.add("expand");
-                }
-            });
-
-            document.addEventListener("pointerout", function(event) {
-                var related = event.relatedTarget;
-                if (!related || !related.closest || !related.closest("a, button, select, input")) {
-                    ring.classList.remove("expand");
-                }
-            });
-
-            if (!reduceMotion) {
-                animateRing();
-            } else {
-                ring.style.transform = "translate3d(" + mouseX + "px, " + mouseY + "px, 0) translate(-50%, -50%)";
-            }
-        }
-
         // 畫廊滾動魔法
         function reveal() {
             var reveals = document.querySelectorAll('.reveal-item');
@@ -1553,7 +1422,6 @@
             loadPaintingVariantsForIndex();
             loadHomepageVariantsForIndex();
             loadFeaturedHomepageVariants();
-            initDesktopCursor();
             reveal();
         };
     </script>
