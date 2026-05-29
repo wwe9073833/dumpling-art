@@ -104,6 +104,63 @@
         .btn-add-cart:hover { background-color: #b80000; }
         .btn-add-cart:disabled { background-color: #444; color: #999; cursor: not-allowed; opacity: 0.6; }
 
+        /* 商品預覽區 */
+        .product-preview-section {
+            max-width: 1100px;
+            margin: 40px auto 0;
+            padding: 40px 5% 0;
+            border-top: 1px solid rgba(184, 0, 0, 0.22);
+        }
+        .product-preview-kicker {
+            font-size: 10px;
+            color: #9b7d7d;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .product-preview-title {
+            margin: 0;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 34px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #fff;
+        }
+        .product-preview-note {
+            max-width: 760px;
+            margin: 16px auto 0;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            line-height: 1.9;
+            letter-spacing: 1px;
+        }
+        .product-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+            margin-top: 34px;
+        }
+        .product-preview-card {
+            margin: 0;
+        }
+        .product-preview-img {
+            width: 100%;
+            display: block;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .product-preview-caption {
+            margin-top: 10px;
+            color: #777;
+            font-size: 11px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+
         /* 右下角漂浮按鈕 */
         .floating-btn {
             position: fixed; bottom: 25px; right: 25px; background-color: #fff; color: #111; 
@@ -128,6 +185,12 @@
             .action-row { flex-direction: column; }
             .quantity-control { width: 100%; }
             .btn-add-cart { width: 100%; }
+            .product-preview-section { margin-top: 28px; padding-top: 26px; }
+            .product-preview-title { font-size: 24px; letter-spacing: 4px; }
+            .product-preview-note { font-size: 13px; line-height: 1.8; }
+            .product-preview-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 24px; }
+            .product-preview-kicker { font-size: 9px; letter-spacing: 0.24em; }
+            .product-preview-caption { font-size: 10px; letter-spacing: 0.22em; }
             .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
             a[href="cart.html"].floating-btn { bottom: 65px; }
         }
@@ -180,6 +243,22 @@
             </div>
         </div>
     </div>
+
+    <section class="product-preview-section" aria-label="商品預覽區">
+        <div class="product-preview-kicker">PRODUCT PREVIEW</div>
+        <h2 class="product-preview-title">商品預覽</h2>
+        <p class="product-preview-note">以下為無框畫系列共用示意，實際圖樣依所選款式為準。</p>
+        <div class="product-preview-grid">
+            <figure class="product-preview-card">
+                <img src="images/painting-room.jpg" alt="空間情境示意" class="product-preview-img">
+                <figcaption class="product-preview-caption">空間情境示意</figcaption>
+            </figure>
+            <figure class="product-preview-card">
+                <img src="images/painting-detail.jpg" alt="作品細節示意" class="product-preview-img">
+                <figcaption class="product-preview-caption">作品細節示意</figcaption>
+            </figure>
+        </div>
+    </section>
 
     <a href="https://page.line.me/659jchwf" class="floating-btn" target="_blank" rel="noopener noreferrer">💬 點我私訊</a>
     <a href="cart.html" class="floating-btn">MY BAG (<span id="cart-count">0</span>)</a>
