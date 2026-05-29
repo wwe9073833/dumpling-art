@@ -255,7 +255,7 @@
 
     /* --- 4. 精品展示區 (加入款式下拉選單) --- */
     .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 5%; max-width: 1200px; margin: 0 auto; }
-    .product-card { background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; }
+    .product-card { position: relative; background: transparent; border-radius: 8px; overflow: hidden; transition: transform 0.4s ease; }
     .product-card:hover { transform: translateY(-5px); }
     .product-img { 
         width: 100%; 
@@ -274,6 +274,26 @@
     .product-info { padding: 20px; text-align: left; } 
     .product-title { font-size: 16px; margin: 0 0 10px; font-weight: 500; letter-spacing: 1px; color: #fff; }
     .product-price { color: #888; font-size: 14px; margin-bottom: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .sold-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: #b80000;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        z-index: 3;
+        pointer-events: none;
+    }
+    .sold-badge.is-visible { display: flex; }
     
     /* 🌟 商品卡片專屬的款式選單 (紅白精品版) */
     .card-style-select {
@@ -508,6 +528,7 @@
         <div class="products-container">
             
             <div class="product-card">
+                <div id="sold-hot-1" class="sold-badge">SOLD</div>
                 <img id="img-hot-1" src="images/painting-cover.jpg" alt="情慾無框畫系列封面" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title" id="title-hot-1">🫦情慾🫦無框畫</h3>
@@ -531,6 +552,7 @@
             </div>
 
             <div class="product-card">
+                <div id="sold-hot-2" class="sold-badge">SOLD</div>
                 <img id="img-hot-2" src="images/hot_item1.jpg" alt="陶瓷杯墊" class="product-img" data-cover-image="images/hot_item1.jpg">
                 <div class="product-info">
                     <h3 class="product-title" id="title-hot-2">🔥獨一無二🔥陶瓷杯墊</h3>
@@ -551,6 +573,7 @@
             </div>
 
             <div class="product-card">
+                <div id="sold-hot-3" class="sold-badge">SOLD</div>
                 <img id="img-hot-3" src="images/hot_item3.jpg" alt="防潑水貼紙" class="product-img" data-cover-image="images/hot_item3.jpg">
                 <div class="product-info">
                     <h3 class="product-title" id="title-hot-3">❤️創意電腦貼紙❤️</h3>
@@ -754,9 +777,9 @@
         var PAINTING_DEFAULT_PRICE = 450;
         var PAINTING_COVER_IMAGE = "images/painting-cover.jpg";
         var FEATURED_HOMEPAGE_CARD_CONFIGS = [
-            { titleId: "title-hot-1", imgId: "img-hot-1", priceId: "price-hot-1", stockId: "stock-hot-1", selectId: "style-hot-1", qtyId: "qty-hot-1", buttonId: "btn-hot-1" },
-            { titleId: "title-hot-2", imgId: "img-hot-2", priceId: "price-hot-2", stockId: "stock-hot-2", selectId: "style-hot-2", qtyId: "qty-hot-2", buttonId: "btn-hot-2" },
-            { titleId: "title-hot-3", imgId: "img-hot-3", priceId: "price-hot-3", stockId: "stock-hot-3", selectId: "style-hot-3", qtyId: "qty-hot-3", buttonId: "btn-hot-3" }
+            { titleId: "title-hot-1", imgId: "img-hot-1", priceId: "price-hot-1", stockId: "stock-hot-1", badgeId: "sold-hot-1", selectId: "style-hot-1", qtyId: "qty-hot-1", buttonId: "btn-hot-1" },
+            { titleId: "title-hot-2", imgId: "img-hot-2", priceId: "price-hot-2", stockId: "stock-hot-2", badgeId: "sold-hot-2", selectId: "style-hot-2", qtyId: "qty-hot-2", buttonId: "btn-hot-2" },
+            { titleId: "title-hot-3", imgId: "img-hot-3", priceId: "price-hot-3", stockId: "stock-hot-3", badgeId: "sold-hot-3", selectId: "style-hot-3", qtyId: "qty-hot-3", buttonId: "btn-hot-3" }
         ];
 
         function safeGetCart() {
@@ -1009,9 +1032,10 @@
             return option;
         }
 
-        function updateFeaturedHomepageCardState(stockId, buttonId, stock) {
+        function updateFeaturedHomepageCardState(stockId, buttonId, badgeId, stock) {
             var stockEl = document.getElementById(stockId);
             var buttonEl = document.getElementById(buttonId);
+            var badgeEl = document.getElementById(badgeId);
             var stockValue = parseInt(stock, 10);
 
             if (stockEl) {
@@ -1025,17 +1049,26 @@
             }
 
             if (!buttonEl) {
+                if (badgeEl) {
+                    badgeEl.classList.toggle("is-visible", !isNaN(stockValue) && stockValue <= 0);
+                }
                 return;
             }
 
             if (isNaN(stockValue) || stockValue <= 0) {
                 buttonEl.disabled = true;
                 buttonEl.innerText = "SOLD OUT";
+                if (badgeEl) {
+                    badgeEl.classList.add("is-visible");
+                }
                 return;
             }
 
             buttonEl.disabled = false;
             buttonEl.innerText = "🛒 ADD TO BAG";
+            if (badgeEl) {
+                badgeEl.classList.remove("is-visible");
+            }
         }
 
         function applyFeaturedHomepageVariant(cardConfig, variant) {
@@ -1044,10 +1077,11 @@
             var priceEl = document.getElementById(cardConfig.priceId);
             var selectEl = document.getElementById(cardConfig.selectId);
             var buttonEl = document.getElementById(cardConfig.buttonId);
+            var badgeEl = document.getElementById(cardConfig.badgeId);
             var option = buildFeaturedHomepageOption(variant);
             var productName = getHomepageProductNameById(variant.product_id);
 
-            if (!titleEl || !imgEl || !priceEl || !selectEl || !buttonEl || !productName) {
+            if (!titleEl || !imgEl || !priceEl || !selectEl || !buttonEl || !badgeEl || !productName) {
                 return;
             }
 
@@ -1067,7 +1101,7 @@
             selectEl.style.display = "none";
 
             buttonEl.setAttribute("onclick", "addCardToCart(" + JSON.stringify(productName) + ", " + (parseInt(variant.price, 10) || 0) + ", " + JSON.stringify(cardConfig.qtyId) + ", " + JSON.stringify(cardConfig.selectId) + ")");
-            updateFeaturedHomepageCardState(cardConfig.stockId, cardConfig.buttonId, variant.stock);
+            updateFeaturedHomepageCardState(cardConfig.stockId, cardConfig.buttonId, cardConfig.badgeId, variant.stock);
         }
 
         function loadFeaturedHomepageVariants() {
