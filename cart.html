@@ -61,8 +61,37 @@
             color: #fff;
         }
 
-        /* --- 購物車內部排版 --- */
-        .section-title { text-align: center; margin: 60px 0 40px; font-size: 28px; font-weight: 300; letter-spacing: 6px; color: #fff; text-transform: uppercase; }
+        /* --- 購物車標題系統：同步 Products 頁 --- */
+        .page-header {
+            text-align: center;
+            margin: 96px 0 66px 0;
+        }
+        .page-title {
+            position: relative;
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 400;
+            letter-spacing: 10px;
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 92px;
+            height: 1px;
+            margin: 24px auto 0;
+            background: rgba(184, 0, 0, 0.28);
+        }
+        .page-subtitle {
+            font-size: 12px;
+            color: #7c5e5e;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 18px;
+        }
         
         /* 🛒 購物車容器：改成黑色透明與精緻框線 */
         .cart-container {
@@ -108,6 +137,10 @@
             .nav-logo-img { height: 28px; transform: scale(2); margin-left: -5px; margin-right: 15px; }
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
             .nav-links a { margin: 0 5px; font-size: 13px; }
+            .page-header { margin: 44px 0 36px 0; }
+            .page-title { font-size: 30px; letter-spacing: 6px; }
+            .page-title::after { width: 72px; margin-top: 18px; }
+            .page-subtitle { margin-top: 14px; font-size: 11px; letter-spacing: 3px; }
             .cart-container { padding: 25px; margin: 20px 15px; }
             .cart-item { flex-direction: column; align-items: flex-start; gap: 10px; }
             .item-subtotal { align-self: flex-end; }
@@ -122,19 +155,23 @@
             DUMPLING ART｜OFFICIAL SITE
         </a>
         <div class="nav-links">
-            <a href="index.html">🏠 繼續逛逛</a>
+            <a href="index.html">繼續探索</a>
         </div>
     </nav>
 
+    <div class="page-header">
+        <h1 class="page-title">ORDER SUMMARY</h1>
+        <div class="page-subtitle">你的收藏清單</div>
+    </div>
+
     <div class="cart-container">
-        <h2 class="section-title">🛒 你的購物車</h2>
         
         <div id="cart-items"></div>
         
         <div class="cart-total" id="cart-total">總計：NT$ 0</div>
 
-        <button onclick="checkoutViaLine()" class="checkout-btn">📲 傳送訂單給餃子 (LINE)</button>
-        <button onclick="clearCart()" class="clear-btn">🗑️ 清空購物車，重新挑選</button>
+        <button onclick="checkoutViaLine()" class="checkout-btn">傳送訂單給餃子 (LINE)</button>
+        <button onclick="clearCart()" class="clear-btn">清空收藏清單</button>
     </div>
 
     <script>
@@ -167,7 +204,7 @@
             totalPrice = 0;
 
             if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<div class="empty-message">你的購物車空空的耶，快去挑選喜歡的藝術品吧！🥺</div>';
+                cartItemsDiv.innerHTML = '<div class="empty-message">尚未收藏任何作品，<br>選擇一件讓你心動的收藏。</div>';
                 document.getElementById('cart-total').innerText = "總計：NT$ 0";
                 return;
             }
