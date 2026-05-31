@@ -232,7 +232,7 @@
 
             if (stockValue <= 0) {
                 stockValue = 0;
-                stockEl.innerText = "已售完";
+                stockEl.innerText = "SOLD OUT";
                 stockEl.classList.add("sold-out");
                 stockEl.setAttribute("data-stock", stockValue);
                 addToCartBtn.disabled = true;

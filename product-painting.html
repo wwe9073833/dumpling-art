@@ -143,15 +143,20 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 24px;
             margin-top: 34px;
+            justify-items: center;
         }
         .product-preview-card {
             margin: 0;
+            width: 100%;
+            max-width: 460px;
         }
         .product-preview-img {
             width: 100%;
+            max-width: 460px;
             display: block;
             border-radius: 0;
             box-shadow: none;
+            margin: 0 auto;
         }
         .product-preview-caption {
             margin-top: 10px;
@@ -191,6 +196,8 @@
             .product-preview-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 24px; }
             .product-preview-kicker { font-size: 9px; letter-spacing: 0.24em; }
             .product-preview-caption { font-size: 10px; letter-spacing: 0.22em; }
+            .product-preview-card { max-width: 88%; }
+            .product-preview-img { max-width: 100%; width: 100%; }
             .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
             a[href="cart.html"].floating-btn { bottom: 65px; }
         }
