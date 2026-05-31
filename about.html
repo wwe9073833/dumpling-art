@@ -95,17 +95,6 @@
             letter-spacing: 5px; margin-bottom: 74px; text-transform: uppercase; font-family: 'Playfair Display', serif;
         }
 
-        .about-image {
-            width: 100%; 
-            max-width: 350px; 
-            height: auto; 
-            object-fit: contain; 
-            display: block; 
-            margin: 0 auto 60px auto; 
-            box-shadow: none; 
-            border-radius: 0;
-        }
-
         .about-quote {
             font-size: 34px; 
             font-weight: 300; 
@@ -135,6 +124,74 @@
             font-weight: 500; 
         }
         .about-content p { margin-bottom: 30px; text-align: justify; }
+
+        .logo-feature {
+            margin-top: 90px;
+        }
+        .logo-feature-header {
+            margin-bottom: 30px;
+        }
+        .logo-feature-body {
+            display: grid;
+            grid-template-columns: minmax(180px, 32%) minmax(0, 68%);
+            gap: 42px;
+            align-items: start;
+        }
+        .logo-feature-media {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-top: 78px;
+        }
+        .logo-feature-image {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        .logo-feature-copy {
+            max-width: 100%;
+            min-width: 0;
+        }
+        .logo-mark-eyebrow {
+            margin: 0 0 14px 0;
+            color: #a8a8a8;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-family: 'Playfair Display', serif;
+        }
+        .logo-mark-title {
+            margin: 0;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 6px;
+        }
+        .logo-story-list {
+            border-bottom: 1px solid rgba(184, 0, 0, 0.8);
+            margin-top: 0;
+        }
+        .logo-story-item {
+            padding: 8px 0 9px 0;
+            border-top: 1px solid rgba(184, 0, 0, 0.8);
+        }
+        .logo-story-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 3px;
+        }
+        .logo-story-text {
+            margin: 0;
+            color: #ccc;
+            font-size: 15px;
+            line-height: 1.8;
+            letter-spacing: 2px;
+            text-align: justify;
+        }
 
         /* --- 7. 網站底部 (Footer)：同步首頁破格疊加版 --- */
         .overlap-footer {
@@ -183,6 +240,14 @@
             .about-subtitle { margin-bottom: 44px; letter-spacing: 3px; }
             .about-quote { font-size: 24px; margin: 48px 0; letter-spacing: 2px; padding: 28px 12px; font-weight: 300;}
             .about-content h4 { margin-top: 64px; }
+            .logo-feature { margin-top: 64px; }
+            .logo-feature-header { margin-bottom: 24px; }
+            .logo-feature-body { grid-template-columns: 1fr; gap: 28px; }
+            .logo-feature-media { justify-content: center; padding-top: 0; }
+            .logo-feature-image { max-width: 200px; }
+            .logo-story-list { margin-top: 0; }
+            .logo-mark-title { font-size: 24px; letter-spacing: 4px; }
+            .logo-story-item { padding: 8px 0 9px 0; }
             .floating-btn { bottom: 15px; right: 15px; padding: 10px 15px; font-size: 13px; }
             
             .overlap-footer { padding: 60px 0 30px 0; }
@@ -210,8 +275,6 @@
         <div class="about-title reveal-item">關於餃子</div>
         <div class="about-subtitle reveal-item delay-1">The Story of Dumpling Art</div>
 
-        <img src="images/Dumpling art(白邊).png" alt="關於創作者" class="about-image reveal-item delay-2" loading="lazy">
-
         <div class="about-quote reveal-item">
             「我是餃子，畫你不敢說的慾望。」
         </div>
@@ -235,11 +298,42 @@
                 ＊挑釁：幽默、騷氣、粗暴的筆畫，反擊社會的不允許。<br>
                 ＊情緒：商品不只是商品，而是一種感受，面對自己的情緒。</p>
             
-            <h4 class="reveal-item">🖌️ 關於Logo</h4>
-            <p class="reveal-item delay-1">👄 嘴唇：性感、神秘、帶著挑逗與不安分，是情慾的出口，也是誠實的入口。<br>
-                🫦 下唇=餃子：仔細看下唇是一個餃子的形狀，「餃子」是我。<br>
-                🖌️ 咬著畫筆：餃子是個插畫家，作品是用慾望與誠實去咬出來的。<br>
-                🥟 整體：餃子不是「隨便畫畫的人」，而是專門畫性感、騷氣、挑釁卻真實的畫圖仔。</p>
+            <div class="logo-feature">
+                <div class="logo-feature-header">
+                    <div class="logo-mark-eyebrow reveal-item delay-1">THE MARK</div>
+                    <div class="logo-mark-title reveal-item delay-1">關於 Logo</div>
+                </div>
+
+                <div class="logo-feature-body">
+                    <div class="logo-feature-media reveal-item delay-1">
+                        <img src="images/Dumpling art(白邊).png" alt="DUMPLING ART Logo" class="logo-feature-image" loading="lazy">
+                    </div>
+
+                    <div class="logo-feature-copy">
+                        <div class="logo-story-list">
+                            <div class="logo-story-item reveal-item delay-1">
+                                <span class="logo-story-label">嘴唇</span>
+                                <p class="logo-story-text">性感、神秘、帶著挑逗與不安分，<br>是情慾的出口，也是誠實的入口。</p>
+                            </div>
+
+                            <div class="logo-story-item reveal-item delay-2">
+                                <span class="logo-story-label">下唇＝餃子</span>
+                                <p class="logo-story-text">仔細看下唇是一個餃子的形狀，「餃子」是我。</p>
+                            </div>
+
+                            <div class="logo-story-item reveal-item delay-2">
+                                <span class="logo-story-label">咬著畫筆</span>
+                                <p class="logo-story-text">餃子是個插畫家，作品是用慾望與誠實去咬出來的。</p>
+                            </div>
+
+                            <div class="logo-story-item reveal-item delay-3">
+                                <span class="logo-story-label">整體意義</span>
+                                <p class="logo-story-text">餃子不是「隨便畫畫的人」，<br>而是專門畫性感、騷氣、挑釁卻真實的畫圖仔。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <p class="reveal-item" style="margin-top: 50px; color: #fff;">
                 DUMPLING ART 不只是品牌，而是一種態度。<br>
